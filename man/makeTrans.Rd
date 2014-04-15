@@ -1,0 +1,25 @@
+\name{makeTrans}
+\alias{makeTrans}
+\title{makeTrans}
+\usage{
+  makeTrans(ccc, isText = FALSE, transparancy.val = "44")
+}
+\arguments{
+  \item{ccc}{color vector to make transparent}
+
+  \item{isText}{are the colors textstrings (as opposed to
+  hex value strings)?}
+
+  \item{transparancy.val}{string value for transparancy}
+}
+\value{
+  a vector of colors with transparancy (hex strings)
+}
+\description{
+  make a vector of colors transparent
+}
+\examples{
+makeTrans(rainbow(6))
+makeTrans(c("red","dark blue","coral"),isText=TRUE)
+}
+

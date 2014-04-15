@@ -1,0 +1,26 @@
+\name{colorize.value}
+\alias{colorize.value}
+\title{colorize.value}
+\usage{
+  colorize.value(val, rng = c(-1, 1),
+    colscheme.col.val = c(colorpanel(100, "blue", "white"), colorpanel(100, "white", "red")))
+}
+\arguments{
+  \item{val}{value to be transformed}
+
+  \item{rng}{value range}
+
+  \item{colscheme.col.val}{Color palette to pick a color
+  from}
+}
+\value{
+  color of the value
+}
+\description{
+  transforms a value to a color based on a colorscale and a
+  value scale
+}
+\examples{
+colorize.value(0.5,rng=c(-1,1), colscheme.col.val=c(colorpanel(100,"blue","white"),colorpanel(100,"white","red")))
+}
+

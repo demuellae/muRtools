@@ -1,0 +1,22 @@
+\name{col.text.2.hex}
+\alias{col.text.2.hex}
+\title{col.text.2.hex}
+\usage{
+  col.text.2.hex(ss, alpha = 255)
+}
+\arguments{
+  \item{ss}{color string to be transformed}
+
+  \item{alpha}{maximum alpha}
+}
+\value{
+  a string containing the hex code of the color
+}
+\description{
+  convert a color from a text string to a hex string (only
+  works with scalars, not on vectors)
+}
+\examples{
+col.text.2.hex("dark blue")
+}
+

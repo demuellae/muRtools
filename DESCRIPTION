@@ -1,0 +1,20 @@
+Package: muRtools
+Title: Mueller's R tools
+Description: My custom plotting functions and utilities
+Author: Fabian Mueller
+Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
+Date: 2014-04-03
+Depends:
+    gplots,
+    plotrix,
+    ggplot2,
+    reshape
+License: GPL-2
+Version: 0.2
+Collate:
+	'commandLine.R'
+    'muKDEplots.R'
+    'muMakeTrans.R'
+    'muPairs.R'
+    'muScatter.R'
+    'mu_ggplots2_ext.R'

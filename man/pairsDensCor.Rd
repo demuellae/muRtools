@@ -1,0 +1,30 @@
+\name{pairsDensCor}
+\alias{pairsDensCor}
+\title{pairsDensCor}
+\usage{
+  pairsDensCor(tt,
+    colscheme = c(colorpanel(100, "blue", "white"), colorpanel(100, "white", "red")),
+    ...)
+}
+\arguments{
+  \item{tt}{table to be visualized}
+
+  \item{colscheme}{colorscheme to be used for correlation}
+
+  \item{...}{more plotting parameters}
+}
+\value{
+  Nothing particularly interesting
+}
+\description{
+  Pair plot with correlation values colored and resized on
+  the upper right diagonal and density scatter plot on the
+  lower left diagonal
+}
+\examples{
+dd <- USJudgeRatings
+dd[,5] <- 1/dd[,5]
+tt <- dd[,1:5]
+pairsDensCor(tt)
+}
+

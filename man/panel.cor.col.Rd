@@ -1,0 +1,29 @@
+\name{panel.cor.col}
+\alias{panel.cor.col}
+\title{panel.cor.col}
+\usage{
+  panel.cor.col(x, y, digits = 2, prefix = "", cex.cor,
+    ...)
+}
+\arguments{
+  \item{x}{x}
+
+  \item{y}{y}
+
+  \item{digits}{number of digits to be displayed}
+
+  \item{prefix}{prefix for correlation text}
+
+  \item{cex.cor}{cex for correlation text}
+
+  \item{...}{more plotting parameters}
+}
+\value{
+  Nothing particularly interesting
+}
+\description{
+  creates a correlation panel. The correlation values are
+  colored and fontsize is proportional to amount of
+  correlation
+}
+
