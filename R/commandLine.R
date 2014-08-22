@@ -3,7 +3,6 @@
 #' parser for command line arguments
 #' @return a named list with command line arguments
 #' @export
-#' @aliases ggplot2.heatmap
 #' @examples 
 #' cmd.args <- parse.cl.args()
 #}

@@ -11,10 +11,3 @@ Depends:
     reshape
 License: GPL-2
 Version: 0.2
-Collate:
-	'commandLine.R'
-    'muKDEplots.R'
-    'muMakeTrans.R'
-    'muPairs.R'
-    'muScatter.R'
-    'mu_ggplots2_ext.R'
