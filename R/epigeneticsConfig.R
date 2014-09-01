@@ -14,15 +14,15 @@
 #' library(gplots)
 #' pie(rep(1,length(colpal.histone)), labels=names(colpal.histone), col=colpal.histone)
 colpal.histone <- c(
-	"H3K4me1"  = "#7FCDBB",
-	"H3K4me2"  = "#ADDD8E",
-	"H3K4me3"  = "#238B45",
-	"H3K9me1"  = "#FB6A4A",
-	"H3K9me3"  = "#D94801",
-	"H3K27me3" = "#A50F15",
-	"H3K27ac"  = "#0570B0",
-	"H3K36me3" = "#6A51A3",
-	"Input"    = "#525252",
+	"h3k4me1"  = "#7FCDBB",
+	"h3k4me2"  = "#ADDD8E",
+	"h3k4me3"  = "#238B45",
+	"h3k9me1"  = "#FB6A4A",
+	"h3k9me3"  = "#D94801",
+	"h3k27me3" = "#A50F15",
+	"h3k27ac"  = "#0570B0",
+	"h3k36me3" = "#6A51A3",
+	"input"    = "#525252",
 	"other"    = "#252525"
 )
 
@@ -37,13 +37,13 @@ colpal.histone <- c(
 #' library(gplots)
 #' pie(rep(1,length(colpal.histone.ihec)), labels=names(colpal.histone.ihec), col=colpal.histone.ihec)
 colpal.histone.ihec <- c(
-	"H3K4me1"  = "#B2DF8A",
-	"H3K4me3"  = "#1F78B4",
-	"H3K9me3"  = "#A6CEE3",
-	"H3K27me3" = "#33A02C",
-	"H3K27ac"  = "#E31A1C",
-	"H3K36me3" = "#FB9A99",
-	"Input"    = "#FF7F00",
+	"h3k4me1"  = "#B2DF8A",
+	"h3k4me3"  = "#1F78B4",
+	"h3k9me3"  = "#A6CEE3",
+	"h3k27me3" = "#33A02C",
+	"h3k27ac"  = "#E31A1C",
+	"h3k36me3" = "#FB9A99",
+	"input"    = "#FF7F00",
 	"other"    = "#FDBF6F"
 )
 

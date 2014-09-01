@@ -1,4 +1,4 @@
-HISTONE.MOD.PATTERN <- "(h[[:digit:]]+)[k]([[:digit:]]+)(me[[:digit:]]?|ac|ub)"
+HISTONE.MOD.PATTERN <- "(h[[:digit:]]+)([k])([[:digit:]]+)(me[[:digit:]]?|ac|ub)"
 
 #' Methods for recognizing histone modifications from strings
 #'
@@ -12,11 +12,17 @@ HISTONE.MOD.PATTERN <- "(h[[:digit:]]+)[k]([[:digit:]]+)(me[[:digit:]]?|ac|ub)"
 #'   \item{\code{getHistoneFromHistoneModStr}}{
 #'   	Retrive the histone from a string containing a histone modification pattern
 #'   }
+#'   \item{\code{getAaTypeFromHistoneModStr}}{
+#'   	Retrive the amino acid type from a string containing a histone modification pattern
+#'   }
 #'   \item{\code{getAaPosFromHistoneModStr}}{
 #'   	Retrive the amino acid position from a string containing a histone modification pattern
 #'   }
 #'   \item{\code{getModFromHistoneModStr}}{
 #'   	Retrive the modification from a string containing a histone modification pattern
+#'   }
+#'   \item{\code{normalizeHistoneModStr}}{
+#'   	normalize the histone modification if contained in a string
 #'   }
 #'   \item{\code{matchHistoneModStr}}{
 #'   	Do two strings contain the same histone modifications
@@ -35,8 +41,11 @@ HISTONE.MOD.PATTERN <- "(h[[:digit:]]+)[k]([[:digit:]]+)(me[[:digit:]]?|ac|ub)"
 #' containsHistoneModStr(s3)
 #' containsHistoneModStr(s4)
 #' getHistoneFromHistoneModStr(s1)
+#' getAaTypeFromHistoneModStr(s1)
 #' getAaPosFromHistoneModStr(s1)
 #' getModFromHistoneModStr(s1)
+#' normalizeHistoneModStr(s1)
+#' normalizeHistoneModStr(c(s1,s2,s3,s4))
 #' matchHistoneModStr(s1,s2)
 #' matchHistoneModStr(s1,s4)
 containsHistoneModStr <- function(s){
@@ -52,9 +61,17 @@ getHistoneFromHistoneModStr <- function(s){
 }
 #' @rdname HistoneModStr
 #' @export
+getAaTypeFromHistoneModStr <- function(s){
+	ifelse(containsHistoneModStr(s),
+		gsub(paste0(".*",HISTONE.MOD.PATTERN,".*"),"\\2",s,ignore.case=TRUE),
+		NA
+	)
+}
+#' @rdname HistoneModStr
+#' @export
 getAaPosFromHistoneModStr <- function(s){
 	ifelse(containsHistoneModStr(s),
-		as.integer(gsub(paste0(".*",HISTONE.MOD.PATTERN,".*"),"\\2",s,ignore.case=TRUE)),
+		as.integer(gsub(paste0(".*",HISTONE.MOD.PATTERN,".*"),"\\3",s,ignore.case=TRUE)),
 		NA
 	)
 }
@@ -62,7 +79,15 @@ getAaPosFromHistoneModStr <- function(s){
 #' @export
 getModFromHistoneModStr <- function(s){
 	ifelse(containsHistoneModStr(s),
-		gsub(paste0(".*",HISTONE.MOD.PATTERN,".*"),"\\3",s,ignore.case=TRUE),
+		gsub(paste0(".*",HISTONE.MOD.PATTERN,".*"),"\\4",s,ignore.case=TRUE),
+		NA
+	)
+}
+#' @rdname HistoneModStr
+#' @export
+normalizeHistoneModStr <- function(s){
+	ifelse(containsHistoneModStr(s),
+		tolower(paste0(getHistoneFromHistoneModStr(s),getAaTypeFromHistoneModStr(s),getAaPosFromHistoneModStr(s),getModFromHistoneModStr(s))),
 		NA
 	)
 }

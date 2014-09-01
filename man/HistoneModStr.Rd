@@ -3,18 +3,24 @@
 \alias{containsHistoneModStr}
 \alias{containsHistoneModStr,getHistoneFromHistoneModStr,getAaPosFromHistoneModStr,getModFromHistoneModStr,matchHistoneModStr}
 \alias{getAaPosFromHistoneModStr}
+\alias{getAaTypeFromHistoneModStr}
 \alias{getHistoneFromHistoneModStr}
 \alias{getModFromHistoneModStr}
 \alias{matchHistoneModStr}
+\alias{normalizeHistoneModStr}
 \title{Methods for recognizing histone modifications from strings}
 \usage{
 containsHistoneModStr(s)
 
 getHistoneFromHistoneModStr(s)
 
+getAaTypeFromHistoneModStr(s)
+
 getAaPosFromHistoneModStr(s)
 
 getModFromHistoneModStr(s)
+
+normalizeHistoneModStr(s)
 
 matchHistoneModStr(s1, s2)
 }
@@ -31,11 +37,17 @@ matchHistoneModStr(s1, s2)
   \item{\code{getHistoneFromHistoneModStr}}{
       Retrive the histone from a string containing a histone modification pattern
   }
+  \item{\code{getAaTypeFromHistoneModStr}}{
+      Retrive the amino acid type from a string containing a histone modification pattern
+  }
   \item{\code{getAaPosFromHistoneModStr}}{
       Retrive the amino acid position from a string containing a histone modification pattern
   }
   \item{\code{getModFromHistoneModStr}}{
       Retrive the modification from a string containing a histone modification pattern
+  }
+  \item{\code{normalizeHistoneModStr}}{
+      normalize the histone modification if contained in a string
   }
   \item{\code{matchHistoneModStr}}{
       Do two strings contain the same histone modifications
@@ -54,8 +66,11 @@ containsHistoneModStr(s1)
 containsHistoneModStr(s3)
 containsHistoneModStr(s4)
 getHistoneFromHistoneModStr(s1)
+getAaTypeFromHistoneModStr(s1)
 getAaPosFromHistoneModStr(s1)
 getModFromHistoneModStr(s1)
+normalizeHistoneModStr(s1)
+normalizeHistoneModStr(c(s1,s2,s3,s4))
 matchHistoneModStr(s1,s2)
 matchHistoneModStr(s1,s4)
 }
