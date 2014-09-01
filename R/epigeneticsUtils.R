@@ -88,7 +88,7 @@ getModFromHistoneModStr <- function(s){
 normalizeHistoneModStr <- function(s){
 	ifelse(containsHistoneModStr(s),
 		tolower(paste0(getHistoneFromHistoneModStr(s),getAaTypeFromHistoneModStr(s),getAaPosFromHistoneModStr(s),getModFromHistoneModStr(s))),
-		NA
+		s
 	)
 }
 #' @rdname HistoneModStr
