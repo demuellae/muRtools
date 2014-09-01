@@ -2,9 +2,13 @@
 
 export(camel2underscore)
 export(col.text.2.hex)
+export(colgrad.methylation.rb)
+export(colgrad.methylation.yb)
 export(colorize.value)
 export(colpal.bde)
 export(colpal.cb)
+export(colpal.histone)
+export(colpal.histone.ihec)
 export(get.encode.cell.table)
 export(ggplot2.heatmap)
 export(kde.plot.matrix)
