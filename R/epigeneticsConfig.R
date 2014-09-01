@@ -61,8 +61,8 @@ colpal.histone.ihec <- c(
 #' gradient.rect(0,0,1,1,col=cp,nslices=length(cp),gradient="x",border=NA)
 colgrad.methylation.rb <- c(low="#AD0021",mid="#909090",high="#39278C")
 #' \describe{
-#'   \item{\code{colgrad.methylation.rb}}{
-#'      3 point color palette for methylation: red-grey-blue
+#'   \item{\code{colgrad.methylation.yb}}{
+#'      3 point color palette for methylation: yellow-turquois-blue
 #'   }
 #' }
 #' @rdname colpal.epigenetics

@@ -40,8 +40,8 @@ Named vectors of colors for different modifications
 }
 
 \describe{
-  \item{\code{colgrad.methylation.rb}}{
-     3 point color palette for methylation: red-grey-blue
+  \item{\code{colgrad.methylation.yb}}{
+     3 point color palette for methylation: yellow-turquois-blue
   }
 }
 }
