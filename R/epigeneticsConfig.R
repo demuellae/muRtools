@@ -31,7 +31,7 @@ colpal.histone <- c(
 #'      Histone modifications. Colors defined by IHEC.
 #'   }
 #' }
-#' @rdname colpal
+#' @rdname colpal.epigenetics
 #' @export
 #' @examples
 #' library(gplots)
@@ -52,7 +52,7 @@ colpal.histone.ihec <- c(
 #'      3 point color palette for methylation: red-grey-blue
 #'   }
 #' }
-#' @rdname colpal
+#' @rdname colpal.epigenetics
 #' @export
 #' @examples
 #' library(plotrix)
@@ -65,7 +65,7 @@ colgrad.methylation.rb <- c(low="#AD0021",mid="#909090",high="#39278C")
 #'      3 point color palette for methylation: red-grey-blue
 #'   }
 #' }
-#' @rdname colpal
+#' @rdname colpal.epigenetics
 #' @export
 #' @examples
 #' library(plotrix)
