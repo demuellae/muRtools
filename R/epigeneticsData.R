@@ -8,9 +8,7 @@
 #' @aliases getRegionSet
 #' @examples 
 #' regs <- getRegionSet("deep_chip_ctrl_regions")
-#}
 getRegionSet <- function(id,assembly="hg19"){
-	require(GRanges)
 	reg.fname <- system.file(file.path("extdata", paste(id,assembly,"bed",sep="."), package = "muRtools"))
 	res <- NULL
 	if (!file.exists(reg.fname)){
@@ -33,8 +31,8 @@ getRegionSet <- function(id,assembly="hg19"){
 #' @examples
 #' reg.fname <- system.file(file.path("extdata","deep_chip_ctrl_regions.hg19.bed"), package = "muRtools")
 #' regs <- bed2GRanges(reg.fname)
-#}
 bed2GRanges <- function(fname,assembly=NA){
+	require(GenomicRanges)
 	BED.COLUMNS <- c("chrom", "start", "end", "id", "score", "strand")
 	if (assembly=="hg19"){
 		require(BSgenome.Hsapiens.UCSC.hg19)
