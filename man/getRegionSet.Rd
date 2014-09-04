@@ -3,7 +3,7 @@
 \alias{getRegionSet}
 \title{getRegionSet}
 \usage{
-getRegionSet(id, assembly = "hg19")
+getRegionSet(id, assembly)
 }
 \arguments{
 \item{id}{region set id}
@@ -17,6 +17,6 @@ a GRanges object containing the region set
 retrieves custom region sets by id
 }
 \examples{
-regs <- getRegionSet("deep_chip_ctrl_regions")
+regs <- getRegionSet("deep_chip_ctrl_regions","hg19")
 }
 

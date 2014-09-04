@@ -5,7 +5,7 @@ Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
 Date: 2014-04-03
 Suggests:
-	GenomicRanges,
+    GenomicRanges,
     BSgenome.Hsapiens.UCSC.hg19,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10

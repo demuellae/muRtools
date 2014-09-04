@@ -14,7 +14,8 @@ bed2GRanges(fname, assembly = NA)
 a GRanges object containing the region set
 }
 \description{
-loads a bed file and converts it to a GRanges object
+loads a bed file and converts it to a GRanges object. Note that bed files are 0-based, right-exclusive by definition
+The output of this function will be 1-based, right inclusive as defined by GRanges.
 }
 \examples{
 reg.fname <- system.file(file.path("extdata","deep_chip_ctrl_regions.hg19.bed"), package = "muRtools")
