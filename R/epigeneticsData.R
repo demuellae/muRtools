@@ -38,6 +38,8 @@ bed2GRanges <- function(fname,assembly=NA){
 	if (assembly=="hg19"){
 		require(BSgenome.Hsapiens.UCSC.hg19)
 		sls <- seqlengths(Hsapiens)
+	} else if (assembly=="GRCh38") {
+		require(BSgenome.Hsapiens.NCBI.GRCh38)
 	} else if (assembly=="mm9"){
 		require(BSgenome.Mmusculus.UCSC.mm9)
 		sls <- seqlengths(Mmusculus)
