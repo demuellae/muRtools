@@ -59,7 +59,17 @@ colpal.cb <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
 #' plot.new()
 #' gradient.rect(0,0,1,1,col=colpal.bde,nslices=length(colpal.bde),gradient="x",border=NA)
 colpal.bde <- c("#2166AC","#B2182B","#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#00441B","#40004B","#053061")
-
+#' \describe{
+#'   \item{\code{colpal.nature}}{
+#'         Color palette inspired by Nature journal color scheme's.
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plot.new()
+#' gradient.rect(0,0,1,1,col=colpal.nature,nslices=length(colpal.nature),gradient="x",border=NA)
+colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A47", "#E67800", "#709F28", "#008FB4", "#84486A", "#B5797F", "#7489A8",  "#6C9396", "#7D9FB1", "#84486A", "#7C698B", "#88A2C3")
 
 #' theme_nogrid
 #' 
