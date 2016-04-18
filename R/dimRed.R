@@ -218,13 +218,13 @@ plotAllDimRed <- function(X, fn.prefix, fn.suffix="", annot=NULL, distMethods=c(
 		 ...){
 	suff <- fn.suffix
 	if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
-	pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.pca, annot=annot, ...)
+	pp <- plotDimRed(X, dimRedFun=getDimRedCoords.pca, annot=annot, ...)
 	ggsave(paste0(fn.prefix,"_pca", suff, ".pdf"), pp, width=width, height=height)
 	for (i in 1:length(distMethods)){
 		distMeth <- distMethods[i]
-		pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.mds, annot=annot, distMethod=distMethods[i], ...)
+		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.mds, annot=annot, distMethod=distMethods[i], ...)
 		ggsave(paste0(fn.prefix,"_mds_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
-		pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.tsne, annot=annot, colScheme=colScheme, distMethod=distMethods[i], ...)
+		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.tsne, annot=annot, distMethod=distMethods[i], ...)
 		ggsave(paste0(fn.prefix,"_tsne_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
 	}
 	invisible(NULL)
