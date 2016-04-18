@@ -4,14 +4,33 @@
 \alias{plotDimRed}
 \title{getDimRedPlot}
 \usage{
-plotDimRed(X, dimRedFun = getDimRedCoords.pca, ...)
+plotDimRed(X, dimRedFun = getDimRedCoords.pca, annot = NULL,
+  colorCol = NULL, shapeCol = NULL, colScheme = NULL, addLabels = FALSE,
+  addDensity = FALSE, annot.text = NULL, ...)
 }
 \arguments{
 \item{X}{feature matrix containing one row for each observation and one column for each feature}
 
 \item{dimRedFun}{function to do dimension reduction. E.g. \code{getDimRedCoords.pca}, \code{getDimRedCoords.mds}, \code{getDimRedCoords.tsne},}
 
-\item{...}{arguments to be passed on to \code{getDimRedPlot}}
+\item{annot}{annotation matrix with the same number of rows as \code{coord}}
+
+\item{colorCol}{name or index in the annotation matrix (\code{annot}) that should be used for coloring the points
+if \code{colorCol} not supplied but \code{annot} is supplied, it defaults to the first annotation column}
+
+\item{shapeCol}{name or index in the annotation matrix (\code{annot}) that should be used for point shapes
+if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
+it defaults to the second annotation column}
+
+\item{colScheme}{color sheme to be used in coloring the points}
+
+\item{addLabels}{should observation labels be added to each point}
+
+\item{addDensity}{should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group}
+
+\item{annot.text}{optional text to be added in the lower right corner of the plot}
+
+\item{...}{arguments to be passed on to \code{dimRedFun}}
 }
 \value{
 a \code{ggplot2} object containing the dimension reduction plot

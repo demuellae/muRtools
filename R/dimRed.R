@@ -176,14 +176,25 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 #' Generate a plot from a feature matrix
 #' @param X         feature matrix containing one row for each observation and one column for each feature
 #' @param dimRedFun function to do dimension reduction. E.g. \code{getDimRedCoords.pca}, \code{getDimRedCoords.mds}, \code{getDimRedCoords.tsne},
-#' @param ...       arguments to be passed on to \code{getDimRedPlot}
+#' @param annot    annotation matrix with the same number of rows as \code{coord}
+#' @param colorCol name or index in the annotation matrix (\code{annot}) that should be used for coloring the points
+#'                 if \code{colorCol} not supplied but \code{annot} is supplied, it defaults to the first annotation column
+#' @param shapeCol name or index in the annotation matrix (\code{annot}) that should be used for point shapes
+#'                 if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
+#'                 it defaults to the second annotation column
+#' @param colScheme color sheme to be used in coloring the points
+#' @param addLabels should observation labels be added to each point
+#' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
+#' @param annot.text optional text to be added in the lower right corner of the plot
+#' @param ...       arguments to be passed on to \code{dimRedFun}
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca, 
+plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
+		annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, addLabels=FALSE, addDensity=FALSE, annot.text=NULL,
 		...){
-	coords <- dimRedFun(X)
-	pp <- getDimRedPlot(coords, ...)
+	coords <- dimRedFun(X, ...)
+	pp <- getDimRedPlot(coords, annot=annot, colorCol=colorCol, shapeCol=shapeCol, colScheme=colScheme, addLabels=addLabels, addDensity=addDensity, annot.text=annot.text)
 	return(pp)
 }
 #' plotAllDimRed
@@ -202,16 +213,17 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 #' Currently, PCA, MDS and t-SNE are employed by default with euclidean and manhattan distance metrics where applicable
 #' @author Fabian Mueller
 #' @export 
-plotAllDimRed <- function(X, fn.prefix, fn.suffix="", distMethods=c(euc="euclidean",man="manhattan"), width=10, height=10, ...){
+plotAllDimRed <- function(X, fn.prefix, fn.suffix="", annot=NULL, distMethods=c(euc="euclidean",man="manhattan"), width=10, height=10,
+		 ...){
 	suff <- fn.suffix
 	if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
-	pp <- plotDimRed(methMat, ph, dimRedFun=getDimRedCoords.pca, colScheme=colScheme, ...)
+	pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.pca, annot=annot, ...)
 	ggsave(paste0(fn.prefix,"_pca", suff, ".pdf"), pp, width=width, height=height)
 	for (i in 1:length(distMethods)){
 		distMeth <- distMethods[i]
-		pp <- plotDimRed(methMat, ph, dimRedFun=getDimRedCoords.mds, colScheme=colScheme, distMethod=distMethods[i], ...)
+		pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.mds, annot=annot, distMethod=distMethods[i], ...)
 		ggsave(paste0(fn.prefix,"_mds_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
-		pp <- plotDimRed(methMat, ph, dimRedFun=getDimRedCoords.tsne, colScheme=colScheme, distMethod=distMethods[i], ...)
+		pp <- plotDimRed(methMat, dimRedFun=getDimRedCoords.tsne, annot=annot, colScheme=colScheme, distMethod=distMethods[i], ...)
 		ggsave(paste0(fn.prefix,"_tsne_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
 	}
 	invisible(NULL)
