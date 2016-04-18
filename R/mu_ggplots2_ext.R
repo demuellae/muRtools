@@ -98,3 +98,21 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
       strip.background  = element_rect(fill = "grey80", colour = "grey50", size = 0.2)
     )
 }
+
+#' ggsave4doc
+#' 
+#' Wrapper around ggsave that has default values for parameters fitting for embedding
+#' plots into my documents
+#' @param fn      file name
+#' @param plot    see \code{?ggsave}
+#' @param width   see \code{?ggsave}
+#' @param height  see \code{?ggsave}
+#' @param units   see \code{?ggsave}
+#' @param family  see \code{?ggsave}
+#' @param plot see \code{?ggsave}
+#' @return result of \code{ggsave} command
+#' @export
+#' @aliases ggsave4doc
+ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", ...){
+  ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, ...)
+}

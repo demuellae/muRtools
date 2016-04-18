@@ -3,7 +3,7 @@ Title: Mueller's R tools
 Description: My custom plotting functions and utilities
 Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
-Date: 2014-04-03
+Date: 2016-04-18
 Suggests:
     GenomicRanges,
     BSgenome.Hsapiens.UCSC.hg19,
@@ -16,4 +16,5 @@ Depends:
     ggplot2,
     reshape
 License: GPL-2
-Version: 0.2
+Version: 0.3
+RoxygenNote: 5.0.1
