@@ -13,6 +13,8 @@ plotAllDimRed(X, fn.prefix, fn.suffix = "", annot = NULL,
 
 \item{fn.prefix}{file prefix to be used for the resulting plots}
 
+\item{annot}{annotation matrix with the same number of rows as \code{X}}
+
 \item{distMethods}{distance methods for MDS and t-SNE}
 
 \item{width}{width of the resulting plot}

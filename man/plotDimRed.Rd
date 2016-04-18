@@ -13,7 +13,7 @@ plotDimRed(X, dimRedFun = getDimRedCoords.pca, annot = NULL,
 
 \item{dimRedFun}{function to do dimension reduction. E.g. \code{getDimRedCoords.pca}, \code{getDimRedCoords.mds}, \code{getDimRedCoords.tsne},}
 
-\item{annot}{annotation matrix with the same number of rows as \code{coord}}
+\item{annot}{annotation matrix with the same number of rows as \code{X}}
 
 \item{colorCol}{name or index in the annotation matrix (\code{annot}) that should be used for coloring the points
 if \code{colorCol} not supplied but \code{annot} is supplied, it defaults to the first annotation column}

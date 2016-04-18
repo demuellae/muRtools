@@ -176,7 +176,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 #' Generate a plot from a feature matrix
 #' @param X         feature matrix containing one row for each observation and one column for each feature
 #' @param dimRedFun function to do dimension reduction. E.g. \code{getDimRedCoords.pca}, \code{getDimRedCoords.mds}, \code{getDimRedCoords.tsne},
-#' @param annot    annotation matrix with the same number of rows as \code{coord}
+#' @param annot     annotation matrix with the same number of rows as \code{X}
 #' @param colorCol name or index in the annotation matrix (\code{annot}) that should be used for coloring the points
 #'                 if \code{colorCol} not supplied but \code{annot} is supplied, it defaults to the first annotation column
 #' @param shapeCol name or index in the annotation matrix (\code{annot}) that should be used for point shapes
@@ -203,6 +203,7 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 #' @param X           feature matrix containing one row for each observation and one column for each feature
 #' @param fn.prefix   file prefix to be used for the resulting plots
 #' @param fn.prefix   file suffix to be used for the resulting plots
+#' @param annot       annotation matrix with the same number of rows as \code{X}
 #' @param distMethods distance methods for MDS and t-SNE
 #' @param width       width of the resulting plot
 #' @param height      height of the resulting plot
