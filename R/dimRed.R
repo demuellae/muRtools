@@ -172,6 +172,12 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	if (!is.null(annot.text)){
 		pp <- pp + annotate("text", x=max(df2p[,xLab],na.rm=TRUE),y=min(df2p[,yLab],na.rm=TRUE),label=annot.text,parse=FALSE,hjust=1,vjust=1,size=4)
 	}
+	#add percent variance explained to axis labels
+	percVar <- attr(coords,"percVar")
+	if (!is.null(percVar)){
+		pp <- pp + xlab(paste0(pp$labels$x, " (", round(percVar[pp$labels$x], 2), "%)"))
+		pp <- pp + ylab(paste0(pp$labels$y, " (", round(percVar[pp$labels$y], 2), "%)"))
+	}
 	return(pp)
 }
 #' getDimRedPlot
@@ -198,20 +204,15 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 		...){
 	coords <- dimRedFun(X, ...)
 	pp <- getDimRedPlot(coords, annot=annot, colorCol=colorCol, shapeCol=shapeCol, colScheme=colScheme, addLabels=addLabels, addDensity=addDensity, annot.text=annot.text)
-	#add percent variance explained to axis labels
-	percVar <- attr(coords,"percVar")
-	if (!is.null(percVar)){
-		pp <- pp + xlab(paste0(pp$labels$x, " (", round(percVar[pp$labels$x], 2), "%)"))
-		pp <- pp + ylab(paste0(pp$labels$y, " (", round(percVar[pp$labels$y], 2), "%)"))
-	}
 	return(pp)
 }
 #' plotAllDimRed
 #' 
 #' Generate a plots with multiple methods and parameter settings from a feature matrix
 #' @param X           feature matrix containing one row for each observation and one column for each feature
-#' @param fn.prefix   file prefix to be used for the resulting plots
-#' @param fn.prefix   file suffix to be used for the resulting plots
+#' @param fn.prefix   file prefix to be used for the resulting plots. 
+#'                    If \code{NULL}, no plot is actually created, but a list of resulting plot objects is returned
+#' @param fn.suffix   file suffix to be used for the resulting plots
 #' @param annot       annotation matrix with the same number of rows as \code{X}
 #' @param distMethods distance methods for MDS and t-SNE
 #' @param width       width of the resulting plot
@@ -223,22 +224,29 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 #' Currently, PCA, MDS and t-SNE are employed by default with euclidean and manhattan distance metrics where applicable
 #' @author Fabian Mueller
 #' @export 
-plotAllDimRed <- function(X, fn.prefix, fn.suffix="", annot=NULL, distMethods=c(euc="euclidean",man="manhattan"), width=10, height=10,
+plotAllDimRed <- function(X, fn.prefix=NULL, fn.suffix="", annot=NULL, distMethods=c(euc="euclidean",man="manhattan"), width=10, height=10,
 		 ...){
-	suff <- fn.suffix
-	if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
+	
 	res <- list()
 	pp <- plotDimRed(X, dimRedFun=getDimRedCoords.pca, annot=annot, ...)
 	res <- c(res, list(list(plot=pp, method="pca", dist=NA)))
-	ggsave(paste0(fn.prefix,"_pca", suff, ".pdf"), pp, width=width, height=height)
 	for (i in 1:length(distMethods)){
 		distMeth <- distMethods[i]
+		distMethName <- names(distMethods)[i]
 		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.mds, annot=annot, distMethod=distMethods[i], ...)
-		res <- c(res, list(list(plot=pp, method="mds", dist=distMeth)))
-		ggsave(paste0(fn.prefix,"_mds_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
+		res <- c(res, list(list(plot=pp, method="mds", dist=distMethName)))
 		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.tsne, annot=annot, distMethod=distMethods[i], ...)
-		res <- c(res, list(list(plot=pp, method="tsne", dist=distMeth)))
-		ggsave(paste0(fn.prefix,"_tsne_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
+		res <- c(res, list(list(plot=pp, method="tsne", dist=distMethName)))
+	}
+	if (doPlot) {
+		suff <- fn.suffix
+		if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
+		for (ple in res){
+			fName <- paste0(fn.prefix,"_", ple$method, "_")
+			if (!is.na(ple$dist)) fName <- paste0(fName, "_", ple$dist)
+			fName <- paste0(fName, suff, ".pdf")
+			ggsave(fName, ple$plot, width=width, height=height)
+		}
 	}
 	invisible(res)
 }
