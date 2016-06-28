@@ -128,6 +128,10 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		} else {
 			stop("invalid value for colorCol")
 		}
+		if (is.numeric(df2p[,colorCol])){
+			warning("Currently only non-numeric columns are supported for dimRed coloring. --> converting to factor")
+			df2p[,colorCol] <- factor(df2p[,colorCol])
+		}
 	}
 	if (!is.null(shapeCol)) {
 		if (length(shapeCol)!=1){
@@ -145,6 +149,9 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			shapeCol <- "shape"
 		} else {
 			stop("invalid value for shapeCol")
+		}
+		if (is.numeric(df2p[,shapeCol])){
+			df2p[,shapeCol] <- factor(df2p[,shapeCol])
 		}
 	}
 
