@@ -242,7 +242,7 @@ plotAllDimRed <- function(X, fn.prefix=NULL, fn.suffix="", annot=NULL, distMetho
 		suff <- fn.suffix
 		if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
 		for (ple in res){
-			fName <- paste0(fn.prefix,"_", ple$method, "_")
+			fName <- paste0(fn.prefix,"_", ple$method)
 			if (!is.na(ple$dist)) fName <- paste0(fName, "_", ple$dist)
 			fName <- paste0(fName, suff, ".pdf")
 			ggsave(fName, ple$plot, width=width, height=height)
