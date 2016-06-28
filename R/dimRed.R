@@ -238,7 +238,7 @@ plotAllDimRed <- function(X, fn.prefix=NULL, fn.suffix="", annot=NULL, distMetho
 		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.tsne, annot=annot, distMethod=distMethods[i], ...)
 		res <- c(res, list(list(plot=pp, method="tsne", dist=distMethName)))
 	}
-	if (doPlot) {
+	if (!is.null(fn.prefix)) {
 		suff <- fn.suffix
 		if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
 		for (ple in res){
