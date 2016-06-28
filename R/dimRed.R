@@ -198,6 +198,12 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 		...){
 	coords <- dimRedFun(X, ...)
 	pp <- getDimRedPlot(coords, annot=annot, colorCol=colorCol, shapeCol=shapeCol, colScheme=colScheme, addLabels=addLabels, addDensity=addDensity, annot.text=annot.text)
+	#add percent variance explained to axis labels
+	percVar <- attr(coords,"percVar")
+	if (!is.null(percVar)){
+		pp <- pp + xlab(paste0(pp$labels$x, " (", round(percVar[pp$labels$x], 2), "%)"))
+		pp <- pp + ylab(paste0(pp$labels$y, " (", round(percVar[pp$labels$y], 2), "%)"))
+	}
 	return(pp)
 }
 #' plotAllDimRed
