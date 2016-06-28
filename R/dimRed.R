@@ -11,10 +11,10 @@
 #' @author Fabian Mueller
 #' @export 
 getDimRedCoords.pca <- function(X, components=c(1,2)){
-	numNA <- colSums(is.na(X))
+	numNA <- colSums(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
 	if (any(numNA>0)){
-		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"observations because the remaining ones contained NAs"))
+		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"observations because the remaining ones contained NAs/Inf"))
 		X <- X[,has.noNA]
 	}
 	pca <- prcomp(X, center = TRUE, scale. = FALSE)
