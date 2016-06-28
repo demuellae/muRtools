@@ -20,6 +20,9 @@ getDimRedCoords.pca <- function(X, components=c(1,2)){
 	pca <- prcomp(X, center = TRUE, scale. = FALSE)
 	coords <- pca$x[,components]
 	rownames(coords) <- rownames(X)
+	percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
+	names(percVar) <- colnames(pca$x)
+	attr(coords, "percVar") <- percVar[components]
 	return(coords)
 }
 #' getDimRedCoords.mds
@@ -208,7 +211,7 @@ plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
 #' @param width       width of the resulting plot
 #' @param height      height of the resulting plot
 #' @param ...       arguments to be passed on to \code{getDimRedPlot}
-#' @return nothing of particular interest
+#' @return (invisibly) a list of lists containing the created plots as ggplot objects and additional info for each plot
 #' 
 #' @details
 #' Currently, PCA, MDS and t-SNE are employed by default with euclidean and manhattan distance metrics where applicable
@@ -218,14 +221,18 @@ plotAllDimRed <- function(X, fn.prefix, fn.suffix="", annot=NULL, distMethods=c(
 		 ...){
 	suff <- fn.suffix
 	if (nchar(fn.suffix)>0) suff <- paste0("_",fn.suffix)
+	res <- list()
 	pp <- plotDimRed(X, dimRedFun=getDimRedCoords.pca, annot=annot, ...)
+	res <- c(res, list(list(plot=pp, method="pca", dist=NA)))
 	ggsave(paste0(fn.prefix,"_pca", suff, ".pdf"), pp, width=width, height=height)
 	for (i in 1:length(distMethods)){
 		distMeth <- distMethods[i]
 		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.mds, annot=annot, distMethod=distMethods[i], ...)
+		res <- c(res, list(list(plot=pp, method="mds", dist=distMeth)))
 		ggsave(paste0(fn.prefix,"_mds_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
 		pp <- plotDimRed(X, dimRedFun=getDimRedCoords.tsne, annot=annot, distMethod=distMethods[i], ...)
+		res <- c(res, list(list(plot=pp, method="tsne", dist=distMeth)))
 		ggsave(paste0(fn.prefix,"_tsne_",names(distMethods)[i], suff, ".pdf"), pp, width=width, height=height)
 	}
-	invisible(NULL)
+	invisible(res)
 }
