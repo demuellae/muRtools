@@ -14,7 +14,7 @@ getDimRedCoords.pca <- function(X, components=c(1,2)){
 	numNA <- colSums(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
 	if (any(numNA>0)){
-		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"observations because the remaining ones contained NAs/Inf"))
+		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"features because the remaining ones contained NAs/Inf"))
 		X <- X[,has.noNA]
 	}
 	pca <- prcomp(X, center = TRUE, scale. = FALSE)
@@ -147,6 +147,8 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		} else if (is.numeric(shapeCol)){
 			df2p[, "shape"] <- annot[,shapeCol]
 			shapeCol <- "shape"
+		} else if (is.logical(shapeCol) && !shapeCol)
+			shapeCol <- NULL
 		} else {
 			stop("invalid value for shapeCol")
 		}
