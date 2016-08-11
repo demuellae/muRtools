@@ -147,7 +147,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		} else if (is.numeric(shapeCol)){
 			df2p[, "shape"] <- annot[,shapeCol]
 			shapeCol <- "shape"
-		} else if (is.logical(shapeCol) && !shapeCol)
+		} else if (is.logical(shapeCol) && !shapeCol) {
 			shapeCol <- NULL
 		} else {
 			stop("invalid value for shapeCol")
