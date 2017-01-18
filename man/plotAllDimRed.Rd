@@ -4,14 +4,17 @@
 \alias{plotAllDimRed}
 \title{plotAllDimRed}
 \usage{
-plotAllDimRed(X, fn.prefix, fn.suffix = "", annot = NULL,
+plotAllDimRed(X, fn.prefix = NULL, fn.suffix = "", annot = NULL,
   distMethods = c(euc = "euclidean", man = "manhattan"), width = 10,
   height = 10, ...)
 }
 \arguments{
 \item{X}{feature matrix containing one row for each observation and one column for each feature}
 
-\item{fn.prefix}{file prefix to be used for the resulting plots}
+\item{fn.prefix}{file prefix to be used for the resulting plots. 
+If \code{NULL}, no plot is actually created, but a list of resulting plot objects is returned}
+
+\item{fn.suffix}{file suffix to be used for the resulting plots}
 
 \item{annot}{annotation matrix with the same number of rows as \code{X}}
 
@@ -22,11 +25,9 @@ plotAllDimRed(X, fn.prefix, fn.suffix = "", annot = NULL,
 \item{height}{height of the resulting plot}
 
 \item{...}{arguments to be passed on to \code{getDimRedPlot}}
-
-\item{fn.prefix}{file suffix to be used for the resulting plots}
 }
 \value{
-nothing of particular interest
+(invisibly) a list of lists containing the created plots as ggplot objects and additional info for each plot
 }
 \description{
 Generate a plots with multiple methods and parameter settings from a feature matrix

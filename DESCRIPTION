@@ -13,8 +13,7 @@ Suggests:
 Depends:
     gplots,
     plotrix,
-    ggplot2,
-    reshape
+    ggplot2
 License: GPL-2
 Version: 0.3
 RoxygenNote: 5.0.1

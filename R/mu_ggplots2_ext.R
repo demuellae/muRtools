@@ -26,7 +26,8 @@ ggplot2.heatmap <- function(mm,add.text=FALSE){
 	dd <- melt(ddd)
 	dd$rnames <- factor(dd$rnames,levels=rownames(mm))
 	p <-   ggplot(dd, aes(variable,rnames)) + geom_tile(aes(fill = value)) + 
-		   scale_x_discrete(name="") + scale_y_discrete(limits = rev(levels(dd$rnames)),name="") + coord_fixed()
+		   scale_x_discrete(name="") + scale_y_discrete(limits = rev(levels(dd$rnames)),name="") + coord_fixed() +
+       theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
 	if(add.text){
 		p <- p + geom_text(aes(label=value))
 	}
