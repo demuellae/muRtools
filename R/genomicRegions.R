@@ -8,7 +8,7 @@
 #' @param gr GRanges object
 #' @param fn filename to save bed file to
 #' @param sc score vector or column in elementMetadata of GRanges
-#' @param addAnnotCols add the columns strored in elementMetadata of GRanges
+#' @param addAnnotCols add the columns stored in elementMetadata of GRanges
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
 #' @return result of writing the table (see \code{write.table})
@@ -38,6 +38,141 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 	}
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=colNames)
 }
+
+
+#' granges2bed.igv
+#' 
+#' Save a GRanges object to a bed file which can be displayed by IGV
+#' 
+#' @param gr        GRanges object
+#' @param fn        filename to save bed file to
+#' @param trackName track name to be displayed
+#' @param scoreCol  the score column (in the GRanges elementMetadata) that is optionally used for coloring
+#' @param na.rm     flag indicating whether items with NA score should be removed
+#' @param nameCol   the name column (in the GRanges elementMetadata) that is used for labelling the items
+#' @param col.cat   color panel for coloring categorical scores
+#' @param col.cont  color panel for coloring numerical scores
+#' @param col.na    color used for NA scores
+#' @param col.range vector of length 2 indicating the range of scores for the color scales to be applied (continuous scores only)
+#' @param na.rm     flag indicating whether items with NA score should be removed
+#' @param doSort sort the regions before writing the output
+#' @return invisibly, the resulting data frame containing the bed file columns
+#' @export 
+granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, nameCol=NULL, col.cat=colpal.bde, col.cont=c("#EDF8B1","#41B6C4","#081D58"), col.na="#bdbdbd", col.range=NULL, doSort=TRUE){
+	if (doSort){
+		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
+		gr <- gr[oo]
+	}
+	naCol <- rep(".", length(gr))
+	itemNames <- naCol
+	if (!is.null(nameCol)){
+		itemNames <- elementMetadata(gr)[, nameCol]
+	}
+
+	scores <- naCol
+	itemColors <- naCol
+	col.na.rgb <- as.integer(col2rgb(col.na)[,1])
+	sc <- NULL
+	if (!is.null(scoreCol)){
+		sc <- elementMetadata(gr)[, scoreCol]
+		isCategorical <- FALSE
+
+		#score column is categorical
+		if (is.character(sc)){
+			itemNames.sc <- sc
+			isCategorical <- TRUE
+		}
+		if (is.factor(sc)){
+			itemNames.sc <- as.character(sc)
+			isCategorical <- TRUE
+		}
+
+		#match the colors to names
+		if (isCategorical){
+			scores <- rep(0, length(gr)) #strangely the score needs to be 0 when itemRgb should be applied in IGV
+
+			lvls <- sort(unique(itemNames.sc))
+			if (!is.null(names(col.cat))){
+				if (!all(lvls %in% names(col.cat))){
+					stop("Not all categories have a mapped color")
+				}
+			} else {
+				col.cat <- rep(col.cat, length.out=length(lvls))
+				names(col.cat) <- lvls
+			}
+			itemColors <- col.cat[itemNames.sc]
+			itemColors <- apply(col2rgb(itemColors), 2, FUN=function(x){paste(as.integer(x), collapse=",")})
+
+			if (!is.null(nameCol)){
+				itemNames <- paste0(itemNames, " (", itemNames.sc, ")")
+			} else {
+				itemNames <- itemNames.sc
+			}
+		}
+
+		#score column is numeric
+		if (is.numeric(sc)){
+			#rescale to be between 0 and 1000
+			# scores <- as.integer(round(rescale(sc, c(0, 1000))))
+			scores <- rep(0, length(gr)) #strangely the score needs to be 0 when itemRgb should be applied in IGV
+
+			#match the values to colors
+			cr <- colorRamp(col.cont)
+			itemColors <- cr(rescale(sc, c(0, 1)))
+			if (!is.null(col.range)){
+				#extend the scores with the min and max values to rescale the color scheme
+				sc.padded <- c(col.range[1], sc, col.range[2])
+				#truncate if values exceed the range
+				sc.padded[sc.padded < col.range[1]] <- col.range[1]
+				sc.padded[sc.padded > col.range[2]] <- col.range[2]
+				itemColors <- cr(rescale(sc.padded, c(0, 1)))[2:(length(sc)+1),]
+			}
+			itemColors[is.na(sc),] <- col.na.rgb
+			itemColors <- apply(itemColors, 1, FUN=function(x){paste(as.integer(x), collapse=",")})
+
+			#write the core to the name column
+			scStr <- signif(sc)
+			if (!is.null(nameCol)){
+				itemNames <- paste0(itemNames, " (", scStr, ")")
+			} else {
+				itemNames <- scStr
+			}
+
+		}
+	}
+	strands <- as.character(strand(gr))
+	strands[strands=="*"] <- "."
+
+
+	starts <- format(start(gr)-1, trim=TRUE, scientific=FALSE)
+	ends   <- format(end(gr), trim=TRUE, scientific=FALSE)
+	tt <- data.frame(
+		chrom=seqnames(gr),
+		start=starts,
+		end=ends,
+		itemName=itemNames,
+		score=scores,
+		strand=strands,
+		thickStart=starts,
+		thickEnds=ends,
+		itemRgb=itemColors,
+		stringsAsFactors=FALSE
+	)
+
+	#discard rows where the score is NA if demanded
+	if (na.rm & !is.null(sc)){
+		tt <- tt[!is.na(sc), ]
+	}
+
+	if (is.null(trackName)) trackName <- "GRanges track"
+
+	trackLine <- paste0('track name="', trackName, '" description="', trackName, '" visibility=1 itemRgb="On"')
+	write(trackLine, file=fn)
+	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE, na=".", append=TRUE)
+	invisible(tt)
+}
+#granges2igv.bed(gr, "~/tmp/gr_conv.bed", trackName="blubb", scoreCol="cmp_LiHe_CTvST")
+#granges2igv.bed(gr, "~/tmp/gr_conv_cat.bed", trackName="blubb", scoreCol="category")
 
 #' getSeqlengths4assembly
 #'
@@ -180,4 +315,3 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	}
 	return(res)
 }
-
