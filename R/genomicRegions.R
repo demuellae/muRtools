@@ -171,8 +171,8 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE, na=".", append=TRUE)
 	invisible(tt)
 }
-#granges2igv.bed(gr, "~/tmp/gr_conv.bed", trackName="blubb", scoreCol="cmp_LiHe_CTvST")
-#granges2igv.bed(gr, "~/tmp/gr_conv_cat.bed", trackName="blubb", scoreCol="category")
+#granges2bed.igv(gr, "~/tmp/gr_conv.bed", trackName="blubb", scoreCol="cmp_LiHe_CTvST")
+#granges2bed.igv(gr, "~/tmp/gr_conv_cat.bed", trackName="blubb", scoreCol="category")
 
 #' getSeqlengths4assembly
 #'
