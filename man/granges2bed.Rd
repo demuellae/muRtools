@@ -12,7 +12,7 @@ granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE, colNames = FALSE,
 
 \item{fn}{filename to save bed file to}
 
-\item{addAnnotCols}{add the columns strored in elementMetadata of GRanges}
+\item{addAnnotCols}{add the columns stored in elementMetadata of GRanges}
 
 \item{colNames}{add column names}
 
