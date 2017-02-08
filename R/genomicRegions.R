@@ -100,8 +100,9 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 				col.cat <- rep(col.cat, length.out=length(lvls))
 				names(col.cat) <- lvls
 			}
-			itemColors <- col.cat[itemNames.sc]
-			itemColors <- apply(col2rgb(itemColors), 2, FUN=function(x){paste(as.integer(x), collapse=",")})
+			col.cat.rgb.str <- apply(col2rgb(col.cat), 2, FUN=function(x){paste(as.integer(x), collapse=",")})
+			names(col.cat.rgb.str) <- names(col.cat)
+			itemColors <- col.cat.rgb.str[itemNames.sc]
 
 			if (!is.null(nameCol)){
 				itemNames <- paste0(itemNames, " (", itemNames.sc, ")")
