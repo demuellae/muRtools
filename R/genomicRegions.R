@@ -39,6 +39,48 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=colNames)
 }
 
+#' granges2igv
+#' 
+#' Save a GRanges object to a IGV file
+#' 
+#' @param gr GRanges object
+#' @param fn filename to save IGV file to
+#' @param sc score vector or column in elementMetadata of GRanges
+#' @param addAnnotCols add the columns stored in elementMetadata of GRanges
+#' @param doSort sort the regions before writing the output
+#' @param toTDF convert to TDF file. Requires that "igvtools" is executable from the current path
+#' @return result of writing the table (see \code{write.table})
+#' @export 
+granges2igv <- function(gr, fn, addStrand=FALSE, addAnnotCols=TRUE, doSort=TRUE, toTDF=FALSE){
+	if (doSort){
+		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
+		gr <- gr[oo]
+	}
+	nns <- rep(".", length(gr))
+	if (!is.null(names(gr))) nns <- names(gr)
+	tt <- data.frame(
+		Chromosome=seqnames(gr),
+		Start=format(start(gr)-1, trim=TRUE, scientific=FALSE),
+		End=format(end(gr), trim=TRUE, scientific=FALSE),
+		Feature=nns,
+		stringsAsFactors=FALSE
+	)
+	if (addStrand){
+		tt <- data.frame(tt, Strand=strand(gr), stringsAsFactors=FALSE)
+	}
+	if (addAnnotCols){
+		tt <- data.frame(tt, elementMetadata(gr), stringsAsFactors=FALSE)
+	}
+	res <- write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+	if (toTDF){
+		assembly <- unique(genome(gr))
+		if (length(assembly) != 1){
+			stop("Could not convert to TDF: invalid value for genome(GRangesObject)")
+		}
+		convertRes <- system2("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly), stdout=TRUE)
+	}
+	invisible(res)
+}
 
 #' granges2bed.igv
 #' 
@@ -269,7 +311,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	param.list[["seqnames"]] <- chroms
 
 	df <- df[!(is.na(df[, start.col]) | is.na(df[, end.col])), ]
-	1
+
 	# adjust format
 	if (coord.format=="B1RI"){
 		#1-based, right-inclusive --> nothing to do
@@ -311,7 +353,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 
 	# optional sorting
 	if (doSort){
-		res <- order(as.integer(seqnames(res)), start(res), end(res), as.integer(strand(res)))
+		oo <- order(as.integer(seqnames(res)), start(res), end(res), as.integer(strand(res)))
 		res <- res[oo]
 	}
 	return(res)
