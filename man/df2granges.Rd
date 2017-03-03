@@ -6,7 +6,7 @@
 \usage{
 df2granges(df, ids = rownames(df), chrom.col = 1L, start.col = 2L,
   end.col = 3L, strand.col = NULL, coord.format = "B1RI",
-  assembly = NULL, doSort = FALSE)
+  assembly = NULL, doSort = FALSE, adjNumChromNames = FALSE)
 }
 \arguments{
 \item{df}{Table defining genomic regions.}
@@ -29,6 +29,8 @@ df2granges(df, ids = rownames(df), chrom.col = 1L, start.col = 2L,
 genomes.}
 
 \item{doSort}{Should the resulting table be sorted}
+
+\item{adjNumChromNames}{Should numeric chromosome names be adjusted for by adding the prefix "chr"}
 }
 \value{
 \code{GRanges} object encapsulating of regions included in \code{df}.

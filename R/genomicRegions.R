@@ -281,6 +281,7 @@ matchStrand <- function(values) {
 #' @param assembly   Genome assembly of interest. See \code{\link{rnb.get.assemblies}} for the list of supported
 #'                   genomes.
 #' @param doSort     Should the resulting table be sorted
+#' @param adjNumChromNames Should numeric chromosome names be adjusted for by adding the prefix "chr"
 #' @return \code{GRanges} object encapsulating of regions included in \code{df}.
 #' 	       As GRanges, the coordinates will be 1-based right-inclusive.
 #'         Columns other that the ones listed as parameters in this function are included as elementMetadata.
@@ -290,7 +291,7 @@ matchStrand <- function(values) {
 #' df <- data.frame(chrom=c(rep("chr5", 7), rep("chr21", 3)), start=1:10, end=seq(20, by=10, length.out=10), strand=rep(c("+","+", "-", "*"), length.out=10), letter=letters[1:10], score=rnorm(10))
 #' df
 #' df2granges(df, assembly="GRCh38_chr")
-df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col=3L, strand.col=NULL, coord.format="B1RI", assembly=NULL, doSort=FALSE) {
+df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col=3L, strand.col=NULL, coord.format="B1RI", assembly=NULL, doSort=FALSE, adjNumChromNames=FALSE) {
 	if (is.character(chrom.col)) { chrom.col <- which(colnames(df) == chrom.col) }
 	if (is.character(start.col)) { start.col <- which(colnames(df) == start.col) }
 	if (is.character(end.col)) { end.col <- which(colnames(df) == end.col) }
@@ -307,6 +308,9 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	# Process the chromosome names
 	chroms <- as.character(df[, chrom.col])
 	# chroms <- paste0("chr", sub("^chr", "", chroms))
+	if (adjNumChromNames){
+		chroms <- sub("^([1-9XYMm]+$)", "chr\\1", chroms)
+	}
 	param.list <- list()
 	param.list[["seqnames"]] <- chroms
 
