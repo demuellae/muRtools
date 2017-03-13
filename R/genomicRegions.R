@@ -227,6 +227,16 @@ getSeqlengths4assembly <- function(assembly){
 	res <- c()
 	if (is.element(assembly, c("hg19"))){
 		res <- seqlengths(BSgenome.Hsapiens.UCSC.hg19::Hsapiens)
+	} else if (is.element(assembly, c("GRCh37"))){
+		require(BSgenome.Hsapiens.1000genomes.hs37d5)
+		res <- seqlengths(BSgenome.Hsapiens.1000genomes.hs37d5)
+	} else if (is.element(assembly, c("GRCh37_chr"))){
+		require(BSgenome.Hsapiens.1000genomes.hs37d5)
+		res <- seqlengths(BSgenome.Hsapiens.1000genomes.hs37d5)
+		prependChr <- c(1:22, "X", "Y", "MT")
+		repNames <- names(res) %in% prependChr
+		names(res)[repNames] <- paste0("chr", names(res)[repNames])
+		names(res)[names(res)=="chrMT"] <- "chrM"
 	} else if (is.element(assembly, c("hg38", "GRCh38"))){
 		res <- seqlengths(BSgenome.Hsapiens.NCBI.GRCh38::Hsapiens)
 	} else if (is.element(assembly, c("hg38_chr", "GRCh38_chr"))){
