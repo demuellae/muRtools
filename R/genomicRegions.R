@@ -323,6 +323,10 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	} else if (coord.format=="B0RE"){
 		#0-based, right-exclusive --> adjust start coordinate
 		df[, start.col] <- df[, start.col] + 1L
+	} else if (coord.format=="B0RI"){
+		#0-based, right-inclusive --> adjust start and end coordinate
+		df[, start.col] <- df[, start.col] + 1L
+		df[, end.col] <- df[, end.col] + 1L
 	} else {
 		stop("unknown coordinate format")
 	}
