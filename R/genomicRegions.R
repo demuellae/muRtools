@@ -291,7 +291,8 @@ matchStrand <- function(values) {
 #' @param assembly   Genome assembly of interest. See \code{\link{rnb.get.assemblies}} for the list of supported
 #'                   genomes.
 #' @param doSort     Should the resulting table be sorted
-#' @param adjNumChromNames Should numeric chromosome names be adjusted for by adding the prefix "chr"
+#' @param adjNumChromNames Should numeric chromosome names be adjusted for by adding the prefix "chr". Additionally chrMT becomes chrM.
+#'                   useful for converting GRC identifiers to NCBI identifiers
 #' @return \code{GRanges} object encapsulating of regions included in \code{df}.
 #' 	       As GRanges, the coordinates will be 1-based right-inclusive.
 #'         Columns other that the ones listed as parameters in this function are included as elementMetadata.
@@ -320,6 +321,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	# chroms <- paste0("chr", sub("^chr", "", chroms))
 	if (adjNumChromNames){
 		chroms <- sub("^([0-9XYMm]+$)", "chr\\1", chroms)
+		chroms <- sub("^chrMT$)", "chrM", chroms)
 	}
 	param.list <- list()
 	param.list[["seqnames"]] <- chroms
