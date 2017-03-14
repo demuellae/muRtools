@@ -319,7 +319,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	chroms <- as.character(df[, chrom.col])
 	# chroms <- paste0("chr", sub("^chr", "", chroms))
 	if (adjNumChromNames){
-		chroms <- sub("^([1-9XYMm]+$)", "chr\\1", chroms)
+		chroms <- sub("^([0-9XYMm]+$)", "chr\\1", chroms)
 	}
 	param.list <- list()
 	param.list[["seqnames"]] <- chroms
