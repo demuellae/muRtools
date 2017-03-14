@@ -358,6 +358,9 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	if (length(validChroms) > 0) {
 		i.valid <- (chroms %in% validChroms)
 		if (sum(i.valid) < 1) stop("No valid chromosome/contig name was matched. Consider using the *_chr version of the assembly fo deal with missing 'chr' prefix")
+		if (sum(!i.valid) > 0){
+			warning(paste0(sum(!i.valid), "invalid chromosome names detected. --> discarding corresponding entries"))
+		}
 		param.list <- lapply(param.list, function(x) { x[i.valid] })
 	}
 	res <- do.call(GRanges, param.list)
