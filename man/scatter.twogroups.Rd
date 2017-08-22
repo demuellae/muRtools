@@ -28,4 +28,3 @@ Nothing particularly interesting
 \description{
 density scatterplot with highlighting the points of a certain group in a different color
 }
-

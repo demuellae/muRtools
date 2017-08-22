@@ -20,4 +20,3 @@ convert a color from a text string to a hex string (only works with scalars, not
 \examples{
 col.text.2.hex("dark blue")
 }
-

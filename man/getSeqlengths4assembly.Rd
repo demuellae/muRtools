@@ -15,4 +15,3 @@ named vector of chromosomes/contigs and sequence lengths
 \description{
 retrieve chromosomes/contigs and their sequence lengths for known assemblies
 }
-

@@ -19,4 +19,3 @@ given the ENCODE controlled vocabulary file, retrieves a table characterizing th
 \examples{
 ect <- get.encode.cell.table()
 }
-

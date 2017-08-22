@@ -41,4 +41,3 @@ Generate a plot from a feature matrix
 \author{
 Fabian Mueller
 }
-

@@ -15,4 +15,3 @@ Factor of genomic strand (with levels \code{"+", "-", "*"})
 \description{
 match commonly used strand names to \code{"+", "-", "*"}
 }
-

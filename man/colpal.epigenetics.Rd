@@ -2,11 +2,11 @@
 % Please edit documentation in R/epigeneticsConfig.R
 \docType{data}
 \name{colpal.histone}
-\alias{colgrad.methylation.rb}
-\alias{colgrad.methylation.yb}
 \alias{colpal.histone}
 \alias{colpal.histone,colpal.histone.ihec,colgrad.methylation.rb,colgrad.methylation.yb}
 \alias{colpal.histone.ihec}
+\alias{colgrad.methylation.rb}
+\alias{colgrad.methylation.yb}
 \title{Custom Color Paletes for epigenetic modifications}
 \format{An object of class \code{character} of length 10.}
 \usage{
@@ -59,4 +59,3 @@ plot.new()
 gradient.rect(0,0,1,1,col=cp,nslices=length(cp),gradient="x",border=NA)
 }
 \keyword{datasets}
-

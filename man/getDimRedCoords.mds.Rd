@@ -21,4 +21,3 @@ Get dimension reduction coordinates (Multidimensional Scaling)
 \author{
 Fabian Mueller
 }
-

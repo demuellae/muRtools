@@ -26,4 +26,3 @@ result of writing the table (see \code{write.table})
 \description{
 Save a GRanges object to a IGV file
 }
-

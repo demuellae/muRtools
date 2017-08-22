@@ -2,9 +2,9 @@
 % Please edit documentation in R/mu_ggplots2_ext.R
 \docType{data}
 \name{colpal.cb}
+\alias{colpal.cb}
 \alias{colpal,colpal.cb,colpal.colpal.bde}
 \alias{colpal.bde}
-\alias{colpal.cb}
 \alias{colpal.nature}
 \title{Custom Color Paletes}
 \format{An object of class \code{character} of length 9.}
@@ -43,4 +43,3 @@ plot.new()
 gradient.rect(0,0,1,1,col=colpal.nature,nslices=length(colpal.nature),gradient="x",border=NA)
 }
 \keyword{datasets}
-

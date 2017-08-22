@@ -20,4 +20,3 @@ retrieves custom region sets by id
 \examples{
 regs <- getRegionSet("deep_chip_ctrl_regions","hg19")
 }
-

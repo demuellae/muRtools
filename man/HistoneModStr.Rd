@@ -3,12 +3,12 @@
 \name{containsHistoneModStr}
 \alias{containsHistoneModStr}
 \alias{containsHistoneModStr,getHistoneFromHistoneModStr,getAaPosFromHistoneModStr,getModFromHistoneModStr,matchHistoneModStr}
-\alias{getAaPosFromHistoneModStr}
-\alias{getAaTypeFromHistoneModStr}
 \alias{getHistoneFromHistoneModStr}
+\alias{getAaTypeFromHistoneModStr}
+\alias{getAaPosFromHistoneModStr}
 \alias{getModFromHistoneModStr}
-\alias{matchHistoneModStr}
 \alias{normalizeHistoneModStr}
+\alias{matchHistoneModStr}
 \title{Methods for recognizing histone modifications from strings}
 \usage{
 containsHistoneModStr(s)
@@ -75,4 +75,3 @@ normalizeHistoneModStr(c(s1,s2,s3,s4))
 matchHistoneModStr(s1,s2)
 matchHistoneModStr(s1,s4)
 }
-

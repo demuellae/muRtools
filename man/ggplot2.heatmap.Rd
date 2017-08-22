@@ -20,4 +20,3 @@ converts a matrix or dataframe into a ggplot2 object for subsequent plotting.
 \examples{
 ggplot2.heatmap(airquality[1:15,],add.text=TRUE) + scale_fill_gradient(low = "red",high = "steelblue"))
 }
-

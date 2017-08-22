@@ -19,4 +19,3 @@ Nothing particularly interesting
 \description{
 creates a scatterplot density panel.
 }
-

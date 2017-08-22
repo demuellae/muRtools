@@ -23,4 +23,3 @@ transforms a value to a color based on a colorscale and a value scale
 \examples{
 colorize.value(0.5,rng=c(-1,1), colscheme.col.val=c(colorpanel(100,"blue","white"),colorpanel(100,"white","red")))
 }
-

@@ -38,4 +38,3 @@ Currently, PCA, MDS and t-SNE are employed by default with euclidean and manhatt
 \author{
 Fabian Mueller
 }
-

@@ -19,4 +19,3 @@ reloads a package without quitting the R session. Useful for developing packages
 library(GenomicRanges)
 reloadPackage("GenomicRanges")
 }
-

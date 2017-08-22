@@ -25,4 +25,3 @@ By default, underscore is the replacement character. Avoids consecutive undersco
 \examples{
 normalize.str("_ (b)lA BLu[bb.blA\\tblubb- bla)\\n_")
 }
-

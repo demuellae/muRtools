@@ -37,4 +37,3 @@ Generate a plot from dimension reduction coordinates
 \author{
 Fabian Mueller
 }
-

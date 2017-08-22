@@ -25,4 +25,3 @@ Nothing particularly interesting
 \description{
 creates a correlation panel. The correlation values are colored and fontsize is proportional to amount of correlation
 }
-

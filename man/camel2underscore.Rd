@@ -18,4 +18,3 @@ converts camel case to underscores in a (vector of) string(s)
 \examples{
 underscore2camel("bla_blubb")
 }
-

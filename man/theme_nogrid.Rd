@@ -22,4 +22,3 @@ theme_set(theme_nogrid())
 dframe <- data.frame(x=runif(100),y=runif(100))
 ggplot(dframe,aes(x=x,y=y)) + geom_point()
 }
-

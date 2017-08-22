@@ -23,4 +23,3 @@ make a vector of colors transparent
 makeTrans(rainbow(6))
 makeTrans(c("red","dark blue","coral"),isText=TRUE)
 }
-

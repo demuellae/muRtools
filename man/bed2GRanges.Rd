@@ -22,4 +22,3 @@ The output of this function will be 1-based, right inclusive as defined by GRang
 reg.fname <- system.file(file.path("extdata","deep_chip_ctrl_regions.hg19.bed"), package = "muRtools")
 regs <- bed2GRanges(reg.fname)
 }
-

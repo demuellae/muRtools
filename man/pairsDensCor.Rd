@@ -26,4 +26,3 @@ dd[,5] <- 1/dd[,5]
 tt <- dd[,1:5]
 pairsDensCor(tt)
 }
-

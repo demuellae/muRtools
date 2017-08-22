@@ -29,4 +29,3 @@ result of \code{ggsave} command
 Wrapper around ggsave that has default values for parameters fitting for embedding
 plots into my documents
 }
-

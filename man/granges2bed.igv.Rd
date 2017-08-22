@@ -39,4 +39,3 @@ invisibly, the resulting data frame containing the bed file columns
 \description{
 Save a GRanges object to a bed file which can be displayed by IGV
 }
-

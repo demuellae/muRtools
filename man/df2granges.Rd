@@ -30,7 +30,8 @@ genomes.}
 
 \item{doSort}{Should the resulting table be sorted}
 
-\item{adjNumChromNames}{Should numeric chromosome names be adjusted for by adding the prefix "chr"}
+\item{adjNumChromNames}{Should numeric chromosome names be adjusted for by adding the prefix "chr". Additionally chrMT becomes chrM.
+useful for converting GRC identifiers to NCBI identifiers}
 }
 \value{
 \code{GRanges} object encapsulating of regions included in \code{df}.
@@ -45,4 +46,3 @@ df <- data.frame(chrom=c(rep("chr5", 7), rep("chr21", 3)), start=1:10, end=seq(2
 df
 df2granges(df, assembly="GRCh38_chr")
 }
-

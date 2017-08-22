@@ -20,4 +20,3 @@ parser for the ENCODE projects controlled vocabulary file
 \examples{
 cv.blocks <- parse.cv.file()
 }
-

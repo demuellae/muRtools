@@ -15,4 +15,3 @@ parser for command line arguments
 \examples{
 cmd.args <- parse.cl.args()
 }
-

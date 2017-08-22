@@ -23,4 +23,3 @@ Get dimension reduction coordinates (t-SNE)
 \author{
 Fabian Mueller
 }
-

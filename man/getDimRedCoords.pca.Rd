@@ -21,4 +21,3 @@ Get dimension reduction coordinates (PCA)
 \author{
 Fabian Mueller
 }
-
