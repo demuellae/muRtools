@@ -222,8 +222,10 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 #' retrieve chromosomes/contigs and their sequence lengths for known assemblies
 #'
 #' @param assembly    assembly
+#' @param onlyMainChrs should only main chromosomes, i.e. chr[1-N] + chr[XYM] be returned (e.g. not ChrUn*, *_random, ...)
 #' @return named vector of chromosomes/contigs and sequence lengths
-getSeqlengths4assembly <- function(assembly){
+#' @export
+getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
 	res <- c()
 	if (is.element(assembly, c("hg19"))){
 		res <- seqlengths(BSgenome.Hsapiens.UCSC.hg19::Hsapiens)
@@ -252,7 +254,30 @@ getSeqlengths4assembly <- function(assembly){
 	} else {
 		stop(paste0("Unknown assembly:", assembly))
 	}
+	if (onlyMainChrs){
+		mainRE <- "^(chr)?([1-9][0-9]?|[XYM]|MT)$"
+		res <- res[grepl(mainRE, names(res))]
+	}
 	return(res)
+}
+#' getTilingRegions
+#'
+#' Get a GRanges object of tiling regions for a specified genome assembly
+#'
+#' @param assembly    assembly
+#' @param width       tiling window size
+#' @param ...         arguments passed on to \code{getSeqlengths4assembly}
+#' @return GRanges object containing tiling windows
+#' @export
+getTilingRegions <- function(assembly, width=1000L, ...){
+	sls <- getSeqlengths4assembly(assembly, ...)
+	gr <- GRanges(seqnames=names(sls), ranges=IRanges(1, sls))
+	seqlevels(gr) <- names(sls)
+	seqlengths(gr) <- sls
+	genome(gr) <- assembly
+	gr <- unlist(slidingWindows(gr, width=width, step=width))
+	# gr <- unlist(tile(gr, width=width)) #does not truncate but makes approximately equal sized windows
+	return(gr)
 }
 #' matchStrand
 #'
