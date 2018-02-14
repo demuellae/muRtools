@@ -15,5 +15,5 @@ Depends:
     plotrix,
     ggplot2
 License: GPL-2
-Version: 0.5
+Version: 0.6
 RoxygenNote: 6.0.1
