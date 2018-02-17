@@ -110,7 +110,7 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
 #' @param height  see \code{?ggsave}
 #' @param units   see \code{?ggsave}
 #' @param family  see \code{?ggsave}
-#' @param plot see \code{?ggsave}
+#' @param ...     see \code{?ggsave}
 #' @return result of \code{ggsave} command
 #' @export
 #' @aliases ggsave4doc
