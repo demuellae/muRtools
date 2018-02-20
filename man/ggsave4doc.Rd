@@ -20,7 +20,7 @@ ggsave4doc(fn, plot = last_plot(), width = 146, height = 146,
 
 \item{family}{see \code{?ggsave}}
 
-\item{plot}{see \code{?ggsave}}
+\item{...}{see \code{?ggsave}}
 }
 \value{
 result of \code{ggsave} command
