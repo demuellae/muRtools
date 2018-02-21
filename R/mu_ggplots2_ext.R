@@ -131,14 +131,14 @@ ggtemp <- function(plot=last_plot(), fn=paste0("~/tmp_work/", getHashString("ggp
   ggsave4doc(fn, plot=plot, ...)
 }
 
-#' plottemp
+#' pdftemp
 #' 
-#' Wrapper for quickly saving plot to temporary pdf file. terminate using \code{off()}
+#' Wrapper for quickly saving plot to temporary pdf file. terminate using \code{dev.off()}
 #' @param fn      file name
 #' @param ...     see \code{?pdf}
 #' @return nothing of particular interest
 #' @export
-#' @aliases ggtemp
-plottemp <- function(fn=paste0("~/tmp_work/", getHashString("rplot"), ".pdf"), ...){
+#' @aliases pdftemp
+pdftemp <- function(fn=paste0("~/tmp_work/", getHashString("rplot"), ".pdf"), ...){
   pdf(fn, ...)
 }
