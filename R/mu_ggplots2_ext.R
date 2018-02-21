@@ -127,6 +127,18 @@ ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", 
 #' @return result of \code{ggsave} command
 #' @export
 #' @aliases ggtemp
-ggtemp <- function(plot=last_plot(), fn=paste0("~/tmp_work/", getHashString("ggplot_"), ".pdf"), ...){
+ggtemp <- function(plot=last_plot(), fn=paste0("~/tmp_work/", getHashString("ggplot"), ".pdf"), ...){
   ggsave4doc(fn, plot=plot, ...)
+}
+
+#' plottemp
+#' 
+#' Wrapper for quickly saving plot to temporary pdf file. terminate using \code{off()}
+#' @param fn      file name
+#' @param ...     see \code{?pdf}
+#' @return nothing of particular interest
+#' @export
+#' @aliases ggtemp
+plottemp <- function(fn=paste0("~/tmp_work/", getHashString("rplot"), ".pdf"), ...){
+  pdf(fn, ...)
 }
