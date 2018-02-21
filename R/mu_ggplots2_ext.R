@@ -117,3 +117,16 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
 ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", ...){
   ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, ...)
 }
+
+#' ggtemp
+#' 
+#' Wrapper for quickly saving plot to temporary file
+#' @param plot    see \code{?ggsave}
+#' @param fn      file name
+#' @param ...     see \code{?ggsave}
+#' @return result of \code{ggsave} command
+#' @export
+#' @aliases ggtemp
+ggtemp <- function(plot=last_plot(), fn=paste0("~/tmp_work/", getHashString("ggplot_"), ".pdf"), ...){
+  ggsave4doc(fn, plot=plot, ...)
+}
