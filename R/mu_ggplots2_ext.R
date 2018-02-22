@@ -142,3 +142,14 @@ ggtemp <- function(plot=last_plot(), fn=paste0("~/tmp_work/", getHashString("ggp
 pdftemp <- function(fn=paste0("~/tmp_work/", getHashString("rplot"), ".pdf"), ...){
   pdf(fn, ...)
 }
+#' pngtemp
+#' 
+#' Wrapper for quickly saving plot to temporary png file. terminate using \code{dev.off()}
+#' @param fn      file name
+#' @param ...     see \code{?png}
+#' @return nothing of particular interest
+#' @export
+#' @aliases pngtemp
+pngtemp <- function(fn=paste0("~/tmp_work/", getHashString("rplot"), ".png"), width=1024, height=1024, ...){
+  png(fn, width=width, height=height, ...)
+}
