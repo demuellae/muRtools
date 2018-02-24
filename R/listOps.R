@@ -18,3 +18,18 @@ indicesInList <- function(x, l){
 	gg <- split(g, lf)
 	gg[match(x, lu)]
 }
+
+#' combinationList
+#' 
+#' get a list of all combinations of vectors. Basically a wrapper around \code{\link{expand.grid}}
+#' @param ...  vectors of elements. Ideally named
+#' @return a list containing all combinations of elements in the input. Each element contains a unique combination
+#' @export 
+#' @examples
+#' combinationList(a=letters[1:5], A=LETTERS[1:3], i=1:4) 
+combinationList <- function(...){
+	dd <- expand.grid(..., stringsAsFactors=FALSE)
+	attr(dd, "out.attrs") <- NULL
+	res <- lapply(1:nrow(dd), FUN=function(i){as.list(dd[i,])})
+	return(res)
+}
