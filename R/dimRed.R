@@ -164,7 +164,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		if (colorNumeric){
 			pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
 		} else {
-			pp <- pp + scale_color_gradientn(na.value = "#C0C0C0", values=colScheme)
+			pp <- pp + scale_color_gradientn(colScheme, na.value = "#C0C0C0")
 		}
 	}
 	if (addDensity){
