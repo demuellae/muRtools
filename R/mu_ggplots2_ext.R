@@ -110,12 +110,13 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
 #' @param height  see \code{?ggsave}
 #' @param units   see \code{?ggsave}
 #' @param family  see \code{?ggsave}
+#' @param useDingbats see \code{?ggsave}
 #' @param ...     see \code{?ggsave}
 #' @return result of \code{ggsave} command
 #' @export
 #' @aliases ggsave4doc
-ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", ...){
-  ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, ...)
+ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", useDingbats=FALSE,...){
+  ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, useDingbats=useDingbats,...)
 }
 
 #' ggtemp
