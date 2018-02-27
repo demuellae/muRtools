@@ -162,7 +162,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	pp <- ggplot(df2p, aes_string(x=xLab, y=yLab, color=colorCol))
 	if (!is.null(colScheme)){
 		if (colorNumeric){
-			pp <- pp + scale_color_gradientn(colScheme, na.value = "#C0C0C0")
+			pp <- pp + scale_color_gradientn(colours=colScheme, na.value = "#C0C0C0")
 		} else {
 			pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
 		}
