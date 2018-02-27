@@ -111,6 +111,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	yLab <- colnames(coords)[2]
 
 	df2p <- data.frame(coords)
+	colorNumeric <- FALSE
 	if (!is.null(colorCol)) {
 		if (length(colorCol)!=1){
 			stop("colorCol must be of length 1")
@@ -129,8 +130,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			stop("invalid value for colorCol")
 		}
 		if (is.numeric(df2p[,colorCol])){
-			warning("Currently only non-numeric columns are supported for dimRed coloring. --> converting to factor")
-			df2p[,colorCol] <- factor(df2p[,colorCol])
+			colorNumeric <- TRUE
 		}
 	}
 	if (!is.null(shapeCol)) {
@@ -153,6 +153,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			stop("invalid value for shapeCol")
 		}
 		if (is.numeric(df2p[,shapeCol])){
+			warning("Currently only non-numeric columns are supported for dimRed shapes. --> converting to factor")
 			df2p[,shapeCol] <- factor(df2p[,shapeCol])
 		}
 	}
@@ -160,14 +161,22 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	if (!is.null(rownames(coords))) df2p$observation <- rownames(coords)
 	pp <- ggplot(df2p, aes_string(x=xLab, y=yLab, color=colorCol))
 	if (!is.null(colScheme)){
-		pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
+		if (colorNumeric){
+			pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
+		} else {
+			pp <- pp + scale_color_gradientn(na.value = "#C0C0C0", values=colScheme)
+		}
 	}
 	if (addDensity){
-		#remove 1-sample groups
-		grpCounts <- table(df2p[,colorCol])
-		grps.1sample <- names(grpCounts)[grpCounts<2]
-		df2p2 <- df2p[!(df2p[,colorCol] %in% grps.1sample),]
-		pp <- pp + stat_density2d(data=df2p2, alpha=0.3)
+		if (colorNumeric){
+			warning("Currently only non-numeric columns are supported for dimRed coloring in combination with density contours. --> skipping density contours")
+		} else {
+			#remove 1-sample groups
+			grpCounts <- table(df2p[,colorCol])
+			grps.1sample <- names(grpCounts)[grpCounts<2]
+			df2p2 <- df2p[!(df2p[,colorCol] %in% grps.1sample),]
+			pp <- pp + stat_density2d(data=df2p2, alpha=0.3)
+		}
 	}
 	if (!is.null(shapeCol)){
 		pp <- pp + geom_point(aes_string(shape=shapeCol), size=3)
