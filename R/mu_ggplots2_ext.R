@@ -21,7 +21,7 @@
 #}
 ggplot2.heatmap <- function(mm,add.text=FALSE){
 	require(reshape)
-	ddd <- data.frame(mm)
+	ddd <- data.frame(mm, check.names=FALSE)
 	ddd$rnames <- rownames(mm)
 	dd <- melt(ddd)
 	dd$rnames <- factor(dd$rnames,levels=rownames(mm))
