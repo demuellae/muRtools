@@ -89,7 +89,7 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
     theme(
       axis.line         = element_line(colour = "black",lineend="round"),
-      axis.text         = element_text(size = rel(0.8)),
+      axis.text         = element_text(size = rel(0.8), colour = "black"),
       axis.ticks        = element_line(colour = "black"),
       legend.key        = element_rect(colour = "grey80"),
       panel.background  = element_rect(fill = "white", colour = NA),
