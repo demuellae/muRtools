@@ -4,12 +4,14 @@
 \alias{setGenomeProps}
 \title{setGenomeProps}
 \usage{
-setGenomeProps(gr, assembly, ...)
+setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, ...)
 }
 \arguments{
 \item{gr}{GRanges object to modify}
 
 \item{assembly}{assembly}
+
+\item{dropUnknownChrs}{discard entries with seqnames not supported by assembly}
 
 \item{...}{arguments passed on to \code{getSeqlengths4assembly}}
 }

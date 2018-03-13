@@ -260,11 +260,22 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 #'
 #' @param gr          GRanges object to modify
 #' @param assembly    assembly
+#' @param dropUnknownChrs discard entries with seqnames not supported by assembly
 #' @param ...         arguments passed on to \code{getSeqlengths4assembly}
 #' @return GRanges object with genome properties set
 #' @export
-setGenomeProps <- function(gr, assembly, ...){
+setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, ...){
 	sls <- getSeqlengths4assembly(assembly, ...)
+	supportedChrs <- seqnames(gr) %in% names(sls)
+	if (sum(supportedChrs)!=length(gr)){
+		ss <- setdiff(seqlevels(gr), names(sls))
+		logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
+		if (dropUnknownChrs){
+			n <- length(gr) - sum(supportedChrs)
+			logger.warning(c(n, "entries with unsupported seqnames will be discarded"))
+			gr <- gr[supportedChrs]
+		}
+	}
 	seqlevels(gr) <- names(sls)
 	seqlengths(gr) <- sls
 	genome(gr) <- assembly
