@@ -4,14 +4,12 @@
 \alias{setGenomeProps}
 \title{setGenomeProps}
 \usage{
-setGenomeProps(gr, assembly, stripChrFromGenome = TRUE, ...)
+setGenomeProps(gr, assembly, ...)
 }
 \arguments{
 \item{gr}{GRanges object to modify}
 
 \item{assembly}{assembly}
-
-\item{stripChrFromGenome}{Tflag indicating whether to strip away the "_chr" suffix from the genome name in the result}
 
 \item{...}{arguments passed on to \code{getSeqlengths4assembly}}
 }

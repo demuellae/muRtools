@@ -221,32 +221,22 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 #'
 #' retrieve chromosomes/contigs and their sequence lengths for known assemblies
 #'
-#' @param assembly    assembly
+#' @param assembly     assembly
 #' @param onlyMainChrs should only main chromosomes, i.e. chr[1-N] + chr[XYM] be returned (e.g. not ChrUn*, *_random, ...)
+#' @param adjChrNames  should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?
 #' @return named vector of chromosomes/contigs and sequence lengths
 #' @export
-getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
+getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRUE){
+	mainRE <- "^(chr)?([1-9][0-9]?|[XYM]|MT)$"
+	mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
 	res <- c()
 	if (is.element(assembly, c("hg19"))){
 		res <- seqlengths(BSgenome.Hsapiens.UCSC.hg19::Hsapiens)
-	} else if (is.element(assembly, c("GRCh37"))){
+	} else if (is.element(assembly, c("GRCh37", "GRCh37_chr"))){
 		require(BSgenome.Hsapiens.1000genomes.hs37d5)
 		res <- seqlengths(BSgenome.Hsapiens.1000genomes.hs37d5)
-	} else if (is.element(assembly, c("GRCh37_chr"))){
-		require(BSgenome.Hsapiens.1000genomes.hs37d5)
-		res <- seqlengths(BSgenome.Hsapiens.1000genomes.hs37d5)
-		prependChr <- c(1:22, "X", "Y", "MT")
-		repNames <- names(res) %in% prependChr
-		names(res)[repNames] <- paste0("chr", names(res)[repNames])
-		names(res)[names(res)=="chrMT"] <- "chrM"
-	} else if (is.element(assembly, c("hg38", "GRCh38"))){
+	} else if (is.element(assembly, c("hg38", "GRCh38", "hg38_chr", "GRCh38_chr"))){
 		res <- seqlengths(BSgenome.Hsapiens.NCBI.GRCh38::Hsapiens)
-	} else if (is.element(assembly, c("hg38_chr", "GRCh38_chr"))){
-		res <- seqlengths(BSgenome.Hsapiens.NCBI.GRCh38::Hsapiens)
-		prependChr <- c(1:22, "X", "Y", "MT")
-		repNames <- names(res) %in% prependChr
-		names(res)[repNames] <- paste0("chr", names(res)[repNames])
-		names(res)[names(res)=="chrMT"] <- "chrM"
 	} else if (is.element(assembly, c("mm9"))){
 		res <- seqlengths(BSgenome.Mmusculus.UCSC.mm9::Mmusculus)
 	} else if (is.element(assembly, c("mm10"))){
@@ -254,8 +244,12 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
 	} else {
 		stop(paste0("Unknown assembly:", assembly))
 	}
+	if (adjChrNames){
+		prep <- grepl(mainREnum, names(res))
+		names(res)[prep] <- paste0("chr", names(res)[prep])
+		names(res)[names(res)=="chrMT"] <- "chrM"
+	}
 	if (onlyMainChrs){
-		mainRE <- "^(chr)?([1-9][0-9]?|[XYM]|MT)$"
 		res <- res[grepl(mainRE, names(res))]
 	}
 	return(res)
@@ -266,17 +260,14 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
 #'
 #' @param gr          GRanges object to modify
 #' @param assembly    assembly
-#' @param stripChrFromGenome Tflag indicating whether to strip away the "_chr" suffix from the genome name in the result
 #' @param ...         arguments passed on to \code{getSeqlengths4assembly}
 #' @return GRanges object with genome properties set
 #' @export
-setGenomeProps <- function(gr, assembly, stripChrFromGenome=TRUE, ...){
+setGenomeProps <- function(gr, assembly, ...){
 	sls <- getSeqlengths4assembly(assembly, ...)
 	seqlevels(gr) <- names(sls)
 	seqlengths(gr) <- sls
-	genStr <- assembly
-	if (stripChrFromGenome) genStr <- gsub("_chr$", "", genStr)
-	genome(gr) <- genStr
+	genome(gr) <- assembly
 	return(gr)
 }
 #' getTilingRegions
@@ -291,7 +282,7 @@ setGenomeProps <- function(gr, assembly, stripChrFromGenome=TRUE, ...){
 getTilingRegions <- function(assembly, width=1000L, ...){
 	sls <- getSeqlengths4assembly(assembly, ...)
 	gr <- GRanges(seqnames=names(sls), ranges=IRanges(1, sls))
-	gr <- setGenomeProps(gr, assembly, stripChrFromGenome=TRUE, ...)
+	gr <- setGenomeProps(gr, assembly, ...)
 	gr <- unlist(slidingWindows(gr, width=width, step=width))
 	# gr <- unlist(tile(gr, width=width)) #does not truncate but makes approximately equal sized windows
 	return(gr)

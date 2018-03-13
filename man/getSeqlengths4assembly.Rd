@@ -4,12 +4,14 @@
 \alias{getSeqlengths4assembly}
 \title{getSeqlengths4assembly}
 \usage{
-getSeqlengths4assembly(assembly, onlyMainChrs = FALSE)
+getSeqlengths4assembly(assembly, onlyMainChrs = FALSE, adjChrNames = TRUE)
 }
 \arguments{
 \item{assembly}{assembly}
 
 \item{onlyMainChrs}{should only main chromosomes, i.e. chr[1-N] + chr[XYM] be returned (e.g. not ChrUn*, *_random, ...)}
+
+\item{adjChrNames}{should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?}
 }
 \value{
 named vector of chromosomes/contigs and sequence lengths
