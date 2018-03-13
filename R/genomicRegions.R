@@ -266,7 +266,7 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 #' @export
 setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, ...){
 	sls <- getSeqlengths4assembly(assembly, ...)
-	supportedChrs <- seqnames(gr) %in% names(sls)
+	supportedChrs <- as.vector(seqnames(gr)) %in% names(sls)
 	if (sum(supportedChrs)!=length(gr)){
 		ss <- setdiff(seqlevels(gr), names(sls))
 		logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
