@@ -5,7 +5,7 @@
 \title{ggsave4doc}
 \usage{
 ggsave4doc(fn, plot = last_plot(), width = 146, height = 146,
-  units = "mm", family = "Palatino", ...)
+  units = "mm", family = "Palatino", useDingbats = FALSE, ...)
 }
 \arguments{
 \item{fn}{file name}
@@ -19,6 +19,8 @@ ggsave4doc(fn, plot = last_plot(), width = 146, height = 146,
 \item{units}{see \code{?ggsave}}
 
 \item{family}{see \code{?ggsave}}
+
+\item{useDingbats}{see \code{?ggsave}}
 
 \item{...}{see \code{?ggsave}}
 }

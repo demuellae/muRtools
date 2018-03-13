@@ -260,6 +260,25 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
 	}
 	return(res)
 }
+#' setGenomeProps
+#'
+#' Set the genome properties for a GRanges object given the name of a genome assembly
+#'
+#' @param gr          GRanges object to modify
+#' @param assembly    assembly
+#' @param stripChrFromGenome Tflag indicating whether to strip away the "_chr" suffix from the genome name in the result
+#' @param ...         arguments passed on to \code{getSeqlengths4assembly}
+#' @return GRanges object with genome properties set
+#' @export
+setGenomeProps <- function(gr, assembly, stripChrFromGenome=TRUE, ...){
+	sls <- getSeqlengths4assembly(assembly, ...)
+	seqlevels(gr) <- names(sls)
+	seqlengths(gr) <- sls
+	genStr <- assembly
+	if (stripChrFromGenome) genStr <- gsub("_chr$", "", genStr)
+	genome(gr) <- genStr
+	return(gr)
+}
 #' getTilingRegions
 #'
 #' Get a GRanges object of tiling regions for a specified genome assembly
@@ -272,9 +291,7 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE){
 getTilingRegions <- function(assembly, width=1000L, ...){
 	sls <- getSeqlengths4assembly(assembly, ...)
 	gr <- GRanges(seqnames=names(sls), ranges=IRanges(1, sls))
-	seqlevels(gr) <- names(sls)
-	seqlengths(gr) <- sls
-	genome(gr) <- assembly
+	gr <- setGenomeProps(gr, assembly, stripChrFromGenome=TRUE, ...)
 	gr <- unlist(slidingWindows(gr, width=width, step=width))
 	# gr <- unlist(tile(gr, width=width)) #does not truncate but makes approximately equal sized windows
 	return(gr)
