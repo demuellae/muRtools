@@ -11,7 +11,7 @@
 #' @param addAnnotCols add the columns stored in elementMetadata of GRanges
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
-#' @return result of writing the table (see \code{write.table})
+#' @return (invisibly) the written results as a data.frame
 #' @export 
 granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE){
 	if (doSort){
@@ -37,6 +37,7 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 		tt <- data.frame(tt, elementMetadata(gr))
 	}
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=colNames)
+	invisible(tt)
 }
 
 #' granges2igv
@@ -256,9 +257,9 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 }
 #' setGenomeProps
 #'
-#' Set the genome properties for a GRanges object given the name of a genome assembly
+#' Set the genome properties for a GRanges or GAlignments object given the name of a genome assembly
 #'
-#' @param gr          GRanges object to modify
+#' @param gr          GRanges object or GAlignments object to modify
 #' @param assembly    assembly
 #' @param dropUnknownChrs discard entries with seqnames not supported by assembly
 #' @param ...         arguments passed on to \code{getSeqlengths4assembly}
