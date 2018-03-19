@@ -21,7 +21,7 @@ granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE, colNames = FALSE,
 \item{sc}{score vector or column in elementMetadata of GRanges}
 }
 \value{
-result of writing the table (see \code{write.table})
+(invisibly) the written results as a data.frame
 }
 \description{
 Save a GRanges object to a bed file

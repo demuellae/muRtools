@@ -7,7 +7,7 @@
 setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, ...)
 }
 \arguments{
-\item{gr}{GRanges object to modify}
+\item{gr}{GRanges object or GAlignments object to modify}
 
 \item{assembly}{assembly}
 
@@ -19,5 +19,5 @@ setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, ...)
 GRanges object with genome properties set
 }
 \description{
-Set the genome properties for a GRanges object given the name of a genome assembly
+Set the genome properties for a GRanges or GAlignments object given the name of a genome assembly
 }
