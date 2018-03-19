@@ -22,7 +22,7 @@ dist.correlation <- function(x, ...) {
 #' @param distMethod distance metric to be used for clusteing. must be either "cor" or a valid distance method for \code{dist()}
 #' @param linkMethod linkage method (see \code{hclust} for details)
 #' @param corMethod  method for computing correlation coefficients. Only relevant if \code{distMethod=="cor"}.
-#' @return clustering dendrogram
+#' @return clustering dendrogram (\code{dendrogram} object)
 #' @author Fabian Mueller
 #' @export 
 getClusteringDendrogram <- function(X, samplesOrdered=colnames(X), distMethod="cor", linkMethod="ward.D", corMethod="pearson"){
@@ -35,7 +35,7 @@ getClusteringDendrogram <- function(X, samplesOrdered=colnames(X), distMethod="c
 	noDist <- is.na(dd)
 	if (sum(noDist) > 0) {
 		logger.warning(c("Some distances could not be computed (",sum(noDist),") --> replacing with max distance"))
-		dd[noDist] <- max(dd, na.rm=TRUE) #hack: set to distance
+		dd[noDist] <- max(dd, na.rm=TRUE) #hack: set to max distance
 	}
 	clustRes <- hclust(dd, method=linkMethod)
 	clustDend <- as.dendrogram(clustRes)

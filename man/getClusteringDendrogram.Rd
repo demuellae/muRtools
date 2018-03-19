@@ -19,7 +19,7 @@ getClusteringDendrogram(X, samplesOrdered = colnames(X), distMethod = "cor",
 \item{corMethod}{method for computing correlation coefficients. Only relevant if \code{distMethod=="cor"}.}
 }
 \value{
-clustering dendrogram
+clustering dendrogram (\code{dendrogram} object)
 }
 \description{
 Get a clustering dendrogram using hierarchical clustering (wrapper)
