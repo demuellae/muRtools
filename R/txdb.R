@@ -8,7 +8,7 @@
 getTxDb.gencode <- function(name){
 	require(GenomicFeatures)
 	fileTab <- data.frame(
-		name=c("gencode_v27", "gencode_v19", "gencode_vM16", "gencode_vM1"),
+		name=c("gencode.v27", "gencode.v19", "gencode.vM16", "gencode.vM1"),
 		version=c("27", "19", "M16", "M1"),
 		fileURL=c(
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.annotation.gtf.gz",
@@ -23,10 +23,10 @@ getTxDb.gencode <- function(name){
 	)
 	rownames(fileTab) <- fileTab$name
 	if (!is.element(name, fileTab$name)){
-		logger.error(c("Gencode name not supported:", name, "must be one of", paste(fileTab$name, collapse=", ")))
+		logger.error(c("Gencode name not supported:", name, "(must be one of", paste(fileTab$name, collapse=", "), ")"))
 	}
-	chrInfo <- getSeqlengths4assembly(fileTab[i, "genomeAss"])
-	chrInfo <- Seqinfo(names(chrInfo), chrInfo, genome=fileTab[i, "genomeAss"])
-	txdb <- makeTxDbFromGFF(fileTab[i, "fileURL"], format="gtf", dataSource=paste("Gencode version", fileTab[i, "version"]), circ_seqs=character(), organism=fileTab[i, "organism"], chrominfo=chrInfo)
+	chrInfo <- getSeqlengths4assembly(fileTab[name, "genomeAss"])
+	chrInfo <- Seqinfo(names(chrInfo), chrInfo, genome=fileTab[name, "genomeAss"])
+	txdb <- makeTxDbFromGFF(fileTab[name, "fileURL"], format="gtf", dataSource=paste("Gencode version", fileTab[name, "version"]), circ_seqs=character(), organism=fileTab[name, "organism"], chrominfo=chrInfo)
 	return(txdb)
 }
