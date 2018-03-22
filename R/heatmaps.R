@@ -19,14 +19,10 @@ plotCorPhm <- function(
 		clustDend=NULL,
 		sampleAnnot=NA,
 		color=colorRampPalette(rev(brewer.pal(n=11, name = "RdBu")))(100),
-		breaks=seq(-1-1e-6, 1+1e-6, length.out=length(color)),
+		breaks=seq(-1-1e-6, 1+1e-6, length.out=length(color)+1),
 		border_color=NA,
 		...){
 	require(pheatmap)
-	# color.base <- c("#EDF8B1","#41B6C4","#081D58")
-	require(RColorBrewer)
-	color.base <- rev(brewer.pal(11,"RdBu")[c(1,6,11)])
-	color.panel <- colorpanel(100,color.base[1],color.base[2],color.base[3])
 	clustr <- FALSE
 	if (!is.null(clustDend)){
 		if (!is.element("dendrogram", class(clustDend))){
