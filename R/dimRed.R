@@ -35,6 +35,7 @@ getDimRedCoords.pca <- function(X, components=c(1,2)){
 #' @author Fabian Mueller
 #' @export 
 getDimRedCoords.mds <- function(X, distMethod="euclidean"){
+	require(MASS)
 	dist.matrix <- dist(X, method=distMethod)
 	if (any(dist.matrix == 0)) {
 		## Get rid of zeros in the distance matrix by adding an epsilon
