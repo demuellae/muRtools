@@ -218,6 +218,35 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 #granges2bed.igv(gr, "~/tmp/gr_conv.bed", trackName="blubb", scoreCol="cmp_LiHe_CTvST")
 #granges2bed.igv(gr, "~/tmp/gr_conv_cat.bed", trackName="blubb", scoreCol="category")
 
+#' getGenomeObject
+#'
+#' retrieve the appropriate \code{BSgenome} for an assembly string
+#'
+#' @param assembly     string specifying the assembly
+#' @return \code{BSgenome} object
+#' @export
+getGenomeObject <- function(assembly){
+	if (is.element(assembly, c("hg19"))){
+		require(BSgenome.Hsapiens.UCSC.hg19)
+		res <- BSgenome.Hsapiens.UCSC.hg19::Hsapiens
+	} else if (is.element(assembly, c("GRCh37", "GRCh37_chr"))){
+		require(BSgenome.Hsapiens.1000genomes.hs37d5)
+		res <- BSgenome.Hsapiens.1000genomes.hs37d5
+	} else if (is.element(assembly, c("hg38", "GRCh38", "hg38_chr", "GRCh38_chr"))){
+		require(BSgenome.Hsapiens.NCBI.GRCh38)
+		res <- BSgenome.Hsapiens.NCBI.GRCh38::Hsapiens
+	} else if (is.element(assembly, c("mm9"))){
+		require(BSgenome.Mmusculus.UCSC.mm9)
+		res <- BSgenome.Mmusculus.UCSC.mm9::Mmusculus
+	} else if (is.element(assembly, c("mm10"))){
+		require(BSgenome.Mmusculus.UCSC.mm10)
+		res <- BSgenome.Mmusculus.UCSC.mm10::Mmusculus
+	} else {
+		stop(paste0("Unknown assembly:", assembly))
+	}
+	return(res)
+}
+
 #' getSeqlengths4assembly
 #'
 #' retrieve chromosomes/contigs and their sequence lengths for known assemblies
@@ -230,21 +259,7 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRUE){
 	mainRE <- "^(chr)?([1-9][0-9]?|[XYM]|MT)$"
 	mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
-	res <- c()
-	if (is.element(assembly, c("hg19"))){
-		res <- seqlengths(BSgenome.Hsapiens.UCSC.hg19::Hsapiens)
-	} else if (is.element(assembly, c("GRCh37", "GRCh37_chr"))){
-		require(BSgenome.Hsapiens.1000genomes.hs37d5)
-		res <- seqlengths(BSgenome.Hsapiens.1000genomes.hs37d5)
-	} else if (is.element(assembly, c("hg38", "GRCh38", "hg38_chr", "GRCh38_chr"))){
-		res <- seqlengths(BSgenome.Hsapiens.NCBI.GRCh38::Hsapiens)
-	} else if (is.element(assembly, c("mm9"))){
-		res <- seqlengths(BSgenome.Mmusculus.UCSC.mm9::Mmusculus)
-	} else if (is.element(assembly, c("mm10"))){
-		res <- seqlengths(BSgenome.Mmusculus.UCSC.mm10::Mmusculus)
-	} else {
-		stop(paste0("Unknown assembly:", assembly))
-	}
+	res <- seqlengths(getGenomeObject(assembly))
 	if (adjChrNames){
 		prep <- grepl(mainREnum, names(res))
 		names(res)[prep] <- paste0("chr", names(res)[prep])
