@@ -223,9 +223,11 @@ granges2bed.igv <- function(gr, fn, trackName=NULL, scoreCol=NULL, na.rm=FALSE, 
 #' retrieve the appropriate \code{BSgenome} for an assembly string
 #'
 #' @param assembly     string specifying the assembly
+#' @param adjChrNames  should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?
 #' @return \code{BSgenome} object
 #' @export
-getGenomeObject <- function(assembly){
+getGenomeObject <- function(assembly, adjChrNames=TRUE){
+	mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
 	if (is.element(assembly, c("hg19"))){
 		require(BSgenome.Hsapiens.UCSC.hg19)
 		res <- BSgenome.Hsapiens.UCSC.hg19::Hsapiens
@@ -244,6 +246,11 @@ getGenomeObject <- function(assembly){
 	} else {
 		stop(paste0("Unknown assembly:", assembly))
 	}
+	if (adjChrNames){
+		prep <- grepl(mainREnum, seqnames(res))
+		seqnames(res)[prep] <- paste0("chr", seqnames(res)[prep])
+		seqnames(res)[seqnames(res)=="chrMT"] <- "chrM"
+	}
 	return(res)
 }
 
@@ -258,13 +265,7 @@ getGenomeObject <- function(assembly){
 #' @export
 getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRUE){
 	mainRE <- "^(chr)?([1-9][0-9]?|[XYM]|MT)$"
-	mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
-	res <- seqlengths(getGenomeObject(assembly))
-	if (adjChrNames){
-		prep <- grepl(mainREnum, names(res))
-		names(res)[prep] <- paste0("chr", names(res)[prep])
-		names(res)[names(res)=="chrMT"] <- "chrM"
-	}
+	res <- seqlengths(getGenomeObject(assembly, adjChrNames))
 	if (onlyMainChrs){
 		res <- res[grepl(mainRE, names(res))]
 	}
