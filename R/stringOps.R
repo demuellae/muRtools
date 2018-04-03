@@ -66,7 +66,10 @@ normalize.str <- function(x,resolve.camel=FALSE,return.camel=FALSE){
 getHashString <- function(pattern="", useDate=TRUE){
 	pat <- pattern
 	if (useDate) {
-		pat <- paste(pat, format(Sys.time(), "%Y%m%d_%H%M%S_"), sep="_")
+		pat <- format(Sys.time(), "%Y%m%d_%H%M%S_")
+		if (nchar(pattern) > 0){
+			pat <- paste(pattern, pat, sep="_")
+		}
 	}
 	res <- basename(tempfile(pattern=pat))
 	return(res)
