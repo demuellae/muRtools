@@ -79,6 +79,8 @@ densRanks <- function (x, y = NULL, nbin = 128, bandwidth)
 #' }
 create.densityScatter <- function(df2p,is.special=NULL,dens.subsample=FALSE,dens.special=TRUE,
 		sparse.points=0.01,dens.n=100,add.text.cor=FALSE){
+	DENS.COLORS.LOW  <- c("#1F78B4","#E31A1C") 
+	DENS.COLORS.HIGH <- c("#A6CEE3","#FB9A99")
 	if (!(is.numeric(sparse.points) && sparse.points>=0)) {
 		stop("Invalid parameter value: sparse.points")
 	}
