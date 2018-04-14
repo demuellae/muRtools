@@ -5,7 +5,7 @@
 \title{granges2bed}
 \usage{
 granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE, colNames = FALSE,
-  doSort = TRUE)
+  doSort = TRUE, bigBed = FALSE)
 }
 \arguments{
 \item{gr}{GRanges object}
@@ -17,6 +17,8 @@ granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE, colNames = FALSE,
 \item{colNames}{add column names}
 
 \item{doSort}{sort the regions before writing the output}
+
+\item{bigBed}{also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.}
 
 \item{sc}{score vector or column in elementMetadata of GRanges}
 }

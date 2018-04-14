@@ -53,6 +53,33 @@ normalize.str <- function(x,resolve.camel=FALSE,return.camel=FALSE){
 	return(x)
 }
 
+#' strTrim
+#'
+#' trim a character vector to have a desired length by taking the beginning of the string
+#' and the end of the string
+#'
+#' @param ss       character vector
+#' @param len.out  target output length to trim to
+#' @param len.pref length of the prefix to be used from the original string
+#' @param len.suf  length of the suffix to be used from the original string
+#' @param trim.str string to place in between prefix and suffix
+#' @return character vector in which each element has length\code{<=len.out}
+#'
+#' @author Fabian Mueller
+#' @export
+strTrim <- function(ss, len.out=50, trim.str="...", len.pref=ceiling((len.out-nchar(trim.str))/2), len.suf=len.out-len.pref-nchar(trim.str)){
+	if (len.pref + len.suf + nchar(trim.str) > len.out){
+		stop("Invalid string lengths specified")
+	}
+	lens <- nchar(ss)
+	res <- ifelse(
+		lens > len.out,
+		paste0(substr(ss, 1, len.pref), trim.str, substr(ss, lens-len.suf+1, lens)),
+		ss
+	)
+	return(res)
+}
+
 #' getHashString
 #' 
 #' Get a hash string, i.e. a string unlikely to occur again

@@ -1,6 +1,23 @@
 ################################################################################
 # Extensions and utitility functions for GRanges
 ################################################################################
+#' bedTobigBed
+#' 
+#' Convert a bed file to bigBed. requires the 'bedToBigBed' tool
+#' 
+#' @param bedFn filename of the bed file
+#' @param chromSizes named vector of chromosome sizes
+#' @param bbFn  filename to save the bigBed file to
+#' @param bedToBigBed executable of the 'bedToBigBed' tool
+#' @return nothing of particular interest
+bedTobigBed <- function(bedFn, chromSizes, bbFn=paste0(gsub("\\.bed$", "", bedFn), ".bb"), bedToBigBed="bedToBigBed"){
+	chromSizesFn <- tempfile(pattern="chromSizes")
+	chromSizesTab <- data.frame(chrom=names(chromSizes), size=chromSizes, stringsAsFactors=FALSE)
+	write.table(chromSizesTab, chromSizesFn, sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
+	convertRes <- system2(bedToBigBed, c(chromSizesFn, bbFn), stdout=TRUE)
+	invisible(NULL)
+}
+
 #' granges2bed
 #' 
 #' Save a GRanges object to a bed file
@@ -11,9 +28,10 @@
 #' @param addAnnotCols add the columns stored in elementMetadata of GRanges
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
+#' @param bigBed also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.
 #' @return (invisibly) the written results as a data.frame
 #' @export 
-granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE){
+granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE){
 	if (doSort){
 		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
 		gr <- gr[oo]
@@ -37,6 +55,14 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 		tt <- data.frame(tt, elementMetadata(gr))
 	}
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=colNames)
+
+	if (bigBed){
+		sls <- seqlengths(gr)
+		if (is.null(sls)){
+			logger.error(c("Could not convert to bigBed. Valid seqlengths are required."))
+		}
+		bedTobigBed(fn, sls)
+	}
 	invisible(tt)
 }
 
