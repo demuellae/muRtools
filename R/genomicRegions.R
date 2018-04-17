@@ -14,7 +14,7 @@ bedTobigBed <- function(bedFn, chromSizes, bbFn=paste0(gsub("\\.bed$", "", bedFn
 	chromSizesFn <- tempfile(pattern="chromSizes")
 	chromSizesTab <- data.frame(chrom=names(chromSizes), size=chromSizes, stringsAsFactors=FALSE)
 	write.table(chromSizesTab, chromSizesFn, sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
-	convertRes <- system2(bedToBigBed, c(chromSizesFn, bbFn), stdout=TRUE)
+	convertRes <- system2("bedToBigBed", c(bedFn, chromSizesFn, bbFn), stdout=TRUE)
 	invisible(NULL)
 }
 
