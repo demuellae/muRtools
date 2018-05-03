@@ -33,3 +33,4 @@ plotCorPhm <- function(
 
 	pheatmap(cc, color=color, breaks=breaks, border_color=border_color, annotation_row=sampleAnnot, annotation_col=sampleAnnot, cluster_rows=clustr, cluster_cols=clustr, ...)
 }
+# todo: check out display_numbers parameter for pheatmap (https://github.com/raivokolde/pheatmap/issues/24)
