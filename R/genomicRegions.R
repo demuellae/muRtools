@@ -104,6 +104,15 @@ granges2igv <- function(gr, fn, addStrand=FALSE, addAnnotCols=TRUE, doSort=TRUE,
 		if (length(assembly) != 1){
 			stop("Could not convert to TDF: invalid value for genome(GRangesObject)")
 		}
+		# igvtools does not support genomes hg38/GRCh38 yet --> create chrom.sizes file
+		if (is.element(assembly, c("hg38", "GRCh38"))){
+			chromSizes <- getSeqlengths4assembly(assembly, onlyMainChrs=FALSE, adjChrNames=FALSE)
+			chromSizesFn <- tempfile(pattern="chromSizes")
+			chromSizesTab <- data.frame(chrom=names(chromSizes), size=chromSizes, stringsAsFactors=FALSE)
+			write.table(chromSizesTab, chromSizesFn, sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
+			assembly <- chromSizesFn
+		}
+
 		convertRes <- system2("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly), stdout=TRUE)
 	}
 	invisible(res)
