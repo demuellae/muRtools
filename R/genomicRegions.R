@@ -480,3 +480,35 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	}
 	return(res)
 }
+
+#' grLiftOver
+#'
+#' Converts coordinates of a GRanges object to target genome assembly. Wraps around rtracklayer::liftOver
+#' and automatically downloads and selects the correct chain file
+#'
+#' @param gr    \code{GRanges} object to liftOver
+#' @param targetAssembly character string specifying the target assembly
+#' @return \code{GRanges} object with coordinates that could uniquely be
+#'
+#' @export
+grLiftOver <- function(gr, targetAssembly, onlyUnique=TRUE){
+	require(rtracklayer)
+	require(GEOquery) #gunzip
+	# require(liftOver)
+	sourceAssembly <- genome(gr)[1]
+	chFnUrl <- paste0("http://hgdownload.cse.ucsc.edu/goldenPath/", sourceAssembly,"/liftOver/", paste0(sourceAssembly, "To", toupper(substring(targetAssembly, 1,1)), substring(targetAssembly, 2) ,".over.chain.gz"))
+	chFn <- paste0(tempfile(),".chain")
+	download.file(chFnUrl, paste0(chFn,".gz"))
+	gunzip(paste0(chFn,".gz"))
+	ch <- import.chain(chFn)
+	res <- liftOver(gr, ch)
+	mapLens <- elementNROWS(res)
+	idx <- mapLens==1
+	if (!onlyUnique) idx <- idx | mapLens>1
+	res <- unlist(res[idx])
+	if (sum(mapLens>1) > 0 && onlyUnique) logger.info(c("Discarding", sum(mapLens>1), "sites with multiple mapped locations"))
+	if (sum(mapLens==0) > 0) logger.info(c("Discarding", sum(mapLens==0), "sites that could not be mapped"))
+	res <- setGenomeProps(res, targetAssembly)
+	return(res)
+}
+
