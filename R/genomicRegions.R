@@ -112,7 +112,7 @@ granges2igv <- function(gr, fn, addStrand=FALSE, addAnnotCols=TRUE, doSort=TRUE,
 			write.table(chromSizesTab, chromSizesFn, sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
 			assembly <- chromSizesFn
 		}
-
+		print(paste(c("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly)), collapse=" "))
 		convertRes <- system2("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly), stdout=TRUE)
 	}
 	invisible(res)
