@@ -107,12 +107,12 @@ granges2igv <- function(gr, fn, addStrand=FALSE, addAnnotCols=TRUE, doSort=TRUE,
 		# igvtools does not support genomes hg38/GRCh38 yet --> create chrom.sizes file
 		if (is.element(assembly, c("hg38", "GRCh38"))){
 			chromSizes <- getSeqlengths4assembly(assembly, onlyMainChrs=FALSE, adjChrNames=FALSE)
-			chromSizesFn <- tempfile(pattern="chromSizes")
+			chromSizesFn <- tempfile(pattern="chromSizes", fileext=".chrom.sizes")
 			chromSizesTab <- data.frame(chrom=names(chromSizes), size=chromSizes, stringsAsFactors=FALSE)
 			write.table(chromSizesTab, chromSizesFn, sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
 			assembly <- chromSizesFn
 		}
-		print(paste(c("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly)), collapse=" "))
+		# print(paste(c("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly)), collapse=" "))
 		convertRes <- system2("igvtools", c("toTDF", fn, paste0(fn, ".tdf"), assembly), stdout=TRUE)
 	}
 	invisible(res)
