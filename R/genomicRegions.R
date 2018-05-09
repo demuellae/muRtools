@@ -512,3 +512,42 @@ grLiftOver <- function(gr, targetAssembly, onlyUnique=TRUE){
 	return(res)
 }
 
+#' grGeneAnnot
+#'
+#' get gene annotation for a \code{GRanges} object using a \code{RegionSetDB} region database object by linking to the nearest gene
+#'
+#' @param gr    \code{GRanges} object to liftOver
+#' @param rsdb  \code{RegionSetDB} object containing a region set database from which gene annotation can be retrieved
+#' @param geneSetName Name of the region set containng gene annotation in the \code{RegionSetDB}
+#' @param geneSetCollection Name of the region set collection containng gene annotation in the \code{RegionSetDB}
+#' @param maxDist maximum distance for matching to nearest gene
+#' @return \code{data.frame} containing information on the nearest gene for each element in \code{gr}
+#'
+#' @export
+grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCollection="Gencode", maxDist=1e5){
+	require(muBioAnnotatR)
+	assembly <- genome(gr)[1]
+	geneGr <- regionSetGr(rsdb, geneSetName, geneSetCollection, assembly)
+	if (is.null(geneGr)) logger.error("Could not find gene annotation")
+	# find the corresponding annotation columns (first hit in elementMetadata)
+	geneIdCol <- intersect(c("gene_id"), colnames(elementMetadata(geneGr)))[1]
+	if (length(geneIdCol) < 1) logger.error(c("Could not find metadata column for the gene identifier"))
+	geneNameCol <- intersect(c("gene_name"), colnames(elementMetadata(geneGr)))[1]
+	if (length(geneNameCol) < 1) logger.error(c("Could not find metadata column for the gene identifier"))
+
+	geneGr <- promoters(geneGr, upstream=0, downstream=1) #get the TSS coordinate
+	dd <- distanceToNearest(gr, geneGr, ignore.strand=TRUE, select="arbitrary")
+	dd <- dd[mcols(dd)[,"distance"] <= maxDist,] # remove too far matches
+
+	res <- data.frame(
+		gene_id=rep(as.character(NA), length(gr)),
+		gene_name=rep(as.character(NA), length(gr)),
+		dist_to_tss=rep(as.integer(NA), length(gr)),
+		stringsAsFactors=FALSE
+	)
+	emd <- elementMetadata(geneGr[subjectHits(dd)])
+	res[queryHits(dd),"gene_id"]     <- emd[,geneIdCol]
+	res[queryHits(dd),"gene_name"]   <- emd[,geneNameCol]
+	res[queryHits(dd),"dist_to_tss"] <- mcols(dd)[,"distance"]
+	return(res)
+}
