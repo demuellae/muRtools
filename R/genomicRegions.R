@@ -535,8 +535,8 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 	geneNameCol <- intersect(c("gene_name"), colnames(elementMetadata(geneGr)))[1]
 	if (length(geneNameCol) < 1) logger.error(c("Could not find metadata column for the gene identifier"))
 
-	geneGr <- promoters(geneGr, upstream=0, downstream=1) #get the TSS coordinate
-	dd <- distanceToNearest(gr, geneGr, ignore.strand=TRUE, select="arbitrary")
+	tssGr <- promoters(geneGr, upstream=0, downstream=1) #get the TSS coordinate
+	dd <- distanceToNearest(gr, tssGr, ignore.strand=TRUE, select="arbitrary")
 	dd <- dd[mcols(dd)[,"distance"] <= maxDist,] # remove too far matches
 
 	res <- data.frame(
@@ -545,9 +545,14 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 		dist_to_tss=rep(as.integer(NA), length(gr)),
 		stringsAsFactors=FALSE
 	)
-	emd <- elementMetadata(geneGr[subjectHits(dd)])
+	geneGr.sub <- geneGr[subjectHits(dd)]
+	emd <- elementMetadata(geneGr.sub)
 	res[queryHits(dd),"gene_id"]     <- emd[,geneIdCol]
 	res[queryHits(dd),"gene_name"]   <- emd[,geneNameCol]
 	res[queryHits(dd),"dist_to_tss"] <- mcols(dd)[,"distance"]
+	res[queryHits(dd),"gene_chrom"]  <- as.character(seqnames(geneGr.sub))
+	res[queryHits(dd),"gene_chromStart"]  <- start(geneGr.sub)
+	res[queryHits(dd),"gene_chromEnd"]  <- end(geneGr.sub)
+	res[queryHits(dd),"gene_strand"]  <- as.character(strand(geneGr.sub))
 	return(res)
 }
