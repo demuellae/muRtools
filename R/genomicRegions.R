@@ -556,3 +556,38 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 	res[queryHits(dd),"gene_strand"]  <- as.character(strand(geneGr.sub))
 	return(res)
 }
+
+#' grGeneAnnot
+#'
+#' Tile each element in a \code{GRanges} object into equally-sized windows.
+#' If the length of an element is not divisible by the window-size, each element will be adjusted to match a multiple of the desired window-size
+#'
+#' @param gr    \code{GRanges} object to liftOver
+#' @param tile.width  length of the tiling window
+#' @param keepMetadata Should the metadata columns for each element be preserved in the resulting object
+#' @return \code{GRanges} containing the tiling regions. Additional metadata columns named \code{.orgIdx}, \code{.winIdx} denote the indices
+#'         of the original element and the window respectively
+#'
+#' @export
+grTile <- function(gr, tile.width=200, keepMetadata=TRUE){
+	nWin <- ceiling(width(gr)/tile.width)
+	tileGrl <- slidingWindows(resize(gr, nWin*tile.width, fix="start"), width=tile.width, step=tile.width)
+	idx <- rep(seq_along(gr), times=elementNROWS(tileGrl))
+	res <- unlist(tileGrl, use.names=FALSE)
+	if (keepMetadata){
+		elementMetadata(res) <- elementMetadata(gr[idx])
+	}
+	
+	# get window indices (revert the order if on - strand)
+	strandRevert <- as.character(strand(gr)) == "-"
+	winIdx <- do.call("c", lapply(seq_along(tileGrl), FUN=function(i){
+		if (strandRevert[i]){
+			return(nWin[i]:1)
+		} else {
+			return(1:nWin[i])
+		}
+	}))
+	elementMetadata(res)[,".orgIdx"] <- idx
+	elementMetadata(res)[,".winIdx"] <- winIdx
+	return(res)
+}
