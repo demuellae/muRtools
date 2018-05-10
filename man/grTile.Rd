@@ -2,7 +2,7 @@
 % Please edit documentation in R/genomicRegions.R
 \name{grTile}
 \alias{grTile}
-\title{grGeneAnnot}
+\title{grTile}
 \usage{
 grTile(gr, tile.width = 200, keepMetadata = TRUE)
 }

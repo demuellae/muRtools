@@ -557,7 +557,7 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 	return(res)
 }
 
-#' grGeneAnnot
+#' grTile
 #'
 #' Tile each element in a \code{GRanges} object into equally-sized windows.
 #' If the length of an element is not divisible by the window-size, each element will be adjusted to match a multiple of the desired window-size
