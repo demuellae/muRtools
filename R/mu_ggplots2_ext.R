@@ -34,6 +34,21 @@ ggplot2.heatmap <- function(mm,add.text=FALSE){
 	return(p)
 }
 
+#' getPointDensity
+#' 
+#' Get point density of points in 2 dimensions. Code from http://slowkow.com/notes/ggplot2-color-by-density/
+#' @param x A numeric vector.
+#' @param y A numeric vector.
+#' @param n Create a square n by n grid to compute density.
+#' @return The density within each square.
+getPointDensity <- function(x, y, n = 100) {
+  dens <- MASS::kde2d(x = x, y = y, n = n)
+  ix <- findInterval(x, dens$x)
+  iy <- findInterval(y, dens$y)
+  ii <- cbind(ix, iy)
+  return(dens$z[ii])
+}
+
 #' Custom Color Paletes
 #' 
 #' \describe{
@@ -71,6 +86,17 @@ colpal.bde <- c("#2166AC","#B2182B","#1B9E77","#D95F02","#7570B3","#E7298A","#66
 #' plot.new()
 #' gradient.rect(0,0,1,1,col=colpal.nature,nslices=length(colpal.nature),gradient="x",border=NA)
 colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A47", "#E67800", "#709F28", "#008FB4", "#84486A", "#B5797F", "#7489A8",  "#6C9396", "#7D9FB1", "#84486A", "#7C698B", "#88A2C3")
+#' \describe{
+#'   \item{\code{colpal.nature}}{
+#'         Color palette inspired by Nature journal color scheme's.
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plot.new()
+#' gradient.rect(0,0,1,1,col=colpal.mu.cat,nslices=length(colpal.nature),gradient="x",border=NA)
+colpal.mu.cat <- c("#e69f00", "#56b4e9", "#74c476", "#cc79a7", "#d55e00", "#0072b2", "#009e73", "#6a51a3", "#f0e442", "#999999", "#000000")
 
 #' theme_nogrid
 #' 
