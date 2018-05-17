@@ -7,6 +7,7 @@
 \alias{colpal.bde}
 \alias{colpal.nature}
 \alias{colpal.mu.cat}
+\alias{colpal.corpid}
 \title{Custom Color Paletes}
 \format{An object of class \code{character} of length 9.}
 \usage{
@@ -17,6 +18,8 @@ colpal.bde
 colpal.nature
 
 colpal.mu.cat
+
+colpal.corpid
 }
 \description{
 \describe{
@@ -42,6 +45,12 @@ colpal.mu.cat
         Color palette inspired by Nature journal color scheme's.
   }
 }
+
+\describe{
+  \item{\code{colpal.nature}}{
+        Color palette inspired by Nature journal color scheme's.
+  }
+}
 }
 \examples{
 plot.new()
@@ -52,5 +61,7 @@ plot.new()
 gradient.rect(0,0,1,1,col=colpal.nature,nslices=length(colpal.nature),gradient="x",border=NA)
 plot.new()
 gradient.rect(0,0,1,1,col=colpal.mu.cat,nslices=length(colpal.nature),gradient="x",border=NA)
+plot.new()
+gradient.rect(0,0,1,1,col=colpal.corpid,nslices=length(colpal.nature),gradient="x",border=NA)
 }
 \keyword{datasets}

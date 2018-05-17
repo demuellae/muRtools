@@ -98,6 +98,31 @@ colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A
 #' plot.new()
 #' gradient.rect(0,0,1,1,col=colpal.mu.cat,nslices=length(colpal.nature),gradient="x",border=NA)
 colpal.mu.cat <- c("#e69f00", "#56b4e9", "#74c476", "#cc79a7", "#d55e00", "#0072b2", "#009e73", "#6a51a3", "#f0e442", "#999999", "#000000")
+#' \describe{
+#'   \item{\code{colpal.nature}}{
+#'         Color palette inspired by Nature journal color scheme's.
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plot.new()
+#' gradient.rect(0,0,1,1,col=colpal.corpid,nslices=length(colpal.nature),gradient="x",border=NA)
+colpal.corpid <- c(
+  "mpii.darkblue"="#1C1D3B",
+  "mpii.lightblue"="#676D8D",
+  "mpii.grey"="#C6C6B6",
+  "deep.turq"="#018D9D",
+  "deep.grey"="#C6C6C6",
+  "stanford.cardinal"="#8c1515",
+  "stanford.coolgrey"="#4d4f53",
+  "stanford.black"="#2e2d29",
+  "stanford.brightred"="#B1040E",
+  "stanford.chocolate"="#2F2424",
+  "stanford.fog"="#F4F4F4",
+  "stanford.cloud"="#dad7cb",
+  "stanford.lightsandstone"="#F9F6EF"
+)
 
 #' theme_nogrid
 #' 
