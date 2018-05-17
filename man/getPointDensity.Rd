@@ -14,7 +14,7 @@ getPointDensity(x, y, n = 100)
 \item{n}{Create a square n by n grid to compute density.}
 }
 \value{
-The density within each square.
+The density within each square
 }
 \description{
 Get point density of points in 2 dimensions. Code from http://slowkow.com/notes/ggplot2-color-by-density/

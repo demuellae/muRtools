@@ -40,7 +40,8 @@ ggplot2.heatmap <- function(mm,add.text=FALSE){
 #' @param x A numeric vector.
 #' @param y A numeric vector.
 #' @param n Create a square n by n grid to compute density.
-#' @return The density within each square.
+#' @return The density within each square
+#' @export
 getPointDensity <- function(x, y, n = 100) {
   dens <- MASS::kde2d(x = x, y = y, n = n)
   ix <- findInterval(x, dens$x)
