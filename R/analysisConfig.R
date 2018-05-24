@@ -142,6 +142,17 @@ getConfig <- function(cfgFn, anaName, addDirs=TRUE){
 	if (addDirs){
 		config[[".anaDir"]] <- cfg_parse_directory_create(file.path(baseDir, paste(anaName, version, sep="_")))
 	}
+
+	#source utility function if a corresponding file exists
+	scrptDir <- cfgJson[[cfgJson[[".MU_ANA_CONFIG"]][["SCRIPT_DIR_BASE"]]]]
+	if (!is.null(scrptDir)){
+		utilsFn <- file.path(scrptDir, "utils", "utils.R")
+		if (file.exists(utilsFn)){
+			logger.info("Sourcing utils.R from", utilsFn)
+			source(utilsFn)
+		}
+	}
+	
 	class(config) <- "muConfig"
 	return(config)
 }
