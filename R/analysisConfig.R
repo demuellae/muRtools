@@ -148,11 +148,11 @@ getConfig <- function(cfgFn, anaName, addDirs=TRUE){
 	if (!is.null(scrptDir)){
 		utilsFn <- file.path(scrptDir, "utils", "utils.R")
 		if (file.exists(utilsFn)){
-			logger.info("Sourcing utils.R from", utilsFn)
+			logger.info(c("Sourcing utils.R from", utilsFn))
 			source(utilsFn)
 		}
 	}
-	
+
 	class(config) <- "muConfig"
 	return(config)
 }
