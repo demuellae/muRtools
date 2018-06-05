@@ -163,12 +163,28 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
 #' @param height  see \code{?ggsave}
 #' @param units   see \code{?ggsave}
 #' @param family  see \code{?ggsave}
+#' @param dimPreset presets for figure dimensions. Possible values are \code{NULL} (don't use a preset; default),
+#'                \code{"slide_nuc_wide_full"} (full slide using Fabians wide nucleosome template)
+#'                Overwrites \code{width}, \code{height} and \code{units}.
 #' @param useDingbats see \code{?ggsave}
 #' @param ...     see \code{?ggsave}
 #' @return result of \code{ggsave} command
 #' @export
 #' @aliases ggsave4doc
-ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", useDingbats=FALSE,...){
+ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", dimPreset=NULL, useDingbats=FALSE,...){
+  if (!is.null(dimPreset)){
+    if (dimPreset == "slide_nuc_wide_full"){
+      width <- 338.6
+      height <- 158
+      units <- "mm"
+    } else if (dimPreset == "slide_nuc_wide_half"){
+      width <- 338.6/2
+      height <- 158
+      units <- "mm"
+    } else {
+      warning(paste("Undefined preset:", dimPreset))
+    }
+  }
   ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, useDingbats=useDingbats,...)
 }
 
