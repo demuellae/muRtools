@@ -136,7 +136,7 @@ colpal.corpid <- c(
 #' theme_set(theme_nogrid())
 #' dframe <- data.frame(x=runif(100),y=runif(100))
 #' ggplot(dframe,aes(x=x,y=y)) + geom_point()
-theme_nogrid <- function(base_size = 12, base_family = "") {
+theme_nogrid <- function(base_size = 10, base_family = "") {
   # Starts with theme_grey and then modify some parts
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
     theme(
@@ -149,7 +149,7 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
       panel.border      = element_blank(),
       panel.grid.major  = element_blank(),
       panel.grid.minor  = element_blank(),
-      strip.background  = element_rect(fill = "grey80", colour = "grey50", size = 0.2)
+      strip.background  = element_rect(fill = "white", colour = "black", size = 0.2)
     )
 }
 
@@ -164,7 +164,8 @@ theme_nogrid <- function(base_size = 12, base_family = "") {
 #' @param units   see \code{?ggsave}
 #' @param family  see \code{?ggsave}
 #' @param dimPreset presets for figure dimensions. Possible values are \code{NULL} (don't use a preset; default),
-#'                \code{"slide_nuc_wide_full"} (full slide using Fabians wide nucleosome template)
+#'                \code{"slide_nuc_wide_full"} (full slide using Fabian's wide nucleosome template),
+#'                \code{"slide_nuc_wide_half"} (half a slide using Fabian's wide nucleosome template)
 #'                Overwrites \code{width}, \code{height} and \code{units}.
 #' @param useDingbats see \code{?ggsave}
 #' @param ...     see \code{?ggsave}
