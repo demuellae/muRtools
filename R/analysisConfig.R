@@ -82,8 +82,10 @@ cfg_parse_commandr_slurm <- function(x){
 	commandRobjs <- lapply(x, FUN=function(y){
 		req <- as.character(y[["REQ"]])
 		names(req) <- names(y[["REQ"]])
-		print(req)
-		CommandRslurm(logDir=y[["LOG_DIR"]], req=req)
+		user <- ""
+		if (is.element("USER", names(y))) user <- y[["USER"]][1]
+		# print(req)
+		CommandRslurm(logDir=y[["LOG_DIR"]], req=req, user=user)
 	})
 	names(commandRobjs) <- names(x)
 	return(commandRobjs)
