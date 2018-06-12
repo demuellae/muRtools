@@ -22,7 +22,8 @@ ggsave4doc(fn, plot = last_plot(), width = 146, height = 146,
 \item{family}{see \code{?ggsave}}
 
 \item{dimPreset}{presets for figure dimensions. Possible values are \code{NULL} (don't use a preset; default),
-\code{"slide_nuc_wide_full"} (full slide using Fabians wide nucleosome template)
+\code{"slide_nuc_wide_full"} (full slide using Fabian's wide nucleosome template),
+\code{"slide_nuc_wide_half"} (half a slide using Fabian's wide nucleosome template)
 Overwrites \code{width}, \code{height} and \code{units}.}
 
 \item{useDingbats}{see \code{?ggsave}}

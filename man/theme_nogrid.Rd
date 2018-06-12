@@ -4,7 +4,7 @@
 \alias{theme_nogrid}
 \title{theme_nogrid}
 \usage{
-theme_nogrid(base_size = 12, base_family = "")
+theme_nogrid(base_size = 10, base_family = "")
 }
 \arguments{
 \item{base_size}{base size}
