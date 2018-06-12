@@ -31,6 +31,6 @@ readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="",
 #' @return the result of \code{write.table}
 #' @author Fabian Mueller
 #' @export
-writeTab <- function(fn, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE, ...){
-	write.table(fn, sep=sep, row.names=row.names, col.names=col.names, quote=quote, ...)
+writeTab <- function(x, fn, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE, ...){
+	write.table(x, fn, sep=sep, row.names=row.names, col.names=col.names, quote=quote, ...)
 }
