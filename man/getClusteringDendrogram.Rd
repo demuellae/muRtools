@@ -8,7 +8,8 @@ getClusteringDendrogram(X, samplesOrdered = colnames(X), distMethod = "cor",
   linkMethod = "ward.D", corMethod = "pearson")
 }
 \arguments{
-\item{X}{A matrix for which the sample clustering dendrogram should be computed. Samples correspond to columns and features correspond to rows.}
+\item{X}{A matrix for which the sample clustering dendrogram should be computed. Samples correspond to columns and features correspond to rows.
+Alternatively, \code{X} can be a distance matrix (\code{dist} object)}
 
 \item{samplesOrdered}{character vector specifying the preferred order of samples}
 

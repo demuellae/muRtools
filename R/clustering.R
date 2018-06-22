@@ -18,6 +18,7 @@ dist.correlation <- function(x, ...) {
 #' 
 #' Get a clustering dendrogram using hierarchical clustering (wrapper)
 #' @param X     A matrix for which the sample clustering dendrogram should be computed. Samples correspond to columns and features correspond to rows.
+#'              Alternatively, \code{X} can be a distance matrix (\code{dist} object)
 #' @param samplesOrdered   character vector specifying the preferred order of samples
 #' @param distMethod distance metric to be used for clusteing. must be either "cor" or a valid distance method for \code{dist()}
 #' @param linkMethod linkage method (see \code{hclust} for details)
@@ -27,10 +28,14 @@ dist.correlation <- function(x, ...) {
 #' @export 
 getClusteringDendrogram <- function(X, samplesOrdered=colnames(X), distMethod="cor", linkMethod="ward.D", corMethod="pearson"){
 	dd <- NULL
-	if (distMethod=="cor"){
-		dd <- dist.correlation(t(X), method=corMethod)
+	if (is.element("dist", class(X))){
+		dd <- X
 	} else {
-		dd <- dist(t(X), method=distMethod)
+		if (distMethod=="cor"){
+			dd <- dist.correlation(t(X), method=corMethod)
+		} else {
+			dd <- dist(t(X), method=distMethod)
+		}
 	}
 	noDist <- is.na(dd)
 	if (sum(noDist) > 0) {
