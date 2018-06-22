@@ -4,8 +4,8 @@
 #' @return (invisibly) the scheme structure
 #' @export
 gviz_bwScheme <- function() {
+  require(Gviz)
   scheme <- getScheme()
-  col.title <- "black"
   scheme$GdObject$fontface.title <- 1
   scheme$GdObject$background.title <- "transparent"
   scheme$GdObject$col.border.title <- "black"
@@ -23,4 +23,5 @@ gviz_bwScheme <- function() {
   scheme$GeneRegionTrack$col.line <- "black"
   addScheme(scheme, "bwScheme")
   options(Gviz.scheme="bwScheme")
+  invisible(scheme)
 }
