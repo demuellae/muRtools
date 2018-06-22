@@ -4,10 +4,12 @@
 \alias{writeTab}
 \title{writeTab}
 \usage{
-writeTab(fn, sep = "\\t", row.names = FALSE, col.names = TRUE,
+writeTab(x, fn, sep = "\\t", row.names = FALSE, col.names = TRUE,
   quote = FALSE, ...)
 }
 \arguments{
+\item{x}{table to write to file}
+
 \item{fn}{filename to write to}
 
 \item{sep}{see \code{?write.table}}
@@ -19,8 +21,6 @@ writeTab(fn, sep = "\\t", row.names = FALSE, col.names = TRUE,
 \item{quote}{see \code{?write.table}}
 
 \item{...}{passed to \code{write.table}}
-
-\item{x}{table to write to file}
 
 \item{stringsAsFactors}{see \code{?write.table}}
 }
