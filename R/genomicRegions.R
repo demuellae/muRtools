@@ -316,14 +316,23 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 #' @param gr          GRanges object or GAlignments object to modify
 #' @param assembly    assembly
 #' @param dropUnknownChrs discard entries with seqnames not supported by assembly
+#' @param adjChrNames  should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?
 #' @param ...         arguments passed on to \code{getSeqlengths4assembly}
 #' @return GRanges object with genome properties set
 #' @export
-setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, ...){
-	sls <- getSeqlengths4assembly(assembly, ...)
-	supportedChrs <- as.vector(seqnames(gr)) %in% names(sls)
+setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE, ...){
+	sls <- getSeqlengths4assembly(assembly, adjChrNames=adjChrNames, ...)
+	sns <- seqnames(gr)
+	slvls <- seqlevels(gr)
+	if (adjChrNames){
+		mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
+		prep <- grepl(mainREnum, seqnames(gr))
+		seqnames(gr)[prep] <- paste0("chr", seqnames(gr)[prep])
+		seqnames(gr)[seqnames(gr)=="chrMT"] <- "chrM"
+	}
+	supportedChrs <- as.vector(sns) %in% names(sls)
 	if (sum(supportedChrs)!=length(gr)){
-		ss <- setdiff(seqlevels(gr), names(sls))
+		ss <- setdiff(slvls, names(sls))
 		logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
 		if (dropUnknownChrs){
 			n <- length(gr) - sum(supportedChrs)

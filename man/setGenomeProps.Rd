@@ -4,7 +4,8 @@
 \alias{setGenomeProps}
 \title{setGenomeProps}
 \usage{
-setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, ...)
+setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, adjChrNames = TRUE,
+  ...)
 }
 \arguments{
 \item{gr}{GRanges object or GAlignments object to modify}
@@ -12,6 +13,8 @@ setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, ...)
 \item{assembly}{assembly}
 
 \item{dropUnknownChrs}{discard entries with seqnames not supported by assembly}
+
+\item{adjChrNames}{should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?}
 
 \item{...}{arguments passed on to \code{getSeqlengths4assembly}}
 }
