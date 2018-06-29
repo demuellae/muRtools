@@ -322,17 +322,16 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 #' @export
 setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE, ...){
 	sls <- getSeqlengths4assembly(assembly, adjChrNames=adjChrNames, ...)
-	sns <- seqnames(gr)
-	slvls <- seqlevels(gr)
 	if (adjChrNames){
 		mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
+		seqlevels(gr) <- union(names(sls), seqlevels(gr))
 		prep <- grepl(mainREnum, seqnames(gr))
 		seqnames(gr)[prep] <- paste0("chr", seqnames(gr)[prep])
 		seqnames(gr)[seqnames(gr)=="chrMT"] <- "chrM"
 	}
-	supportedChrs <- as.vector(sns) %in% names(sls)
+	supportedChrs <- as.vector(seqnames(gr)) %in% names(sls)
 	if (sum(supportedChrs)!=length(gr)){
-		ss <- setdiff(slvls, names(sls))
+		ss <- setdiff(seqlevels(gr), names(sls))
 		logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
 		if (dropUnknownChrs){
 			n <- length(gr) - sum(supportedChrs)
