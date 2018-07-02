@@ -504,10 +504,13 @@ grLiftOver <- function(gr, targetAssembly, onlyUnique=TRUE){
 	require(GEOquery) #gunzip
 	# require(liftOver)
 	sourceAssembly <- genome(gr)[1]
-	chFnUrl <- paste0("http://hgdownload.cse.ucsc.edu/goldenPath/", sourceAssembly,"/liftOver/", paste0(sourceAssembly, "To", toupper(substring(targetAssembly, 1,1)), substring(targetAssembly, 2) ,".over.chain.gz"))
-	chFn <- paste0(tempfile(),".chain")
-	download.file(chFnUrl, paste0(chFn,".gz"))
-	gunzip(paste0(chFn,".gz"))
+	targetAssemblyStr <- paste0(toupper(substring(targetAssembly, 1,1)), substring(targetAssembly, 2))
+	chFnUrl <- paste0("http://hgdownload.cse.ucsc.edu/goldenPath/", sourceAssembly, "/liftOver/", paste0(sourceAssembly, "To", targetAssemblyStr, ".over.chain.gz"))
+	chFn <- file.path(tempdir(), paste0(sourceAssembly, "To", targetAssemblyStr, ".chain"))
+	if (!file.exists(chFn)){
+		download.file(chFnUrl, paste0(chFn,".gz"))
+		gunzip(paste0(chFn,".gz"))
+	}
 	ch <- import.chain(chFn)
 	res <- liftOver(gr, ch)
 	mapLens <- elementNROWS(res)
