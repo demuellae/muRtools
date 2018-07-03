@@ -325,9 +325,11 @@ setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE,
 	if (adjChrNames){
 		mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
 		seqlevels(gr) <- union(names(sls), seqlevels(gr))
-		prep <- grepl(mainREnum, seqnames(gr))
-		seqnames(gr)[prep] <- paste0("chr", seqnames(gr)[prep])
-		seqnames(gr)[seqnames(gr)=="chrMT"] <- "chrM"
+		if (is.element(class(gr), c("GRanges", "GRangesList"))){
+			prep <- grepl(mainREnum, seqnames(gr))
+			seqnames(gr)[prep] <- paste0("chr", seqnames(gr)[prep])
+			seqnames(gr)[seqnames(gr)=="chrMT"] <- "chrM"
+		}
 	}
 	supportedChrs <- as.vector(seqnames(gr)) %in% names(sls)
 	if (sum(supportedChrs)!=length(gr)){
