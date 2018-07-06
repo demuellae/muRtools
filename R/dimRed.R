@@ -377,7 +377,7 @@ testAssoc <- function(x, y, permMat=NULL) {
 		if (is.null(permMat)) {
 			result[["statistic"]] <- cor(x, y)
 		} else {
-			N <- length(inds)
+			N <- length(x)
 			values <- apply(permMat, 2, function(i) { cor(x[i[i <= N]], y) })
 			result[["statistic"]] <- values[1]
 			values <- abs(values)
@@ -425,7 +425,7 @@ getAssocTestRes.pca <- function(X, ph, nComp=10, nPerm=1000){
 	permMat <- NULL
 	if (nPerm > 0 && any(!sapply(ph, is.factor))) {
 		permMat <- mapply(sample, rep(nPoints, times=nPerm))
-		logger.info(c("Created", ncol(permMat), "sample permutations"))
+		logger.info(c("Created", ncol(permMat), "sample permutations for correlation permutation testing"))
 	}
 	assocL <- lapply(1:ncol(ph), FUN=function(i){
 		rr <- lapply(1:nComp, FUN=function(j){
