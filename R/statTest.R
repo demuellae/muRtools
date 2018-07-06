@@ -101,7 +101,7 @@ testAssoc <- function(x, y, permMat=NULL) {
 			result[["statistic"]] <- get.stat(testRes, "statistic")
 		}
 	} else {
-		result[["test"]] <- "Correlation"
+		result[["test"]] <- "Pearson correlation"
 		if (is.null(permMat)) {
 			result[["statistic"]] <- cor(x, y)
 		} else {
