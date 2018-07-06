@@ -18,11 +18,12 @@ getDimRedCoords.pca <- function(X, components=c(1,2)){
 		X <- X[,has.noNA]
 	}
 	pca <- prcomp(X, center = TRUE, scale. = FALSE)
-	coords <- pca$x[,components]
+	coords <- pca$x[,components, drop=FALSE]
 	rownames(coords) <- rownames(X)
 	percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
 	names(percVar) <- colnames(pca$x)
 	attr(coords, "percVar") <- percVar[components]
+	attr(coords,"PCAclass") <-"PCcoord"
 	return(coords)
 }
 #' getDimRedCoords.mds
@@ -268,4 +269,173 @@ plotAllDimRed <- function(X, fn.prefix=NULL, fn.suffix="", annot=NULL, distMetho
 		}
 	}
 	invisible(res)
+}
+
+################################################################################
+# Associations
+################################################################################
+#' Tests for association between two vectors. Based on \code{RnBeads:::test.traits}
+#'
+#' @param x           Sample values for the first trait. This must be a vector of type \code{factor}, \code{integer} or
+#'                    \code{numeric}.
+#' @param y           Sample values for the second trait. This must be a vector of type \code{factor}, \code{integer} or
+#'                    \code{numeric}.
+#' @param permMat     Matrix of sample permutations (indices of x that will be used in permutation tests) in case none of the traits is a \code{factor}, and thus
+#'                    permutation-based p-value from correlations is computed. If this parameter is \code{NULL} and
+#'                    both \code{x} and \code{y} are sequences of numbers, no p-value is calculated.
+#' @return            List of four elements:
+#'                    \describe{
+#'                      \item{error}{Error, if any, that prevented this function from computing a p-value for trait
+#'                           association.}
+#'                      \item{test}{Type of test performed. This is one of \code{"Fisher"}, \code{"Wilcoxon"},
+#'                           \code{"Kruskal-Wallis"}, \code{"Correlation"} or \code{NA}. The last value indicates that
+#'                           the traits cannot be tested for association.}
+#'                      \item{correlation}{Value of the pearson correlation coefficient between \code{x} and \code{y},
+#'                           or \code{NA} if any of them is \code{factor}.}
+#'                      \item{pvalue}{Calculated p-value, or \code{NA} if the traits cannot be tested for association.}
+#'                    }
+#' @export
+testAssoc <- function(x, y, permMat=NULL) {
+	result <- list(
+			"error" = as.character(NA),
+			"test" = as.character(NA),
+			"statistic" = as.double(NA),
+			"pvalue" = as.double(NA))
+
+	if (length(x) != length(y)) logger.error(c("x and y must have matching lengths"))
+
+	## Focus on common values
+	if (class(x) == "Date") { x <- as.integer(x) }
+	if (class(y) == "Date") { y <- as.integer(y) }
+	if (is.character(x) || is.logical(x)) { x <- factor(x) }
+	if (is.character(y) || is.logical(y)) { y <- factor(y) }
+	disc <- is.na(x) | is.na(y)
+	if (sum(disc) > 0){
+		logger.warning(c("Discarding", sum(disc), "observations with NA (testAssoc)"))
+		inds <- which(!disc)
+		x <- x[inds]
+		y <- y[inds]
+	}
+	
+	if (length(x) < 2) {
+		result[["error"]] <- "not enough shared values between x and y"
+		return(result)
+	}
+	if (is.factor(x)) {
+		x <- as.factor(as.character(x))
+		if (nlevels(x) < 2) {
+			## Not enough categories in y
+			result[["error"]] <- "not enough categories in x"
+			return(result)
+		}
+	}
+	if (is.factor(y)) {
+		y <- as.factor(as.character(y))
+		if (nlevels(y) < 2) {
+			## Not enough categories in y
+			result[["error"]] <- "not enough categories in y"
+			return(result)
+		}
+	}
+
+	## Perform a test or compute correlation
+	get.stat <- function(expr, statName) { tryCatch(suppressWarnings(expr[[statName]]), error = function(er) { as.double(NA) }) }
+	if (is.factor(x)) {
+		if (is.factor(y)) {
+			simulate <- (nlevels(x) > 2 || nlevels(y) > 2)
+			testRes <- fisher.test(x, y, conf.int = FALSE, simulate.p.value = simulate, B = 50000)
+			result[["test"]] <- "Fisher"
+			result[["pvalue"]] <- get.stat(testRes, "p.value")
+			result[["statistic"]] <- get.stat(testRes, "estimate")
+		} else if (nlevels(x) == 2) {
+			result[["test"]] <- "Wilcoxon"
+			values <- tapply(y, x, identity)
+			testRes <- wilcox.test(values[[1]], values[[2]], alternative = "two.sided")
+			result[["pvalue"]] <- get.stat(testRes, "p.value")
+			result[["statistic"]] <- get.stat(testRes, "statistic")
+		} else {
+			testRes <- kruskal.test(y, x)
+			result[["test"]] <- "Kruskal-Wallis"
+			result[["pvalue"]] <- get.stat(testRes, "p.value")
+			result[["statistic"]] <- get.stat(testRes, "statistic")
+		}
+	} else if (is.factor(y)) {
+		if (nlevels(y) == 2) {
+			result[["test"]] <- "Wilcoxon"
+			values <- tapply(x, y, identity)
+			testRes <- wilcox.test(values[[1]], values[[2]], alternative = "two.sided")
+			result[["pvalue"]] <- get.stat(testRes, "p.value")
+			result[["statistic"]] <- get.stat(testRes, "statistic")
+		} else {
+			testRes <- kruskal.test(x, y)
+			result[["test"]] <- "Kruskal-Wallis"
+			result[["pvalue"]] <- get.stat(testRes, "p.value")
+			result[["statistic"]] <- get.stat(testRes, "statistic")
+		}
+	} else {
+		result[["test"]] <- "Correlation"
+		if (is.null(permMat)) {
+			result[["statistic"]] <- cor(x, y)
+		} else {
+			N <- length(inds)
+			values <- apply(permMat, 2, function(i) { cor(x[i[i <= N]], y) })
+			result[["statistic"]] <- values[1]
+			values <- abs(values)
+			result[["pvalue"]] <- mean(values[1] <= values)
+		}
+	}
+
+	if (is.na(result[["pvalue"]])) {
+		result[["error"]] <- "test failed"
+	}
+	return(result)
+}
+
+#' getAssocTestRes.pca
+#' 
+#' Test associations of annotations with principal components (PCA)
+#' @param X       A matrix on which the dimension reduction is to be performed. Alternatively, it can be a matrix of PC coordinates computed by \code{getDimRedCoords.pca}.
+#' @param ph      annotation table for the datapoints. The columns of this table will be used to test associations with the PCs.
+#'                Should be a \code{matrix} or \code{data.frame}.
+#' @param nComp   number of PCs to be considered
+#' @param nPerm   number of permutation tests to be conducted if an annotation in \code{ph} is numeric (i.e. a correlation permutation test is performed)
+#' @return A nested list of tested associations one element for each column in \code{ph} (1st level), each PC (2nd level).
+#'         Each element is again a list with the name of the test being used (\code{test}), the test statistic (\code{statistic}) and p-value (\code{pvalue})
+#' @author Fabian Mueller
+#' @export 
+getAssocTestRes.pca <- function(X, ph, nComp=10, nPerm=1000){
+	if (!is.matrix(X)) logger.error("Invalid X object. Expected matrix")
+	if (!is.matrix(ph) && !is.data.frame(ph)) logger.error("Invalid ph object. Expected matrix or data frame")
+	if (nrow(ph)!=nrow(X)) logger.error("Invalid ph object. Expected matrix or data frame WITH MATCHING DIMENSIONS")
+	nPoints <- nrow(X)
+
+	nComp <- min(nComp, nPoints)
+	# check if X is already a PCcoord object
+	if (is.null(attr(X,"PCAclass")) || attr(X,"PCAclass")!="PCcoord"){
+		coords <- getDimRedCoords.pca(X, components=1:nComp)
+	} else {
+		coords <- X
+		nComp <- ncol(coords)
+	}
+
+	#factorize matrix
+	for (j in which(sapply(ph, FUN=function(x){is.character(x) || is.logical(x)}))){
+		ph[,j] <- factor(ph[,j])
+	}
+	permMat <- NULL
+	if (nPerm > 0 && any(!sapply(ph, is.factor))) {
+		permMat <- mapply(sample, rep(nPoints, times=nPerm))
+		logger.info(c("Created", ncol(permMat), "sample permutations"))
+	}
+	assocL <- lapply(1:ncol(ph), FUN=function(i){
+		rr <- lapply(1:nComp, FUN=function(j){
+			testAssoc(ph[,i], coords[,j], permMat)
+		})
+		names(rr) <- colnames(coords)
+		return(rr)
+	})
+	names(assocL) <- colnames(ph)
+	# pVals <- sapply(assocL, FUN=function(x){sapply(x, FUN=function(y){y[["pvalue"]]})})
+	# testNames <- sapply(assocL, FUN=function(x){sapply(x, FUN=function(y){y[["test"]]})})
+	return(assocL)
 }
