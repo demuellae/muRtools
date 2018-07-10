@@ -34,3 +34,30 @@ readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="",
 writeTab <- function(x, fn, sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE, ...){
 	write.table(x, fn, sep=sep, row.names=row.names, col.names=col.names, quote=quote, ...)
 }
+
+#' aggregateDf
+#' 
+#' Wrapper around \code{aggregate} to merge rows of a data frame based on a specified grouping.
+#' Merging is done by either returning the unique value for each group or if multiple different
+#' val;ues exists converting them to character and concatenating by ";"
+#' @param df     \code{data.frame} to aggregate
+#' @param groupBy vector whose unique values indicates the grouping of the rows in the data frame
+#' @return aggregated \code{data.frame}
+#' @author Fabian Mueller
+#' @export
+aggregateDf <- function(df, groupBy){
+	if (length(groupBy) != nrow(df)) stop("invalid value for 'groupBy'")
+	res <- data.frame(lapply(aggregate(df, list(groupBy), FUN=function(x){
+		if (length(unique(x))==1) return(x[1])
+		return(paste(as.character(x), collapse=";"))
+	}, simplify=FALSE), FUN=function(x){
+		hasFactor <- any(sapply(x, is.factor))
+		hasChar   <- any(sapply(x, is.character))
+		if (hasFactor && hasChar) x <- lapply(x, as.character)
+		return(unlist(x))
+	}), stringsAsFactors=FALSE)
+	grpNames <- as.character(res[,1]) # first column "Group.1"
+	res <- res[,-1] #remove the first column "Group.1"
+	rownames(res) <- grpNames
+	return(res)
+}
