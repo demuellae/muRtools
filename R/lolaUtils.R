@@ -440,15 +440,16 @@ lolaVolcanoPlot <- function(lolaDb, lolaRes, includedCollections=c(), signifCol=
 	cpanel <- colorpanel
 	if (length(cpanel) < 1){
 		if (is.color.gradient){
-			cpanel <- rev(rnb.getOption("colors.gradient"))
+			#default: viridis 
+			cpanel <- c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF", "#6DCD59FF", "#B4DE2CFF", "#FDE725FF")
 		}
 		if (is.color.discrete){
 			if (is.factor(df2p[[colorBy]])){
-				cpanel <- rep(rnb.getOption("colors.category"), length.out=nlevels(df2p[[colorBy]]))
+				cpanel <- rep(colpal.mu.cat, length.out=nlevels(df2p[[colorBy]]))
 				names(cpanel) <- levels(df2p[[colorBy]])
 			} else if (is.character(df2p[[colorBy]])){
 				cpanel.names <- unique(df2p[[colorBy]])
-				cpanel <- rep(rnb.getOption("colors.category"), length.out=length(cpanel.names))
+				cpanel <- rep(colpal.mu.cat, length.out=length(cpanel.names))
 				names(cpanel) <- cpanel.names
 			} else {
 				logger.error("invalid discrete coloring column type")
