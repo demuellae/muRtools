@@ -314,7 +314,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	}
 
 	lolaRes$name <- getNamesFromLolaDb(lolaDb, addCollectionNames=!groupByCollection)[lolaRes$dbSet]
-	lolaRes$name <- trimChar(lolaRes$name, len.out=50, trim.str="...", len.pref=30)
+	lolaRes$name <- strTrim(lolaRes$name, len.out=50, trim.str="...", len.pref=30)
 	lolaRes$target <- getTargetFromLolaDb(lolaDb)[lolaRes$dbSet]
 
 	if (!is.element(scoreCol, colnames(lolaRes))){
