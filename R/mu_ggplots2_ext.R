@@ -34,6 +34,29 @@ ggplot2.heatmap <- function(mm,add.text=FALSE){
 	return(p)
 }
 
+#' ggMessagePlot
+#'
+#' Creates a plot, using \pkg{ggplot2}, with a single text message.
+#'
+#' @param txt Text to be plotted.
+#' @return The newly initialized \code{ggplot} instance.
+#'
+#' @examples
+#' \donttest{
+#' ggMessagePlot("Missing data")
+#' }
+#' @export
+ggMessagePlot <- function(txt) {
+  if (!(is.character(txt) && length(txt) == 1 && (!is.na(txt)))) {
+    stop("invalid value for txt")
+  }
+  ggplot(data.frame(x = 1, y = 1, labeltext = txt), aes_string("x", "y", label = "labeltext")) +
+    geom_text(color = "grey50") +
+    theme(axis.line = element_blank(), axis.title = element_blank(), axis.text = element_blank(),
+      axis.ticks = element_blank(), panel.border = element_blank(), panel.grid = element_blank(),
+      panel.background = element_blank(), plot.background = element_blank())
+}
+
 #' getPointDensity
 #' 
 #' Get point density of points in 2 dimensions. Code from http://slowkow.com/notes/ggplot2-color-by-density/
