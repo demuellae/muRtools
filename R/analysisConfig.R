@@ -17,7 +17,7 @@ cfg_parse_directory <- function(x){
 
 cfg_parse_directory_existing <- function(x){
 	x <- cfg_parse_directory(x)
-	if (!dir.exists(x)) stop("directory must exist")
+	if (!all(dir.exists(x))) stop("directories must exist")
 	return(x)
 }
 
@@ -49,7 +49,7 @@ cfg_parse_file <- function(x){
 
 cfg_parse_file_existing <- function(x){
 	x <- cfg_parse_file(x)
-	if (!file.exists(x)) stop("file must exist")
+	if (!all(file.exists(x))) stop("file(s) must exist")
 	return(x)
 }
 
