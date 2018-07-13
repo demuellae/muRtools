@@ -73,6 +73,6 @@ gradient.rect(0,0,1,1,col=colpal.mu.cat,nslices=length(colpal.mu.cat),gradient="
 plot.new()
 gradient.rect(0,0,1,1,col=colpal.corpid,nslices=length(colpal.corpid),gradient="x",border=NA)
 plot.new()
-gradient.rect(0,0,1,1,col=colpals.games[["bruges"]],nslices=length(colpals.games[["bruges"]]),gradient="x",border=NA)
+gradient.rect(0,0,1,1,col=colpals.games[["rollgalaxy"]],nslices=length(colpals.games[["rollgalaxy"]]),gradient="x",border=NA)
 }
 \keyword{datasets}

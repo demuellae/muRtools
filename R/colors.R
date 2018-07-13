@@ -81,7 +81,7 @@ colpal.corpid <- c(
 #' @export
 #' @examples
 #' plot.new()
-#' gradient.rect(0,0,1,1,col=colpals.games[["bruges"]],nslices=length(colpals.games[["bruges"]]),gradient="x",border=NA)
+#' gradient.rect(0,0,1,1,col=colpals.games[["rollgalaxy"]],nslices=length(colpals.games[["rollgalaxy"]]),gradient="x",border=NA)
 colpals.games <- list(
   bruges=c("#3B8FCF", "#B52622", "#8D5718", "#572978", "#FFC856", "#28A742", "#256CBF", "#C4292C", "#E0EB36"),
   mombasa=c("#009FE3", "#8EC041", "#951B81", "#FFCC00", "#BE1716", "#DE7E00", "#7C83B3", "#671719", "#E0CDA6", "#775725", "#000000"),
