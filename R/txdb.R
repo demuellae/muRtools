@@ -1,7 +1,7 @@
 #' getTxDb.gencode
 #' 
 #' Create a \code{TxDb} object by downloading the corresponding GTF file from Gencode
-#' @param name	gencode identifier. Currently supported are: "gencode_v27", "gencode_v19", "gencode_vM16", "gencode_vM1"
+#' @param name	gencode identifier. Currently supported are: "gencode.v27", "gencode.v19", "gencode.vM16", "gencode.vM1"
 #' @return \code{TxDb} object
 #' @author Fabian Mueller
 #' @export 
