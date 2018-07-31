@@ -207,6 +207,14 @@ getTargetFromLolaDb <- function(lolaDb){
 		)
 	}
 
+	# special treatment for "encodeTFBSmm10" from LOLAExt which don't have a good description
+	isInCollection <- tt$collection=="encodeTFBSmm10" & tt$description=="encodeTFBSmm10"
+	if (sum(isInCollection) > 0){
+		res[isInCollection] <- gsub("^wgEncodePsuTfbs", "", 
+			gsub("RepPeaksRep[1-9]\\.broadPeak$", "", tt$filename[isInCollection])
+		)
+	}
+
 	return(res)
 }
 
