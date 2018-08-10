@@ -4,8 +4,8 @@
 \alias{granges2igv}
 \title{granges2igv}
 \usage{
-granges2igv(gr, fn, addStrand = FALSE, addAnnotCols = TRUE, doSort = TRUE,
-  toTDF = FALSE)
+granges2igv(gr, fn, addStrand = FALSE, addAnnotCols = TRUE,
+  doSort = TRUE, toTDF = FALSE)
 }
 \arguments{
 \item{gr}{GRanges object}

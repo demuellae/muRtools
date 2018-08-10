@@ -25,24 +25,6 @@ Named vectors of colors for different modifications
   	Histone modifications
   }
 }
-
-\describe{
-  \item{\code{colpal.histone.ihec}}{
-     Histone modifications. Colors defined by IHEC.
-  }
-}
-
-\describe{
-  \item{\code{colgrad.methylation.rb}}{
-     3 point color palette for methylation: red-grey-blue
-  }
-}
-
-\describe{
-  \item{\code{colgrad.methylation.yb}}{
-     3 point color palette for methylation: yellow-turquois-blue
-  }
-}
 }
 \examples{
 library(gplots)

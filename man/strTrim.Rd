@@ -4,8 +4,9 @@
 \alias{strTrim}
 \title{strTrim}
 \usage{
-strTrim(ss, len.out = 50, trim.str = "...", len.pref = ceiling((len.out -
-  nchar(trim.str))/2), len.suf = len.out - len.pref - nchar(trim.str))
+strTrim(ss, len.out = 50, trim.str = "...",
+  len.pref = ceiling((len.out - nchar(trim.str))/2), len.suf = len.out
+  - len.pref - nchar(trim.str))
 }
 \arguments{
 \item{ss}{character vector}

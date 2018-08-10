@@ -4,8 +4,8 @@
 \alias{setGenomeProps}
 \title{setGenomeProps}
 \usage{
-setGenomeProps(gr, assembly, dropUnknownChrs = TRUE, adjChrNames = TRUE,
-  ...)
+setGenomeProps(gr, assembly, dropUnknownChrs = TRUE,
+  adjChrNames = TRUE, ...)
 }
 \arguments{
 \item{gr}{GRanges object or GAlignments object to modify}

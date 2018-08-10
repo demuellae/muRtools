@@ -4,8 +4,8 @@
 \alias{granges2bed}
 \title{granges2bed}
 \usage{
-granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE, colNames = FALSE,
-  doSort = TRUE, bigBed = FALSE)
+granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE,
+  colNames = FALSE, doSort = TRUE, bigBed = FALSE)
 }
 \arguments{
 \item{gr}{GRanges object}

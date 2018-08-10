@@ -30,36 +30,6 @@ colpals.games
         color blind friendly color palettes (adapted from http://wiki.stdout.org/rcookbook/Graphs/Colors%20%28ggplot2%29/)
   }
 }
-
-\describe{
-  \item{\code{colpal.bde}}{
-        Enhanced Color Brewer palette 'Dark2'
-  }
-}
-
-\describe{
-  \item{\code{colpal.nature}}{
-        Color palette inspired by Nature journal color scheme's.
-  }
-}
-
-\describe{
-  \item{\code{colpal.nature}}{
-        Color palette inspired by Nature journal color scheme's.
-  }
-}
-
-\describe{
-  \item{\code{colpal.corpid}}{
-        Color palette inspired by coorporate identities I worked with
-  }
-}
-
-\describe{
-  \item{\code{colpals.games}}{
-        List of color palette inspired by board games
-  }
-}
 }
 \examples{
 plot.new()

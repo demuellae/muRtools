@@ -4,8 +4,9 @@
 \alias{colorize.value}
 \title{colorize.value}
 \usage{
-colorize.value(val, rng = c(-1, 1), colscheme.col.val = c(colorpanel(100,
-  "blue", "white"), colorpanel(100, "white", "red")))
+colorize.value(val, rng = c(-1, 1),
+  colscheme.col.val = c(colorpanel(100, "blue", "white"), colorpanel(100,
+  "white", "red")))
 }
 \arguments{
 \item{val}{value to be transformed}

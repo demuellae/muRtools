@@ -4,8 +4,8 @@
 \alias{scatter.twogroups}
 \title{scatter.twogroups}
 \usage{
-scatter.twogroups(x, y, is.g, cols.all = blues9[-(1:3)], cols.g = c("coral",
-  "darkred"), ...)
+scatter.twogroups(x, y, is.g, cols.all = blues9[-(1:3)],
+  cols.g = c("coral", "darkred"), ...)
 }
 \arguments{
 \item{x}{x coordinates}

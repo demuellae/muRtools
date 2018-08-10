@@ -4,7 +4,8 @@
 \alias{getSeqlengths4assembly}
 \title{getSeqlengths4assembly}
 \usage{
-getSeqlengths4assembly(assembly, onlyMainChrs = FALSE, adjChrNames = TRUE)
+getSeqlengths4assembly(assembly, onlyMainChrs = FALSE,
+  adjChrNames = TRUE)
 }
 \arguments{
 \item{assembly}{assembly}

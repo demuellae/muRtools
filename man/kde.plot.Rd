@@ -8,7 +8,8 @@
 \usage{
 kde.plot.simple(x, initial = FALSE, col = c("#00640044"), ...)
 
-kde.plot.matrix(X, col = makeTrans(rainbow(ncol(X))), legend = TRUE, ...)
+kde.plot.matrix(X, col = makeTrans(rainbow(ncol(X))), legend = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{values}

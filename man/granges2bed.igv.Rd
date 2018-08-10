@@ -4,9 +4,10 @@
 \alias{granges2bed.igv}
 \title{granges2bed.igv}
 \usage{
-granges2bed.igv(gr, fn, trackName = NULL, scoreCol = NULL, na.rm = FALSE,
-  nameCol = NULL, col.cat = colpal.bde, col.cont = c("#EDF8B1", "#41B6C4",
-  "#081D58"), col.na = "#bdbdbd", col.range = NULL, doSort = TRUE)
+granges2bed.igv(gr, fn, trackName = NULL, scoreCol = NULL,
+  na.rm = FALSE, nameCol = NULL, col.cat = colpal.bde,
+  col.cont = c("#EDF8B1", "#41B6C4", "#081D58"), col.na = "#bdbdbd",
+  col.range = NULL, doSort = TRUE)
 }
 \arguments{
 \item{gr}{GRanges object}

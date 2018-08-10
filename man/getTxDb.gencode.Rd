@@ -7,7 +7,7 @@
 getTxDb.gencode(name)
 }
 \arguments{
-\item{name}{gencode identifier. Currently supported are: "gencode_v27", "gencode_v19", "gencode_vM16", "gencode_vM1"}
+\item{name}{gencode identifier. Currently supported are: "gencode.v27", "gencode.v19", "gencode.vM16", "gencode.vM1"}
 }
 \value{
 \code{TxDb} object

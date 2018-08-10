@@ -4,8 +4,8 @@
 \alias{getClusteringDendrogram}
 \title{getClusteringDendrogram}
 \usage{
-getClusteringDendrogram(X, samplesOrdered = colnames(X), distMethod = "cor",
-  linkMethod = "ward.D", corMethod = "pearson")
+getClusteringDendrogram(X, samplesOrdered = colnames(X),
+  distMethod = "cor", linkMethod = "ward.D", corMethod = "pearson")
 }
 \arguments{
 \item{X}{A matrix for which the sample clustering dendrogram should be computed. Samples correspond to columns and features correspond to rows.

@@ -4,8 +4,8 @@
 \alias{bedTobigBed}
 \title{bedTobigBed}
 \usage{
-bedTobigBed(bedFn, chromSizes, bbFn = paste0(gsub("\\\\.bed$", "", bedFn),
-  ".bb"), bedToBigBed = "bedToBigBed")
+bedTobigBed(bedFn, chromSizes, bbFn = paste0(gsub("\\\\.bed$", "",
+  bedFn), ".bb"), bedToBigBed = "bedToBigBed")
 }
 \arguments{
 \item{bedFn}{filename of the bed file}
