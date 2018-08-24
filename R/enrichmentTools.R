@@ -20,6 +20,7 @@
 goEnrichment <- function(qids, uids, ontology="BP", idType="ensembl", assembly="org.Hs.eg.db", algorithm="weight01"){
 	require(topGO)
 	if (!all(qids %in% uids)) stop("query ids must be a subset of universe ids")
+	ass <- assembly
 	if (is.element(assembly,c("hg19","hg38"))){
 		ass <- "org.Hs.eg.db"
 	} else if (is.element(assembly,c("mm9","mm10"))){
