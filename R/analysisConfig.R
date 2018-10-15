@@ -151,7 +151,7 @@ getConfig <- function(cfgFn, anaName, addDirs=TRUE){
 		utilsFn <- file.path(scrptDir, "utils", "utils.R")
 		if (file.exists(utilsFn)){
 			logger.info(c("Sourcing utils.R from", utilsFn))
-			source(utilsFn)
+			source(utilsFn, chdir=TRUE)
 		}
 	}
 
