@@ -59,11 +59,15 @@ plotCorPhm <- function(
 #' rownames(m1) <- rownames(m2) <- colnames(m1) <- colnames(m2) <- paste0("Idx", 1:10)
 #' diagDivHeatmap(m1, m2)
 #' diagDivHeatmap(m1, m2, cell.val.text=TRUE, cell.val.text.round=3)
+#' cres <- as.hclust(muRtools::getClusteringDendrogram(m1, distMethod="euclidean", linkMethod="ward.D", corMethod="pearson"))
+#' diagDivHeatmap(m1, m2, cluster=cres, cell.val.text=TRUE, cell.val.text.round=2)
 diagDivHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower left", name.r="Upper right", cluster=FALSE, cell.val.text=FALSE, cell.val.text.round=2, ...){
 	require(ComplexHeatmap)
 	if (nrow(ml)!=nrow(mr)) stop("Numbers of rows of the two matrices must match")
 	if (ncol(ml)!=ncol(mr)) stop("Numbers of columns of the two matrices must match")
 	if (nrow(ml)!=ncol(ml)) stop("Matrices must be quadratic")
+	if (!is.element(class(cluster), c("hclust", "logical"))) stop("parameter 'cluster' must be hclust or logical")
+	if (is.logical(cluster) && cluster) stop("parameter 'cluster' currently can not be set to TRUE (would mess up the ordering)")
 
 	if (is.null(col.l)){
 		col.l <- circlize::colorRamp2(seq(min(ml, na.rm=TRUE), max(ml, na.rm=TRUE), length.out=9), rev(colpal.cont(9, "cb.YlOrRd")))
@@ -78,23 +82,31 @@ diagDivHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower left", 
 	cell.text.fun <- identity
 	if (is.numeric(mc)) cell.text.fun <- function(x){sprintf(paste0("%.", cell.val.text.round, "f"), x)}
 
+	idxMap <- 1:nrow(ml)
+	if (class(cluster)=="hclust") idxMap <- order(cluster$order)
+
 	dotArgs <- list(...)
-	res <- Heatmap(mc,
+	res <- Heatmap(ml,
 		col=col.l,
 		cluster_rows=cluster, cluster_columns=cluster,
+		rect_gp=gpar(type="none"),
 		cell_fun = function(j, i, x, y, width, height, fill) {
-			grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col="grey", fill="grey"))
-			if (i == j) {
-				grid.text(rownames(mc)[i], x=x, y=y)
-			} else if(i > j) {
-				grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col=NA, fill=col.l(mc[i, j])))
-				if (cell.val.text){
-					grid.text(cell.text.fun(mc[i, j]), x, y)
+			grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col=NA, fill="grey"))
+			if (idxMap[i] == idxMap[j]) {
+				grid.text(rownames(ml)[i], x=x, y=y)
+			} else if(idxMap[i] > idxMap[j]) {
+				if (!is.na(ml[i, j])){
+					grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col=NA, fill=col.l(ml[i, j])))
+					if (cell.val.text){
+						grid.text(cell.text.fun(ml[i, j]), x, y)
+					}
 				}
 			} else {
-				grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col=NA, fill=col.r(mc[i, j])))
-				if (cell.val.text){
-					grid.text(cell.text.fun(mc[i, j]), x, y)
+				if (!is.na(mr[i, j])) {
+					grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col=NA, fill=col.r(mr[i, j])))
+					if (cell.val.text){
+						grid.text(cell.text.fun(mr[i, j]), x, y)
+					}
 				}
 			}
 		},
@@ -102,13 +114,10 @@ diagDivHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower left", 
 		...
 	)
 	# dummy heatmap for color legend
-	dummyM <- matrix(rep(NA, length.out=nrow(mr)), nrow=nrow(mc), ncol=1)
-	# dummyM <- matrix(nrow=nrow(mc), ncol=0)
-	# dummyM <- mr
-	rownames(dummyM) <- rownames(mc)
-	dummyHm <- Heatmap(dummyM, col=col.r, cluster_rows=cluster, cluster_columns=cluster, width=unit(0, "mm"), name=name.r)
+	dummyM <- matrix(rep(NA, length.out=nrow(mr)), nrow=nrow(mr), ncol=1)
+	rownames(dummyM) <- rownames(mr)
+	dummyHm <- Heatmap(dummyM, col=col.r, cluster_rows=cluster, cluster_columns=FALSE, width=unit(0, "mm"), name=name.r)
 	return(res + dummyHm)
-	# return(res)
 }
 
 #' diagDivCellHeatmap
@@ -132,6 +141,8 @@ diagDivHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower left", 
 #' m2 <- matrix(rnorm(100, mean=2), ncol=10)
 #' rownames(m1) <- rownames(m2) <- colnames(m1) <- colnames(m2) <- paste0("Idx", 1:10)
 #' diagDivCellHeatmap(m1, m2, cluster_rows=FALSE, cluster_columns=FALSE)
+#' cres <- as.hclust(muRtools::getClusteringDendrogram(m1, distMethod="euclidean", linkMethod="ward.D", corMethod="pearson"))
+#' diagDivCellHeatmap(m1, m2, cluster_rows=cres, cluster_columns=cres)
 diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower left", name.r="Upper right", ...){
 	require(ComplexHeatmap)
 	if (nrow(ml)!=nrow(mr)) stop("Numbers of rows of the two matrices must match")
@@ -145,7 +156,7 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 	}
 
 	res <- Heatmap(ml,
-		col=col.l,rect_gp = gpar(type = "none"),
+		col=col.l, rect_gp=gpar(type="none"),
 		cell_fun = function(j, i, x, y, width, height, fill) {
 			# grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col="grey", fill="grey"))
 			grid.polygon(
@@ -166,6 +177,7 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 	dummyM <- matrix(rep(NA, length.out=nrow(mr)), nrow=nrow(ml), ncol=1)
 	rownames(dummyM) <- rownames(ml)
 	dummyHm <- Heatmap(dummyM, col=col.r, width=unit(0, "mm"), name=name.r)
+
 	return(res + dummyHm)
 }
 
