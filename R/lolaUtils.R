@@ -86,6 +86,7 @@ loadLolaDbs <- function(lolaDbPaths){
 	require("data.table") #explicitely load data.table to adress LOLA namespace issues
 	require("LOLA")
 	require("simpleCache") # TODO: include requirement in dependencies
+	if (length(lolaDbPaths) < 1) logger.error(c("No LOLA DB paths specified"))
 	logger.start("Loading LOLA DBs")
 		lolaDb <- loadRegionDB(lolaDbPaths[1])
 		if (length(lolaDbPaths)>1){
