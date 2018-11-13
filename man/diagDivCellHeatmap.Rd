@@ -36,6 +36,8 @@ m1 <- matrix(rnorm(100, mean=0), ncol=10)
 m2 <- matrix(rnorm(100, mean=2), ncol=10)
 rownames(m1) <- rownames(m2) <- colnames(m1) <- colnames(m2) <- paste0("Idx", 1:10)
 diagDivCellHeatmap(m1, m2, cluster_rows=FALSE, cluster_columns=FALSE)
+cres <- as.hclust(muRtools::getClusteringDendrogram(m1, distMethod="euclidean", linkMethod="ward.D", corMethod="pearson"))
+diagDivCellHeatmap(m1, m2, cluster_rows=cres, cluster_columns=cres)
 }
 \author{
 Fabian Mueller

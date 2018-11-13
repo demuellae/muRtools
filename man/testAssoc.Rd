@@ -2,7 +2,7 @@
 % Please edit documentation in R/statTest.R
 \name{testAssoc}
 \alias{testAssoc}
-\title{Tests for association between two vectors. Based on \code{RnBeads:::test.traits}}
+\title{testAssoc}
 \usage{
 testAssoc(x, y, permMat = NULL)
 }

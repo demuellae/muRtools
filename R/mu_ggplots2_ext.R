@@ -1,3 +1,6 @@
+#' @include stringOps.R
+NULL
+
 #' ggplot2.heatmap
 #' 
 #' converts a matrix or dataframe into a ggplot2 object for subsequent plotting.

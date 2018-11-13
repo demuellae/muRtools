@@ -181,7 +181,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		}
 	}
 	if (!is.null(shapeCol)){
-		pp <- pp + geom_point(aes_string(shape=shapeCol), size=3)
+		pp <- pp + geom_point(aes_string(shape=shapeCol), size=3) + scale_shape_manual(values=c(19,15,17,4,3,18,8,1,0,2,6))
 	} else {
 		pp <- pp + geom_point(size=3)
 	}
