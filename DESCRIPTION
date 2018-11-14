@@ -17,8 +17,10 @@ Depends:
     ggplot2
 License: GPL-2
 Version: 0.7
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Collate: 
+    'txdb.R'
+    'GvizManager-class.R'
     'analysisConfig.R'
     'clustering.R'
     'colors.R'
@@ -43,5 +45,4 @@ Collate:
     'mu_ggplots2_ext.R'
     'rnbeads.R'
     'statTest.R'
-    'txdb.R'
     'wrappers.R'

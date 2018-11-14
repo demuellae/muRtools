@@ -30,3 +30,35 @@ getTxDb.gencode <- function(name){
 	txdb <- makeTxDbFromGFF(fileTab[name, "fileURL"], format="gtf", dataSource=paste("Gencode version", fileTab[name, "version"]), circ_seqs=character(), organism=fileTab[name, "organism"], chrominfo=chrInfo)
 	return(txdb)
 }
+
+#' getGeneAnnotMap
+#' Get a mapping (e.g. of identifiers) and automatically select the correct \code{‘AnnotationDbi} database for a given
+#' assembly
+#' @param assembly	character string specifying the assembly
+#' @param from      the column name that will be used as the key for the resulting map
+#' @param to        the column name that will be used as the result for the resulting map
+#' @param multiMap  character string specifying what to do if multiple mappings are found for a key
+#'                  by default (\code{multiMap="paste"}) the results will be pasted into a single character string (separated by ';').
+#'                  Other options include \code{'first'} for just returning the first value or 'list' for returning a list of all values
+#' @return a named vector (or list depending on how the \code{multiMap} argument is chosen) providing a mapping
+#' @author Fabian Mueller
+#' @export
+getGeneAnnotMap <- function(assembly, from="ENSEMBL", to="SYMBOL", multiMap="paste"){
+	aa <- NULL
+	if (is.element(assembly, c("hg38", "hg19"))){
+		aa <- org.Hs.eg.db::org.Hs.eg.db
+	} else if (is.element(assembly, c("mm9", "mm10"))){
+		aa <- org.Mm.eg.db::org.Mm.eg.db
+	} else {
+		stop(paste0("Unknown assembly:", assembly))
+	}
+	kk <- keys(aa, keytype=from)
+	if (multiMap=="paste"){
+		res <- mapIds(aa, keys=kk, column=to, keytype=from, multiVals="list")
+		res <- sapply(res, FUN=function(x){paste(x, collapse=";")})
+	} else {
+		res <- mapIds(aa, keys=kk, column=to, keytype=from, multiVals=multiMap)
+	}
+	return(res)
+}
+

@@ -18,7 +18,7 @@ plotCorPhm <- function(
 		cc,
 		clustDend=NULL,
 		sampleAnnot=NA,
-		color=colorRampPalette(rev(brewer.pal(n=11, name = "RdBu")))(100),
+		color=colorRampPalette(rev(colpal.cont(n=11, name="cb.RdBu")))(100),
 		breaks=seq(-1-1e-6, 1+1e-6, length.out=length(color)+1),
 		border_color=NA,
 		...){
