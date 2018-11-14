@@ -4,6 +4,7 @@
 ################################################################################
 #' @include txdb.R
 NULL
+require(GenomicRanges)
 
 #' GvizManager
 #'
@@ -73,6 +74,7 @@ setMethod("initialize", "GvizManager",
 )
 
 #' @param assembly		Parameter description
+#' @noRd
 #' @export
 GvizManager <- function(assembly, geneModel=NULL){
 	geneModelMap <- c(

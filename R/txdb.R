@@ -32,7 +32,8 @@ getTxDb.gencode <- function(name){
 }
 
 #' getGeneAnnotMap
-#' Get a mapping (e.g. of identifiers) and automatically select the correct \code{‘AnnotationDbi} database for a given
+#' 
+#' Get a mapping (e.g. of identifiers) and automatically select the correct \code{AnnotationDbi} database for a given
 #' assembly
 #' @param assembly	character string specifying the assembly
 #' @param from      the column name that will be used as the key for the resulting map

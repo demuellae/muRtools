@@ -2,9 +2,7 @@
 % Please edit documentation in R/txdb.R
 \name{getGeneAnnotMap}
 \alias{getGeneAnnotMap}
-\title{getGeneAnnotMap
-Get a mapping (e.g. of identifiers) and automatically select the correct \code{‘AnnotationDbi} database for a given
-assembly}
+\title{getGeneAnnotMap}
 \usage{
 getGeneAnnotMap(assembly, from = "ENSEMBL", to = "SYMBOL",
   multiMap = "paste")
@@ -24,8 +22,7 @@ Other options include \code{'first'} for just returning the first value or 'list
 a named vector (or list depending on how the \code{multiMap} argument is chosen) providing a mapping
 }
 \description{
-getGeneAnnotMap
-Get a mapping (e.g. of identifiers) and automatically select the correct \code{‘AnnotationDbi} database for a given
+Get a mapping (e.g. of identifiers) and automatically select the correct \code{AnnotationDbi} database for a given
 assembly
 }
 \author{
