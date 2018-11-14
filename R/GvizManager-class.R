@@ -73,7 +73,7 @@ setMethod("initialize", "GvizManager",
 )
 
 #' @param assembly		Parameter description
-#' @noRd
+#' @export
 GvizManager <- function(assembly, geneModel=NULL){
 	geneModelMap <- c(
 		"hg38"="gencode.v27",
