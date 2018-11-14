@@ -63,7 +63,7 @@ setMethod("initialize", "GvizManager",
 		names(.Object@iTrackL) <- chroms
 
 		.Object@geneTrackL <- lapply(chroms, function(cc){
-			rr <- GeneRegionTrack(txdb, chromosome=cc, name=geneModel, transcriptAnnotation="symbol")
+			rr <- GeneRegionTrack(txdb, genome=assembly, chromosome=cc, name=geneModel, transcriptAnnotation="symbol")
 			symbol(rr) <- elementMetadata(geneAnnot)[gene(rr), ".symbol"]
 			return(rr)
 		})
@@ -97,6 +97,11 @@ GvizManager <- function(assembly, geneModel=NULL){
 	)
 	return(obj)
 }
+# fp <- "~/tmp_work"
+# for (aa in c("hg38", "mm10", "hg19")){
+# 	gvm <- GvizManager(aa)
+# 	saveRDS(gvm, file.path(fp, paste0("GvizManager_", aa, ".rds")))
+# }
 
 ################################################################################
 # Getters
