@@ -232,8 +232,8 @@ setMethod("getGeneRegionBySymbol",
 		} else if (!is.integer(offsetDown) || offsetDown < 0){
 			stop("Invalid parameter: offsetDown")
 		}
-		gr <- resize(gr, width=width(gr)+offsetDown, fix="start")
-		gr <- resize(gr, width=width(gr)+offsetUp, fix="end")
+		if (offsetDown > 0) gr <- resize(gr, width=width(gr)+offsetDown, fix="start")
+		if (offsetUp > 0) gr <- resize(gr, width=width(gr)+offsetUp, fix="end")
 		return(gr)
 	}
 )
