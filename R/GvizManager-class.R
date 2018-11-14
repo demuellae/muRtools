@@ -238,3 +238,66 @@ setMethod("getGeneRegionBySymbol",
 	}
 )
 
+################################################################################
+
+if (!isGeneric("getGeneRegionById")) {
+	setGeneric(
+		"getGeneRegionById",
+		function(object, ...) standardGeneric("getGeneRegionById"),
+		signature=c("object")
+	)
+}
+#' getGeneRegionById-methods
+#'
+#' Retrieve the coordinates of a gene given the gene identifier
+#'
+#' @param object	\code{\linkS4class{GvizManager}} object
+#' @param id    	character specifying the gene id for which coordinates should be retrieved
+#' @param offsetUp  offset for retrieving a flanking region upstream of the gene. Can be an \code{integer} (e.g. \code{5L}) for the absolute number of bases
+#'                  or a \code{double} that specifies the relative length of the gene
+#' @param offsetDown offset for retrieving a flanking region downstream of the gene. Can be an \code{integer} (e.g. \code{5L}) for the absolute number of bases
+#'                  or a \code{double} that specifies the relative length of the gene
+#' @param type      type of identifier. currently only \code{'ensembl'} and \code{'ensembl_long'} are supported
+#' @return a \code{GRanges} object containing the gene coordinates
+#'
+#' @rdname getGeneRegionById-GvizManager-method
+#' @docType methods
+#' @aliases getGeneRegionById
+#' @aliases getGeneRegionById,GvizManager-method
+#' @author Fabian Mueller
+#' @export
+setMethod("getGeneRegionById",
+	signature(
+		object="GvizManager"
+	),
+	function(
+		object,
+		id,
+		offsetUp=0.1,
+		offsetDown=0.1,
+		type="ensembl"
+	) {
+		cname <- paste0(".id_", type)
+
+		if (!is.element(cname, colnames(elementMetadata(object@geneAnnot)))){
+			stop(paste("Unknown identifier type:", type))
+		}
+		idx <- which(elementMetadata(object@geneAnnot)[,cname]==id)
+		if (length(idx) < 1) warning(paste("Could not find gene id:", id))
+		gr <- object@geneAnnot[idx]
+
+		if (is.double(offsetUp) && offsetUp >= 0){
+			offsetUp <- ceiling(width(gr)*offsetUp)
+		} else if (!is.integer(offsetUp) || offsetUp < 0){
+			stop("Invalid parameter: offsetUp")
+		}
+		if (is.double(offsetDown) && offsetDown >= 0){
+			offsetDown <- ceiling(width(gr)*offsetDown)
+		} else if (!is.integer(offsetDown) || offsetDown < 0){
+			stop("Invalid parameter: offsetDown")
+		}
+		if (offsetDown > 0) gr <- resize(gr, width=width(gr)+offsetDown, fix="start")
+		if (offsetUp > 0) gr <- resize(gr, width=width(gr)+offsetUp, fix="end")
+		return(gr)
+	}
+)
