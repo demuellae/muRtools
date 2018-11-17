@@ -74,6 +74,31 @@ getDimRedCoords.tsne <- function(X, distMethod="euclidean", dims=c(1,2)){
 	rownames(coords) <- rownames(X)
 	return(coords)
 }
+#' getDimRedCoords.umap
+#' 
+#' Get dimension reduction coordinates using the UMAP method
+#' @param X   A matrix on which the dimension reduction is to be performed
+#' @param distMethod   distance metric to be employed
+#' @param dims dimensions to return from the reduction
+#' @return a matrix containing two columns for the reduced dimensions and the same number of
+#'         rows as \code{X}
+#' @author Fabian Mueller
+#' @export 
+getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
+	require(reticulate)
+	require(umap)
+	dist.matrix <- dist(X, method=distMethod)
+	if (!py_module_available("umap")){
+		stop("could not load Python module 'umap-learn'")
+	}
+	k <- max(dims[1:2])
+	umapRes <- umap(iris.data, method="umap-learn", n_components=k, metric=distMethod)
+	coords <- umapRes$layout
+	colnames(coords) <- paste0("UMAP", 1:ncol(coords))
+	rownames(coords) <- rownames(X)
+	return(coords)
+}
+
 #' getDimRedPlot
 #' 
 #' Generate a plot from dimension reduction coordinates
