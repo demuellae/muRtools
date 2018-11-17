@@ -87,12 +87,11 @@ getDimRedCoords.tsne <- function(X, distMethod="euclidean", dims=c(1,2)){
 getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
 	require(reticulate)
 	require(umap)
-	dist.matrix <- dist(X, method=distMethod)
 	if (!py_module_available("umap")){
 		stop("could not load Python module 'umap-learn'")
 	}
 	k <- max(dims[1:2])
-	umapRes <- umap(iris.data, method="umap-learn", n_components=k, metric=distMethod)
+	umapRes <- umap(X, method="umap-learn", n_components=k, metric=distMethod)
 	coords <- umapRes$layout
 	colnames(coords) <- paste0("UMAP", 1:ncol(coords))
 	rownames(coords) <- rownames(X)
