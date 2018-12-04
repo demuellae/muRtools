@@ -288,7 +288,7 @@ getNamesFromLolaDb <- function(lolaDb, addCollectionNames=FALSE, addDbId=TRUE){
 lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), pvalCut=0.01, maxTerms=50, perUserSet=FALSE, groupByCollection=TRUE, orderDecreasing=NULL){
 	#dedect by column name whether decreasing order needs to be used
 	if (is.null(orderDecreasing)){
-		oset.dec <- c("pValueLog", "qValueLog", "logOddsRatio", "oddsRatio")
+		oset.dec <- c("pValueLog", "qValueLog", "logOddsRatio", "oddsRatio", "log2OR")
 		oset.inc <- c("maxRnk", "meanRnk", "qValue")
 		if (!is.element(orderCol, c(oset.dec, oset.inc))){
 			logger.error(c("Could not determine whether to use increasing or decreasing order for column:", orderCol))
@@ -309,7 +309,8 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 
 	#check if column name is in the LOLA results
 	# take older versions of LOLA into account (oddsRatio was named logOddsRatio before)
-	if (is.element("logOddsRatio", colnames(lolaRes))){
+	isOldLolaObj <-is.element("logOddsRatio", colnames(lolaRes))
+	if (isOldLolaObj){
 		logger.warning("Detected old version of LOLA. Renaming 'logOddsRatio' to 'oddsRatio'")
 		colnames(lolaRes)[colnames(lolaRes)=="logOddsRatio"] <- "oddsRatio"
 	}
@@ -320,6 +321,13 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	if (orderCol=="logOddsRatio") {
 		logger.warning("In newer versions of LOLA the odds ratio column is called 'oddsRatio' (no longer 'logOddsRatio')")
 		orderCol <- "oddsRatio"
+	}
+
+	if (scoreCol=="log2OR" || orderCol=="log2OR") {
+		if (isOldLolaObj){
+			logger.error("I don't want to take the log of logs")
+		}
+		lolaRes[["log2OR"]] <- log2(lolaRes[["oddsRatio"]])
 	}
 
 	lolaRes$name <- getNamesFromLolaDb(lolaDb, addCollectionNames=!groupByCollection)[lolaRes$dbSet]
@@ -338,6 +346,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	}
 
 	calledSignif <- lolaRes[[signifCol]] > -log10(pvalCut)
+	lolaRes[["isSignif"]] <- calledSignif
 
 	if (sum(calledSignif) < 1){
 		# lolaRes.signif <- lolaRes
@@ -660,6 +669,46 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 		}
 		pp <- pp + scale_fill_manual(na.value="#C0C0C0", values=cpanel, guide=FALSE)
 	} 
+	if (groupByCollection){
+		pp <- pp + facet_grid(. ~ collection, scales = "free", space = "free")
+	}
+	return(pp)
+}
+
+#' lolaRegionSetHeatmap
+#' Plot a heatmap in which the rows are different user sets and the color corresponds to an enrichment score
+#'
+#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}
+#' @param lolaRes  LOLA enrichment result as returned by the \code{runLOLA} function from the \code{LOLA} package
+#' @param scoreCol column name in \code{lolaRes} to be plotted
+#' @param orderCol column name in \code{lolaRes} which is used for sorting the results
+#' @param signifCol column name of the significance score in \code{lolaRes}. Should be one of \code{c("pValueLog", "qValue")}
+#' @param markSignif mark significant enrichments in the heatmap
+#' @param includedCollections vector of collection names to be included in the plot. If empty (default), all collections are used
+#' @param pvalCut p-value cutoff (negative log10) to be employed for filtering the results
+#' @param maxTerms maximum number of items to be included in the plot
+#' @param colorpanel colorpanel for the heatmap gradient
+#' @param groupByCollection facet the plot by collection
+#' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
+#'                 to increasing). \code{NULL} (default) for automatic determination.
+#' @return ggplot object containing the plot
+#'
+#' @author Fabian Mueller
+#' @export
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=TRUE, includedCollections=c(), pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), groupByCollection=TRUE, orderDecreasing=NULL){
+	#prepare data.frame for plotting
+	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing)
+
+	if (is.null(df2p)){
+		return(rnb.message.plot("No significant association found"))
+	}
+
+	if (!is.factor(df2p$userSet)) df2p$userSet <- factor(df2p$userSet)
+
+	pp <- ggplot(df2p) + aes(term, userSet) + geom_tile(aes_string(fill=scoreCol)) + 
+		  scale_x_discrete(name="") + scale_y_discrete(limits=rev(levels(df2p$userSet)), name="") + 
+		  scale_fill_gradientn(colors=colorpanel) +
+		  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
 	if (groupByCollection){
 		pp <- pp + facet_grid(. ~ collection, scales = "free", space = "free")
 	}
