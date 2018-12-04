@@ -9,12 +9,13 @@
 #' @param header see \code{?read.table}
 #' @param stringsAsFactors see \code{?read.table}
 #' @param quote  see \code{?read.table}
+#' @param comment.char see \code{?read.table}
 #' @param ...    passed to \code{read.table}
 #' @return the result of \code{read.table}
 #' @author Fabian Mueller
 #' @export
-readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="", ...){
-	read.table(fn, header=header, sep=sep, comment.char="",  stringsAsFactors=stringsAsFactors, quote=quote, ...)
+readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="", comment.char="", ...){
+	read.table(fn, header=header, sep=sep, comment.char=comment.char,  stringsAsFactors=stringsAsFactors, quote=quote, ...)
 }
 
 #' writeTab

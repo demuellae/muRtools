@@ -5,7 +5,7 @@
 \title{readTab}
 \usage{
 readTab(fn, sep = "\\t", header = TRUE, stringsAsFactors = FALSE,
-  quote = "", ...)
+  quote = "", comment.char = "", ...)
 }
 \arguments{
 \item{fn}{filename to read}
@@ -17,6 +17,8 @@ readTab(fn, sep = "\\t", header = TRUE, stringsAsFactors = FALSE,
 \item{stringsAsFactors}{see \code{?read.table}}
 
 \item{quote}{see \code{?read.table}}
+
+\item{comment.char}{see \code{?read.table}}
 
 \item{...}{passed to \code{read.table}}
 }
