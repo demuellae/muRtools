@@ -6,7 +6,7 @@
 Plot a heatmap in which the rows are different user sets and the color corresponds to an enrichment score}
 \usage{
 lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
-  orderCol = scoreCol, signifCol = "qValue", markSignif = TRUE,
+  orderCol = scoreCol, signifCol = "qValue", markSignif = FALSE,
   includedCollections = c(), pvalCut = 0.01, maxTerms = 50,
   colorpanel = colpal.cont(9, "cb.OrRd"), groupByCollection = TRUE,
   orderDecreasing = NULL)

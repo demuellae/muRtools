@@ -695,7 +695,7 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #'
 #' @author Fabian Mueller
 #' @export
-lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=TRUE, includedCollections=c(), pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), groupByCollection=TRUE, orderDecreasing=NULL){
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), groupByCollection=TRUE, orderDecreasing=NULL){
 	#prepare data.frame for plotting
 	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing)
 
@@ -704,11 +704,15 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 	}
 
 	if (!is.factor(df2p$userSet)) df2p$userSet <- factor(df2p$userSet)
+	if (markSignif) df2p$signifTxt <- ifelse(df2p$isSignif, "*", NA) 
 
 	pp <- ggplot(df2p) + aes(term, userSet) + geom_tile(aes_string(fill=scoreCol)) + 
 		  scale_x_discrete(name="") + scale_y_discrete(limits=rev(levels(df2p$userSet)), name="") + 
-		  scale_fill_gradientn(colors=colorpanel) +
-		  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
+		  scale_fill_gradientn(colors=colorpanel)
+	if (markSignif){
+		pp <- pp + geom_text(aes(label=signifTxt))
+	}
+	pp <- pp + theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
 	if (groupByCollection){
 		pp <- pp + facet_grid(. ~ collection, scales = "free", space = "free")
 	}
