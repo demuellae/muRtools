@@ -216,6 +216,10 @@ getTargetFromLolaDb <- function(lolaDb){
 		)
 	}
 
+	# special treatment for "TF_motifs(_vert)?" from muBioAnnotatR/createAnnotationDB.R
+	isInCollection <- tt$collection %in% c("TF_motifs", "TF_motifs_vert")
+	if (sum(isInCollection) > 0) res[isInCollection] <- gsub("^MA[0-9]+\\.[1-9]_", "", tt$description[isInCollection])
+
 	return(res)
 }
 
