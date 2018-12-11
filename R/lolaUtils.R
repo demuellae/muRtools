@@ -360,7 +360,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	if (recalc && nrow(lolaRes) < nOrig){
 		logger.info("Recalculating adjusted p-values and ranks based on subsetting")
 		# should q-values and adjusted p-values be computed grouped by user set? --> No
-		scoreTab <- data.table(lolaRes[,c("userSet", "dbSet", "pValueLog", "support", "oddsRatio")])
+		scoreTab <- data.table::data.table(lolaRes[,c("userSet", "dbSet", "pValueLog", "support", "oddsRatio")])
 		scoreTab[, pValUn:=10^(-pValueLog)] # convert -log10(p-value) back to [0,1]
 		scoreTab[, qValue:=qvalue::qvalue(pValUn)$qvalue]
 		scoreTab[, qValueLog:=-log10(qValue)]
