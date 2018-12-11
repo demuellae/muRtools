@@ -313,7 +313,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 		signifCol <- "qValueLog"
 	}
 
-	if (any(c(scoreCol, orderCol,signifCol)=="pValueAdjFdrLog")){
+	if (any(c(scoreCol, orderCol, signifCol)=="pValueAdjFdrLog")){
 		pVals <- 10^(-lolaRes[["pValueLog"]]) # convert -log10(p-value) back to [0,1]
 		lolaRes[["pValueAdjFdrLog"]] <- -log10(p.adjust(pVals, method="fdr"))
 	}
@@ -359,16 +359,22 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	# recalculate adjusted p-values and ranks if the dataset was subset
 	if (recalc && nrow(lolaRes) < nOrig){
 		logger.info("Recalculating adjusted p-values and ranks based on subsetting")
-		pVals <- 10^(-lolaRes[["pValueLog"]]) # convert -log10(p-value) back to [0,1]
-		lolaRes[["qValue"]] <- qvalue::qvalue(pVals)$qvalue
-		lolaRes[["qValueLog"]] <- -log10(lolaRes[["qValue"]])
-		if (is.element("pValueAdjFdrLog", colnames(lolaRes))) lolaRes[["pValueAdjFdrLog"]] <- -log10(p.adjust(pVals, method="fdr"))
-		lolaRes[["rnkSup"]] <- rank(-lolaRes[["support"]], ties.method="min")
-		lolaRes[["rnkPV"]] <- rank(-lolaRes[["pValueLog"]], ties.method="min")
-		lolaRes[["rnkOR"]] <- rank(-lolaRes[["oddsRatio"]], ties.method="min")
-		rnkMat <- as.matrix(lolaRes[,c("rnkSup", "rnkPV", "rnkOR")])
-		lolaRes[["maxRnk"]] <- matrixStats::rowMaxs(rnkMat, na.rm=TRUE)
-		lolaRes[["meanRnk"]] <- rowMeans(rnkMat, na.rm=TRUE)
+		# should q-values and adjusted p-values be computed grouped by user set? --> No
+		scoreTab <- data.table(lolaRes[,c("userSet", "dbSet", "pValueLog", "support", "oddsRatio")])
+		scoreTab[, pValUn:=10^(-pValueLog)] # convert -log10(p-value) back to [0,1]
+		scoreTab[, qValue:=qvalue::qvalue(pValUn)$qvalue]
+		scoreTab[, qValueLog:=-log10(qValue)]
+		if (is.element("pValueAdjFdrLog", colnames(lolaRes))) scoreTab[, pValueAdjFdrLog:=-log10(p.adjust(pValUn, method="fdr"))]
+
+		scoreTab[, rnkSup:=rank(-support, ties.method="min"), by=userSet]
+		scoreTab[, rnkPV:=rank(-pValueLog, ties.method="min"), by=userSet]
+		scoreTab[, rnkOR:=rank(-oddsRatio, ties.method="min"), by=userSet]
+		scoreTab[, maxRnk:=max(c(rnkSup, rnkPV, rnkOR)), by=list(userSet,dbSet)]
+		scoreTab[, meanRnk:=signif(mean(c(rnkSup, rnkPV, rnkOR)), 3), by=list(userSet,dbSet)]
+
+		recalcCols <- c("qValue", "qValueLog", "pValueAdjFdrLog", "rnkSup", "rnkPV", "rnkOR", "maxRnk", "meanRnk")
+		recalcCols <- intersect(recalcCols, colnames(lolaRes))
+		lolaRes[,recalcCols] <- as.data.frame(scoreTab)[,recalcCols]
 	}
 
 	calledSignif <- lolaRes[[signifCol]] > -log10(pvalCut)
