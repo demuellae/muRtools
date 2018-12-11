@@ -358,6 +358,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 
 	# recalculate adjusted p-values and ranks if the dataset was subset
 	if (recalc && nrow(lolaRes) < nOrig){
+		logger.info("Recalculating adjusted p-values and ranks based on subsetting")
 		pVals <- 10^(-lolaRes[["pValueLog"]]) # convert -log10(p-value) back to [0,1]
 		lolaRes[["qValue"]] <- qvalue::qvalue(pVals)$qvalue
 		lolaRes[["qValueLog"]] <- -log10(lolaRes[["qValue"]])
