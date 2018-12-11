@@ -7,9 +7,9 @@ Plot a heatmap in which the rows are different user sets and the color correspon
 \usage{
 lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
   orderCol = scoreCol, signifCol = "qValue", markSignif = FALSE,
-  includedCollections = c(), pvalCut = 0.01, maxTerms = 50,
-  colorpanel = colpal.cont(9, "cb.OrRd"), groupByCollection = TRUE,
-  orderDecreasing = NULL)
+  includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
+  maxTerms = 50, colorpanel = colpal.cont(9, "cb.OrRd"),
+  groupByCollection = TRUE, orderDecreasing = NULL)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}}
@@ -25,6 +25,8 @@ lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
 \item{markSignif}{mark significant enrichments in the heatmap}
 
 \item{includedCollections}{vector of collection names to be included in the plot. If empty (default), all collections are used}
+
+\item{recalc}{recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})}
 
 \item{pvalCut}{p-value cutoff (negative log10) to be employed for filtering the results}
 

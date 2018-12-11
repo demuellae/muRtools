@@ -6,9 +6,9 @@
 \usage{
 lolaBoxPlotPerTarget(lolaDb, lolaRes, scoreCol = "pValueLog",
   orderCol = scoreCol, signifCol = "qValue",
-  includedCollections = c(), pvalCut = 0.01, maxTerms = 50,
-  colorpanel = c(), groupByCollection = TRUE, orderDecreasing = NULL,
-  scoreDecreasing = NULL)
+  includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
+  maxTerms = 50, colorpanel = c(), groupByCollection = TRUE,
+  orderDecreasing = NULL, scoreDecreasing = NULL)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}
@@ -22,6 +22,8 @@ lolaBoxPlotPerTarget(lolaDb, lolaRes, scoreCol = "pValueLog",
 \item{signifCol}{column name of the significance score in \code{lolaRes}. Should be one of \code{c("pValueLog", "qValue")}}
 
 \item{includedCollections}{vector of collection names to be included in the plot. If empty (default), all collections are used}
+
+\item{recalc}{recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})}
 
 \item{pvalCut}{p-value cutoff to be employed for filtering the results}
 

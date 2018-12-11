@@ -5,7 +5,8 @@
 \title{lolaVolcanoPlot}
 \usage{
 lolaVolcanoPlot(lolaDb, lolaRes, includedCollections = c(),
-  signifCol = "qValue", colorBy = "maxRnk", colorpanel = c())
+  signifCol = "qValue", recalc = TRUE, colorBy = "maxRnk",
+  colorpanel = c())
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}
@@ -15,6 +16,8 @@ lolaVolcanoPlot(lolaDb, lolaRes, includedCollections = c(),
 \item{includedCollections}{vector of collection names to be included in the plot. If empty (default), all collections are used}
 
 \item{signifCol}{column name of the significance score in \code{lolaRes}. Should be one of \code{c("pValueLog", "qValue")}.}
+
+\item{recalc}{recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})}
 
 \item{colorBy}{annotation/column in the the LOLA DB that should be used for point coloring}
 

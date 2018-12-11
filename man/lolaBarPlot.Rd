@@ -6,8 +6,8 @@
 \usage{
 lolaBarPlot(lolaDb, lolaRes, scoreCol = "pValueLog",
   orderCol = scoreCol, signifCol = "qValue",
-  includedCollections = c(), pvalCut = 0.01, maxTerms = 50,
-  colorpanel = sample(rainbow(maxTerms, v = 0.5)),
+  includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
+  maxTerms = 50, colorpanel = sample(rainbow(maxTerms, v = 0.5)),
   groupByCollection = TRUE, orderDecreasing = NULL)
 }
 \arguments{
@@ -22,6 +22,8 @@ lolaBarPlot(lolaDb, lolaRes, scoreCol = "pValueLog",
 \item{signifCol}{column name of the significance score in \code{lolaRes}. Should be one of \code{c("pValueLog", "qValue")}}
 
 \item{includedCollections}{vector of collection names to be included in the plot. If empty (default), all collections are used}
+
+\item{recalc}{recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})}
 
 \item{pvalCut}{p-value cutoff to be employed for filtering the results}
 
