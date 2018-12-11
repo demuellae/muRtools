@@ -10,11 +10,14 @@ Suggests:
     BSgenome.Hsapiens.NCBI.GRCh38,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10
+Imports:
+    data.table
 Depends:
 	muLogR,
     gplots,
     plotrix,
-    ggplot2
+    ggplot2,
+    data.table
 License: GPL-2
 Version: 0.7
 RoxygenNote: 6.1.1
