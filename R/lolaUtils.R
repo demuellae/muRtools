@@ -731,12 +731,12 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #'
 #' @author Fabian Mueller
 #' @export
-lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), groupByCollection=TRUE, orderDecreasing=NULL){
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=NA, groupByCollection=TRUE, orderDecreasing=NULL){
 	#prepare data.frame for plotting
 	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing)
 
 	if (is.null(df2p)){
-		return(rnb.message.plot("No significant association found"))
+		return(ggMessagePlot("No significant association found"))
 	}
 
 	if (!is.factor(df2p$userSet)) df2p$userSet <- factor(df2p$userSet)
@@ -744,7 +744,7 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 
 	pp <- ggplot(df2p) + aes(term, userSet) + geom_tile(aes_string(fill=scoreCol)) + 
 		  scale_x_discrete(name="") + scale_y_discrete(limits=rev(levels(df2p$userSet)), name="") + 
-		  scale_fill_gradientn(colors=colorpanel)
+		  scale_fill_gradientn(colors=colorpanel, limits=colorpanelLimits)
 	if (markSignif){
 		pp <- pp + geom_text(aes(label=signifTxt))
 	}
