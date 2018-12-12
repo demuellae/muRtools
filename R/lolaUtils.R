@@ -744,7 +744,7 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 
 	pp <- ggplot(df2p) + aes(term, userSet) + geom_tile(aes_string(fill=scoreCol)) + 
 		  scale_x_discrete(name="") + scale_y_discrete(limits=rev(levels(df2p$userSet)), name="") + 
-		  scale_fill_gradientn(colors=colorpanel, limits=colorpanelLimits)
+		  scale_fill_gradientn(colors=colorpanel, limits=colorpanelLimits, oob=squish)
 	if (markSignif){
 		pp <- pp + geom_text(aes(label=signifTxt))
 	}
