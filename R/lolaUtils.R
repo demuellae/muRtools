@@ -731,7 +731,7 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #'
 #' @author Fabian Mueller
 #' @export
-lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=NA, groupByCollection=TRUE, orderDecreasing=NULL){
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL){
 	#prepare data.frame for plotting
 	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing)
 
