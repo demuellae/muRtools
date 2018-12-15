@@ -783,14 +783,14 @@ runLOLA_list <- function(userSets, userUniverse, lolaDb, ...){
 		stop("Invalid userSets argument")
 	}
 	lolaResL <- lapply(userSets, FUN=function(x){
-		runLOLA(x, peakGr[rownames(interM.mat)], lolaDb, ...)
+		runLOLA(x, userUniverse, lolaDb, ...)
 	})
 	names(lolaResL) <- names(userSets)
 	res <- data.table(do.call("rbind", lapply(names(lolaResL), FUN=function(us){
 		lr <- lolaResL[[us]]
 		if (is.null(lr) || is.null(nrow(lr))) return(NULL)
 		df <- as.data.frame(lr)
-		df[,"userSet"] <- cc
+		df[,"userSet"] <- us
 		return(df)
 	})))
 	return(res)
