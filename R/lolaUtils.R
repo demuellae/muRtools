@@ -362,7 +362,18 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 		# should q-values and adjusted p-values be computed grouped by user set? --> No
 		scoreTab <- data.table(lolaRes[,c("userSet", "dbSet", "pValueLog", "support", "oddsRatio")])
 		scoreTab[, pValUn:=10^(-pValueLog)] # convert -log10(p-value) back to [0,1]
-		scoreTab[, qValue:=qvalue::qvalue(pValUn)$qvalue]
+		tryCatch(
+			scoreTab[, qValue:=qvalue::qvalue(pValUn)$qvalue],
+			error = function(e) {
+				# account for the fact that you need a certain number of p-values to get a reliable q-value:
+				# https://support.bioconductor.org/p/105623/
+				if (e$message == "missing or infinite values in inputs are not allowed"){
+					scoreTab[, qValue:=qvalue::qvalue(pValUn, lambda=0)$qvalue]
+				} else {
+					logger.warning("Could not compute q-values")
+				}
+			})
+		)
 		scoreTab[, qValueLog:=-log10(qValue)]
 		if (is.element("pValueAdjFdrLog", colnames(lolaRes))) scoreTab[, pValueAdjFdrLog:=-log10(p.adjust(pValUn, method="fdr"))]
 
