@@ -779,7 +779,7 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #' @author Fabian Mueller
 #' @export
 runLOLA_list <- function(userSets, userUniverse, lolaDb, ...){
-	if ((!is.list(userSets) || !is.element("GRangesList", class(userSets))) | length(names(userSets)) != length(userSets)){
+	if ((!is.list(userSets) && !is.element("GRangesList", class(userSets))) || length(names(userSets)) != length(userSets)){
 		stop("Invalid userSets argument")
 	}
 	lolaResL <- lapply(userSets, FUN=function(x){
