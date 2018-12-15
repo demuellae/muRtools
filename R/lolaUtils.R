@@ -372,7 +372,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 				} else {
 					logger.warning("Could not compute q-values")
 				}
-			})
+			}
 		)
 		scoreTab[, qValueLog:=-log10(qValue)]
 		if (is.element("pValueAdjFdrLog", colnames(lolaRes))) scoreTab[, pValueAdjFdrLog:=-log10(p.adjust(pValUn, method="fdr"))]
