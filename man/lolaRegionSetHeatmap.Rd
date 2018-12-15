@@ -9,7 +9,8 @@ lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
   orderCol = scoreCol, signifCol = "qValue", markSignif = FALSE,
   includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
   maxTerms = 50, colorpanel = colpal.cont(9, "cb.OrRd"),
-  groupByCollection = TRUE, orderDecreasing = NULL)
+  colorpanelLimits = rep(as.numeric(NA), 2), groupByCollection = TRUE,
+  orderDecreasing = NULL)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}}

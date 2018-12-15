@@ -765,3 +765,33 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 	}
 	return(pp)
 }
+
+#' runLOLA_list
+#' More robust version of lola for lists of user sets
+#' (to avoid "Negative c entry in table" errors)
+#'
+#' @param userSets      NAMED list or GRangesList of user sets
+#' @param userUniverse  GRanges object to be used as universe (as required by \code{LOLA::runLOLA})
+#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}
+#' @param ...  other arguments to iterate over
+#' @return LOLA result as returned by \code{LOLA::runLOLA}
+#'
+#' @author Fabian Mueller
+#' @export
+runLOLA_list <- function(userSets, userUniverse, lolaDb, ...){
+	if ((!is.list(userSets) || !is.element("GRangesList", class(userSets))) | length(names(userSets)) != length(userSets)){
+		stop("Invalid userSets argument")
+	}
+	lolaResL <- lapply(userSets, FUN=function(x){
+		runLOLA(x, peakGr[rownames(interM.mat)], lolaDb, ...)
+	})
+	names(lolaResL) <- names(userSets)
+	res <- data.table(do.call("rbind", lapply(names(lolaResL), FUN=function(us){
+		lr <- lolaResL[[us]]
+		if (is.null(lr) || is.null(nrow(lr))) return(NULL)
+		df <- as.data.frame(lr)
+		df[,"userSet"] <- cc
+		return(df)
+	})))
+	return(res)
+}
