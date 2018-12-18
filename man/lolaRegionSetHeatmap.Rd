@@ -10,7 +10,7 @@ lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
   includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
   maxTerms = 50, colorpanel = colpal.cont(9, "cb.OrRd"),
   colorpanelLimits = rep(as.numeric(NA), 2), groupByCollection = TRUE,
-  orderDecreasing = NULL)
+  orderDecreasing = NULL, appendTermDbId = TRUE)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}}
@@ -39,6 +39,8 @@ lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
 
 \item{orderDecreasing}{flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
 to increasing). \code{NULL} (default) for automatic determination.}
+
+\item{appendTermDbId}{attach the index of the item in the LOLA DB object to the name of the set}
 }
 \value{
 ggplot object containing the plot

@@ -286,11 +286,12 @@ getNamesFromLolaDb <- function(lolaDb, addCollectionNames=FALSE, addDbId=TRUE){
 #' @param groupByCollection facet the plot by collection
 #' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
 #'                 to increasing). \code{NULL} (default) for automatic determination.
+#' @param appendTermDbId  attach the index of the item in the LOLA DB object to the name of the set
 #' @return ggplot object containing the plot
 #'
 #' @author Fabian Mueller
 #' @noRd
-lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, perUserSet=FALSE, groupByCollection=TRUE, orderDecreasing=NULL){
+lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, perUserSet=FALSE, groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
 	#dedect by column name whether decreasing order needs to be used
 	if (is.null(orderDecreasing)){
 		oset.dec <- c("pValueLog", "pValueAdjFdrLog", "qValueLog", "logOddsRatio", "oddsRatio", "log2OR")
@@ -341,7 +342,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 		lolaRes[["log2OR"]] <- log2(lolaRes[["oddsRatio"]])
 	}
 
-	lolaRes$name <- getNamesFromLolaDb(lolaDb, addCollectionNames=!groupByCollection)[lolaRes$dbSet]
+	lolaRes$name <- getNamesFromLolaDb(lolaDb, addCollectionNames=!groupByCollection, addDbId=appendTermDbId)[lolaRes$dbSet]
 	lolaRes$name <- strTrim(lolaRes$name, len.out=50, trim.str="...", len.pref=30)
 	lolaRes$target <- getTargetFromLolaDb(lolaDb)[lolaRes$dbSet]
 
@@ -546,6 +547,7 @@ lolaVolcanoPlot <- function(lolaDb, lolaRes, includedCollections=c(), signifCol=
 #' @param groupByCollection facet the plot by collection
 #' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
 #'                 to increasing). \code{NULL} (default) for automatic determination.
+#' @param appendTermDbId  attach the index of the item in the LOLA DB object to the name of the set
 #' @return ggplot object containing the plot
 #'
 #' @author Fabian Mueller
@@ -571,7 +573,7 @@ lolaVolcanoPlot <- function(lolaDb, lolaRes, includedCollections=c(), signifCol=
 #' # plot
 #' lolaBarPlot(res$lolaDb, lolaRes, scoreCol="oddsRatio", orderCol="maxRnk", pvalCut=0.05)
 #' }
-lolaBarPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=sample(rainbow(maxTerms,v=0.5)), groupByCollection=TRUE, orderDecreasing=NULL){
+lolaBarPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=sample(rainbow(maxTerms,v=0.5)), groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
 	if (length(unique(lolaRes[["userSet"]])) > 1){
 		logger.warning("Multiple userSets contained in LOLA result object")
 	}
@@ -738,13 +740,14 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #' @param groupByCollection facet the plot by collection
 #' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
 #'                 to increasing). \code{NULL} (default) for automatic determination.
+#' @param appendTermDbId  attach the index of the item in the LOLA DB object to the name of the set
 #' @return ggplot object containing the plot
 #'
 #' @author Fabian Mueller
 #' @export
-lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL){
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
 	#prepare data.frame for plotting
-	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing)
+	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing, appendTermDbId=appendTermDbId)
 
 	if (is.null(df2p)){
 		return(ggMessagePlot("No significant association found"))
