@@ -769,6 +769,94 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 	return(pp)
 }
 
+################################################################################
+# UNDER CONSTRUCTION
+################################################################################
+#' lolaRegionSetHeatmap2
+#' Plot a heatmap in which the rows are different user sets and the color corresponds to an enrichment score
+#' using the complexHeatmap package
+#'
+#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}
+#' @param lolaRes  LOLA enrichment result as returned by the \code{runLOLA} function from the \code{LOLA} package
+#' @param scoreCol column name in \code{lolaRes} to be plotted
+#' @param orderCol column name in \code{lolaRes} which is used for sorting the results
+#' @param signifCol column name of the significance score in \code{lolaRes}. Should be one of \code{c("pValueLog", "qValue")}
+#' @param includedCollections vector of collection names to be included in the plot. If empty (default), all collections are used
+#' @param recalc   recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})
+#' @param pvalCut p-value cutoff (negative log10) to be employed for filtering the results
+#' @param maxTerms maximum number of items to be included in the plot
+#' @param colorpanel colorpanel for the heatmap gradient
+#' @param groupByCollection facet the plot by collection
+#' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
+#'                 to increasing). \code{NULL} (default) for automatic determination.
+#' @param appendTermDbId  attach the index of the item in the LOLA DB object to the name of the set
+#' @return ComplexHeatmap object to plot
+#'
+#' @author Fabian Mueller
+#' @noRd
+## @export
+lolaRegionSetHeatmap2 <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
+	require(ComplexHeatmap)
+	#prepare data.frame for plotting
+	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing, appendTermDbId=appendTermDbId)
+
+	if (is.null(df2p)){
+		logger.warning("No significant association found")
+		return(NULL)
+	}
+
+	if (!is.factor(df2p$userSet)) df2p$userSet <- factor(df2p$userSet)
+	# levels(df2p$userSet) <- rev(levels(df2p$userSet)) # revert level order for proper column ordering
+	# make the dbSet a factor in order to keep the order of the data frame
+	df2p$dbSetF <- paste0("db", df2p$dbSet)
+	df2p$dbSetF <- factor(df2p$dbSetF, levels=unique(df2p$dbSetF))
+
+	scoreM <- reshape2::acast(df2p, dbSetF ~ userSet, value.var=scoreCol)
+	rDbIds <- as.integer(gsub("^db", "", rownames(scoreM)))
+	rMeta <- data.frame(
+		dbId=rDbIds,
+		name=getNamesFromLolaDb(lolaDb, addCollectionNames=!groupByCollection, addDbId=appendTermDbId)[rDbIds],
+		collection=as.data.frame(lolaDb$regionAnno)[rDbIds,"collection"],
+		target=getTargetFromLolaDb(lolaDb)[rDbIds],
+		cellType=getCellTypesFromLolaDb(lolaDb)[rDbIds]
+	)
+	rownames(scoreM) <- rMeta[,"name"]
+
+	if (is.na(colorpanelLimits[1])) colorpanelLimits[1] <- min(scoreM, na.rm=TRUE)
+	if (is.na(colorpanelLimits[2])) colorpanelLimits[2] <- max(scoreM, na.rm=TRUE)
+	cp <- circlize::colorRamp2(seq(colorpanelLimits[1], colorpanelLimits[2], length.out=length(colorpanel)), colorpanel)
+	hm <- Heatmap(scoreM,
+		col=cp,
+		split=rMeta[,"collection"],
+		show_row_names=TRUE, row_names_side="left", row_title_side="right",
+		show_column_names=TRUE, column_names_side="top",
+		cluster_rows=FALSE, cluster_columns=FALSE,
+		width=unit(0.2, "npc"),
+		name=scoreCol
+	)
+	# annoStrM <- as.matrix(rMeta[,c("name", "target", "cellType")])
+	# hmStrAnno <- Heatmap(annoStrM, rect_gp=gpar(type = "none"),
+	# 	cell_fun = function(j, i, x, y, width, height, fill) {
+	# 		# gp.box <- gpar(col = "grey", fill = NA)
+	# 		# grid.rect(x=x, y=y, width=width, height=height, gp=gp.box)
+	# 		gp.txt <- gpar()
+	# 		annoStrM[i,j]
+	# 		grid.text(annoStrM[i,j], x=x, y=y, gp=gp.txt)
+	# 	},
+	# 	cluster_rows=FALSE, cluster_columns=FALSE,
+	# 	split=rMeta[,"collection"],
+	# 	show_row_names=FALSE, show_column_names=FALSE, show_heatmap_legend=FALSE,
+	# 	width=unit(0.2, "npc")
+	# )
+
+	res <- hm
+
+	pdftemp(width=40, height=150)
+		draw(res)
+	dev.off()
+	return(res)
+}
+
 #' runLOLA_list
 #' More robust version of lola for lists of user sets
 #' (to avoid "Negative c entry in table" errors)
