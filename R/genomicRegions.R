@@ -346,6 +346,22 @@ setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE,
 	genome(gr) <- assembly
 	return(gr)
 }
+
+#' getGenomeGr
+#'
+#' retrieve the full genome as GRanges object
+#'
+#' @param assembly     assembly
+#' @param ...          other arguments passed on to \code{setGenomeProps}
+#' @return \code{GRanges} object
+#' @export
+getGenomeGr <- function(assembly, ...){
+	sls <- getSeqlengths4assembly(assembly, ...)
+	res <- GRanges(seqnames=names(sls), ranges=IRanges(1, sls))
+	res <- setGenomeProps(res, assembly, ...)
+	return(res)
+}
+
 #' getTilingRegions
 #'
 #' Get a GRanges object of tiling regions for a specified genome assembly
@@ -356,9 +372,7 @@ setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE,
 #' @return GRanges object containing tiling windows
 #' @export
 getTilingRegions <- function(assembly, width=1000L, ...){
-	sls <- getSeqlengths4assembly(assembly, ...)
-	gr <- GRanges(seqnames=names(sls), ranges=IRanges(1, sls))
-	gr <- setGenomeProps(gr, assembly, ...)
+	gr <- getGenomeGr(assembly, ...)
 	gr <- unlist(slidingWindows(gr, width=width, step=width))
 	# gr <- unlist(tile(gr, width=width)) #does not truncate but makes approximately equal sized windows
 	return(gr)
