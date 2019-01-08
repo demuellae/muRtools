@@ -89,6 +89,8 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
 	require(umap)
 	if (!py_module_available("umap")){
 		stop("could not load Python module 'umap-learn'")
+		# if the module cannot be loaded this can be because not the correct python environment is loaded (check py_config())
+		# also: umap requires the correct version of the C++ compiler. So, be sure to load GCC beforehand
 	}
 	k <- max(dims[1:2])
 	umapRes <- umap(X, method="umap-learn", n_components=k, metric=distMethod)
