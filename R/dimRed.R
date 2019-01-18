@@ -6,24 +6,42 @@
 #' Get dimension reduction coordinates (PCA)
 #' @param X   A matrix on which the dimension reduction is to be performed
 #' @param components   principal component to be returned
+#' @param method Method/package to be used for computing principal components. Currently \code{prcomp} and \code{irlba} are supported.
+#' @param ... other arguments passed on to the PCA method
 #' @return a matrix containing two columns for the reduced dimensions and the same number of
 #'         rows as \code{X}
 #' @author Fabian Mueller
 #' @export 
-getDimRedCoords.pca <- function(X, components=c(1,2)){
+getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 	numNA <- colSums(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
 	if (any(numNA>0)){
 		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"features because the remaining ones contained NAs/Inf"))
 		X <- X[,has.noNA]
 	}
-	pca <- prcomp(X, center = TRUE, scale. = FALSE)
-	coords <- pca$x[,components, drop=FALSE]
-	rownames(coords) <- rownames(X)
-	percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
-	names(percVar) <- colnames(pca$x)
-	attr(coords, "percVar") <- percVar[components]
-	attr(coords,"PCAclass") <-"PCcoord"
+
+	if (method=="prcomp"){
+		pca <- prcomp(X, center = TRUE, scale. = FALSE, ...)
+		coords <- pca$x[,components, drop=FALSE]
+		rownames(coords) <- rownames(X)
+		percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
+		names(percVar) <- colnames(pca$x)
+		attr(coords, "percVar") <- percVar[components]
+		attr(coords,"PCAclass") <-"PCcoord"
+		attr(coords,"PCAmethod") <- "prcomp"
+	} else if (method=="irlba"){
+		require(irlba)
+		pca <- prcomp_irlba(X, center = TRUE, scale. = FALSE, ...)
+		coords <- pca$x[,components, drop=FALSE]
+		rownames(coords) <- rownames(X)
+		percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
+		names(percVar) <- colnames(pca$x)
+		attr(coords, "percVar") <- percVar[components]
+		attr(coords,"PCAclass") <-"PCcoord"
+		attr(coords,"PCAmethod") <- "irldba"
+	} else {
+		stop(paste("Unknown PCA method:", method))
+	}
 	return(coords)
 }
 #' getDimRedCoords.mds

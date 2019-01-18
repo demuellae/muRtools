@@ -4,12 +4,16 @@
 \alias{getDimRedCoords.pca}
 \title{getDimRedCoords.pca}
 \usage{
-getDimRedCoords.pca(X, components = c(1, 2))
+getDimRedCoords.pca(X, components = c(1, 2), method = "prcomp", ...)
 }
 \arguments{
 \item{X}{A matrix on which the dimension reduction is to be performed}
 
 \item{components}{principal component to be returned}
+
+\item{method}{Method/package to be used for computing principal components. Currently \code{prcomp} and \code{irlba} are supported.}
+
+\item{...}{other arguments passed on to the PCA method}
 }
 \value{
 a matrix containing two columns for the reduced dimensions and the same number of
