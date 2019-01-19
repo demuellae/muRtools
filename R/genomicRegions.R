@@ -618,3 +618,41 @@ grTile <- function(gr, tile.width=200, keepMetadata=TRUE){
 	elementMetadata(res)[,".winIdx"] <- winIdx
 	return(res)
 }
+
+#' countPairwiseOverlaps
+#'
+#' Fast counting of pairwise overlaps between two lists of region sets
+#'
+#' @param grl1    list of \code{GRanges} or \code{GRangesList} object 1
+#' @param grl2    list of \code{GRanges} or \code{GRangesList} object 2
+#' @param ...	  arguments passed on to \code{findOverlaps}
+#' @return an integer matrix containing pairwise overlaps between elements in \code{grl1} and \code{grl1}
+#'
+#' @export
+countPairwiseOverlaps <- function(grl1, grl2, ...){
+	require(data.table)
+
+	if (class(grl1)!="GRangesList") grl1 <- GRangesList(grl1)
+	if (class(grl2)!="GRangesList") grl2 <- GRangesList(grl2)
+	gr1 <- unlist(grl1, use.names=FALSE)
+	gr2 <- unlist(grl2, use.names=FALSE)
+
+	idx1 <- rep(1:length(grl1), times=elementNROWS(grl1))
+	idx2 <- rep(1:length(grl2), times=elementNROWS(grl2))
+
+	res <- matrix(as.integer(NA), nrow=length(grl1), ncol=length(grl2))
+
+	oo <- findOverlaps(gr1, gr2, ...)
+	idxDt <- as.data.table(cbind(
+		idx1[queryHits(oo)], #row indices in resulting count matrix
+		idx2[subjectHits(oo)] #column indices in resulting count matrix
+	))
+	# count the number of occurrences between each index pair
+	idxDt <- idxDt[,.N, by=names(idxDt)]
+	idxM <- as.matrix(idxDt[,c(1,2)])
+	res[idxM] <- idxDt$N
+
+	if (!is.null(names(grl1))) rownames(res) <- names(grl1)
+	if (!is.null(names(grl2))) colnames(res) <- names(grl2)
+	return(res)
+}
