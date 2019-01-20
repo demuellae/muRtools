@@ -129,13 +129,14 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
 #'                 if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
 #'                 it defaults to the second annotation column
 #' @param colScheme color sheme to be used in coloring the points
+#' @param ptSize   size of the points in the scatterplot
 #' @param addLabels should observation labels be added to each point
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
 #' @param annot.text optional text to be added in the lower right corner of the plot
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, addLabels=FALSE, addDensity=FALSE, annot.text=NULL){
+getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL){
 	if (!is.null(annot)){
 		if (nrow(annot)!=nrow(coords)){
 			stop("Non-matching number of rows for dimension reduction coordinates and annotation")
@@ -225,9 +226,9 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		}
 	}
 	if (!is.null(shapeCol)){
-		pp <- pp + geom_point(aes_string(shape=shapeCol), size=3) + scale_shape_manual(values=c(19,15,17,4,3,18,8,1,0,2,6))
+		pp <- pp + geom_point(aes_string(shape=shapeCol), size=ptSize) + scale_shape_manual(values=c(19,15,17,4,3,18,8,1,0,2,6))
 	} else {
-		pp <- pp + geom_point(size=3)
+		pp <- pp + geom_point(size=ptSize)
 	}
 	if (addLabels && is.element("observation", colnames(df2p))){
 		pp <- pp + geom_text(aes(label=observation), size=2)
@@ -256,6 +257,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 #'                 if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
 #'                 it defaults to the second annotation column
 #' @param colScheme color sheme to be used in coloring the points
+#' @param ptSize   size of the points in the scatterplot
 #' @param addLabels should observation labels be added to each point
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
 #' @param annot.text optional text to be added in the lower right corner of the plot
@@ -264,10 +266,10 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 #' @author Fabian Mueller
 #' @export 
 plotDimRed <- function(X, dimRedFun=getDimRedCoords.pca,
-		annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, addLabels=FALSE, addDensity=FALSE, annot.text=NULL,
+		annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL,
 		...){
 	coords <- dimRedFun(X, ...)
-	pp <- getDimRedPlot(coords, annot=annot, colorCol=colorCol, shapeCol=shapeCol, colScheme=colScheme, addLabels=addLabels, addDensity=addDensity, annot.text=annot.text)
+	pp <- getDimRedPlot(coords, annot=annot, colorCol=colorCol, shapeCol=shapeCol, colScheme=colScheme, ptSize=ptSize, addLabels=addLabels, addDensity=addDensity, annot.text=annot.text)
 	return(pp)
 }
 #' plotAllDimRed

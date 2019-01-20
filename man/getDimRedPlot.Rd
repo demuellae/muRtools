@@ -5,8 +5,8 @@
 \title{getDimRedPlot}
 \usage{
 getDimRedPlot(coords, annot = NULL, colorCol = NULL, shapeCol = NULL,
-  colScheme = NULL, addLabels = FALSE, addDensity = FALSE,
-  annot.text = NULL)
+  colScheme = NULL, ptSize = 3, addLabels = FALSE,
+  addDensity = FALSE, annot.text = NULL)
 }
 \arguments{
 \item{coords}{dimension reduction coordinates}
@@ -21,6 +21,8 @@ if \code{shapeCol} not supplied but \code{annot} is supplied and has more than o
 it defaults to the second annotation column}
 
 \item{colScheme}{color sheme to be used in coloring the points}
+
+\item{ptSize}{size of the points in the scatterplot}
 
 \item{addLabels}{should observation labels be added to each point}
 
