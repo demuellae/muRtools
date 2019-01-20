@@ -631,7 +631,7 @@ grTile <- function(gr, tile.width=200, keepMetadata=TRUE){
 #' @export
 countPairwiseOverlaps <- function(grl1, grl2, ...){
 	require(data.table)
-
+	logger.status("[DEBUG] STARTED")
 	if (class(grl1)!="GRangesList") grl1 <- GRangesList(grl1)
 	if (class(grl2)!="GRangesList") grl2 <- GRangesList(grl2)
 	gr1 <- unlist(grl1, use.names=FALSE)
@@ -639,20 +639,26 @@ countPairwiseOverlaps <- function(grl1, grl2, ...){
 
 	idx1 <- rep(1:length(grl1), times=elementNROWS(grl1))
 	idx2 <- rep(1:length(grl2), times=elementNROWS(grl2))
+	logger.status("[DEBUG] unlisted")
 
 	res <- matrix(as.integer(NA), nrow=length(grl1), ncol=length(grl2))
+	rownames(res) <- names(grl1)
+	colnames(res) <- names(grl2)
 
-	oo <- findOverlaps(gr1, gr2, ...)
+	rm(grl1, grl2)
+	logger.status("[DEBUG] finding overlaps")
+	oo <- findOverlaps(gr1, gr2, ...) # this step can take up a lot of memory, if there are a lot of overlaps
+	rm(gr1,gr2)
+	logger.status("[DEBUG] found overlaps")
 	idxDt <- as.data.table(cbind(
 		idx1[queryHits(oo)], #row indices in resulting count matrix
 		idx2[subjectHits(oo)] #column indices in resulting count matrix
 	))
+	logger.status("[DEBUG] Created index DT")
 	# count the number of occurrences between each index pair
 	idxDt <- idxDt[,.N, by=names(idxDt)]
+	logger.status("[DEBUG] Summarized index DT")
 	idxM <- as.matrix(idxDt[,c(1,2)])
 	res[idxM] <- idxDt$N
-
-	if (!is.null(names(grl1))) rownames(res) <- names(grl1)
-	if (!is.null(names(grl2))) colnames(res) <- names(grl2)
 	return(res)
 }
