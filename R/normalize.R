@@ -18,6 +18,7 @@ normalizeRank <- function(X, out="percentile", ties.method="average"){
 		return(rankM)
 	} else if (out=="percentile"){
 		percM <- t(t(rankM)/colMaxs(rankM, na.rm=TRUE))
+		dimnames(percM) <- dimnames(percM)
 		return(percM)
 	} else {
 		stop(paste0("Invalid 'out' parameter (normalizeRank): ", out))
