@@ -110,6 +110,12 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
 		# if the module cannot be loaded this can be because not the correct python environment is loaded (check py_config())
 		# also: umap requires the correct version of the C++ compiler. So, be sure to load GCC beforehand
 	}
+	numNA <- colSums(is.nan(X) | is.infinite(X)) # colSums(is.na(X) | is.infinite(X))
+	has.noNA <- numNA==0
+	if (any(numNA>0)){
+		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"features because the remaining ones contained NAs/Inf"))
+		X <- X[,has.noNA]
+	}
 	k <- max(dims[1:2])
 	umapRes <- umap(X, method="umap-learn", n_components=k, metric=distMethod)
 	coords <- umapRes$layout
