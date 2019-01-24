@@ -505,7 +505,7 @@ lolaVolcanoPlot <- function(lolaDb, lolaRes, includedCollections=c(), signifCol=
 	if (length(cpanel) < 1){
 		if (is.color.gradient){
 			#default: viridis 
-			cpanel <- c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF", "#6DCD59FF", "#B4DE2CFF", "#FDE725FF")
+			cpanel <- rev(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF", "#6DCD59FF", "#B4DE2CFF", "#FDE725FF"))
 		}
 		if (is.color.discrete){
 			if (is.factor(df2p[[colorBy]])){
