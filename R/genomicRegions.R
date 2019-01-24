@@ -573,14 +573,24 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 		stringsAsFactors=FALSE
 	)
 	geneGr.sub <- geneGr[subjectHits(dd)]
+	geneStrand <- as.character(strand(geneGr.sub))
 	emd <- elementMetadata(geneGr.sub)
+	# assign negative distances for elements that are downstream of the gene
+	dist.signed <- mcols(dd)[,"distance"]
+	coord.q <- start(resize(gr[queryHits(dd)], width=1, fix="center", ignore.strand=TRUE))
+	# isNeg.q <- strand(gr[queryHits(dd)])=="-"
+	coord.s <- start(tssGr)
+	isNeq.s <- geneStrand=="-"
+	isDownstream <- (dist.signed > 0) & ((!isNeq.s & (coord.q > coord.s)) | (isNeq.s & (coord.q < coord.s)))
+	dist.signed[isDownstream] <- -dist.signed[isDownstream]
+
 	res[queryHits(dd),"gene_id"]     <- emd[,geneIdCol]
 	res[queryHits(dd),"gene_name"]   <- emd[,geneNameCol]
-	res[queryHits(dd),"dist_to_tss"] <- mcols(dd)[,"distance"]
+	res[queryHits(dd),"dist_to_tss"] <- dist.signed
 	res[queryHits(dd),"gene_chrom"]  <- as.character(seqnames(geneGr.sub))
 	res[queryHits(dd),"gene_chromStart"]  <- start(geneGr.sub)
 	res[queryHits(dd),"gene_chromEnd"]  <- end(geneGr.sub)
-	res[queryHits(dd),"gene_strand"]  <- as.character(strand(geneGr.sub))
+	res[queryHits(dd),"gene_strand"]  <- geneStrand
 	return(res)
 }
 
