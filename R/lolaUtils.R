@@ -499,7 +499,7 @@ lolaVolcanoPlot <- function(lolaDb, lolaRes, includedCollections=c(), signifCol=
 	if (!is.element(oddsRatioCol, colnames(df2p))){
 		logger.error("Invalid LOLA result. Could not find a valid column containing odds ratios.")
 	}
-	lolaRes[["log2OR"]] <- log2(lolaRes[[oddsRatioCol]])
+	df2p[["log2OR"]] <- log2(df2p[[oddsRatioCol]])
 	pp <- ggplot(df2p) + aes_string("log2OR", signifCol, color=colorBy) + geom_point()
 	cpanel <- colorpanel
 	if (length(cpanel) < 1){
