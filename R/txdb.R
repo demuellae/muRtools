@@ -31,6 +31,42 @@ getTxDb.gencode <- function(name){
 	return(txdb)
 }
 
+#' getAnnotGrl.gencode
+#' 
+#' Create a \code{GRangesList} with element annotation by downloading the corresponding GTF file from Gencode
+#' @param name	gencode identifier. Currently supported are: "gencode.v27", "gencode.v19", "gencode.vM16", "gencode.vM1"
+#' @return \code{GRangesList} object with annotated elements for each element type (genes, transcripts, exons, ...)
+#' @author Fabian Mueller
+#' @export 
+getAnnotGrl.gencode <- function(name){
+	require(GenomicFeatures)
+	require(rtracklayer)
+	fileTab <- data.frame(
+		name=c("gencode.v27", "gencode.v19", "gencode.vM16", "gencode.vM1"),
+		version=c("27", "19", "M16", "M1"),
+		fileURL=c(
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.annotation.gtf.gz",
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz",
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M16/gencode.vM16.annotation.gtf.gz",
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M1/gencode.vM1.annotation.gtf.gz"
+		),
+		organism = c("Homo sapiens", "Homo sapiens", "Mus musculus", "Mus musculus"),
+
+		genomeAss=c("hg38", "hg19", "mm10", "mm9"),
+		stringsAsFactors = FALSE
+	)
+	rownames(fileTab) <- fileTab$name
+	if (!is.element(name, fileTab$name)){
+		logger.error(c("Gencode name not supported:", name, "(must be one of", paste(fileTab$name, collapse=", "), ")"))
+	}
+	gr <- import.gff(fileTab[name, "fileURL"])
+	gr <- setGenomeProps(gr, fileTab[name, "genomeAss"])
+	gr <- sortGr(gr)
+	grl <- split(gr, elementMetadata(gr)[,"type"])
+	return(grl)
+}
+
+
 #' getGeneAnnotMap
 #' 
 #' Get a mapping (e.g. of identifiers) and automatically select the correct \code{AnnotationDbi} database for a given

@@ -1,6 +1,18 @@
 ################################################################################
 # Extensions and utitility functions for GRanges
 ################################################################################
+#' sortGr
+#'
+#' sort a \code{GRanges} object
+#'
+#' @param gr    \code{GRanges} object to sort
+#' @return sorted \code{GRanges} object
+#'
+#' @export
+sortGr <- function(gr){
+	gr[order(as.integer(seqnames(gr)), start(gr), end(gr), as.integer(strand(gr)))]
+}
+
 #' bedTobigBed
 #' 
 #' Convert a bed file to bigBed. requires the 'bedToBigBed' tool
@@ -499,8 +511,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 
 	# optional sorting
 	if (doSort){
-		oo <- order(as.integer(seqnames(res)), start(res), end(res), as.integer(strand(res)))
-		res <- res[oo]
+		res <- sortGr(res)
 	}
 	return(res)
 }

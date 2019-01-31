@@ -4,7 +4,7 @@
 \alias{plot.colpal}
 \title{plot.colpal}
 \usage{
-\method{plot}{colpal}(cp, type = "pie")
+plot.colpal(cp, type = "pie")
 }
 \arguments{
 \item{cp}{color palette, i.e. vector of colors}
