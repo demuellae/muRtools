@@ -6,6 +6,9 @@
 \usage{
 normalizePercentile(X)
 }
+\arguments{
+\item{X}{A matrix which should be normalized}
+}
 \value{
 a matrix containing the normalized values
 }

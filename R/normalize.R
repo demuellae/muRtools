@@ -29,6 +29,7 @@ normalizeRank <- function(X, out="percentile", ties.method="average"){
 #' 
 #' Performs percentile normalization on the columns of a matrix,
 #' i.e. each element in a column will be the percentile it lies in in its column
+#' @param X   A matrix which should be normalized
 #' @return a matrix containing the normalized values
 #' @author Fabian Mueller
 #' @export 
