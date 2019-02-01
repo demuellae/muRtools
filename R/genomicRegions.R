@@ -550,6 +550,38 @@ grLiftOver <- function(gr, targetAssembly, onlyUnique=TRUE){
 	return(res)
 }
 
+
+#' grSignedDistance
+#'
+#' Compute pairwise distances between the elements of two \code{GRanges} objects,
+#' taking orientation and position into account.
+#' (wrapper for \code{GRanges::distance}) 
+#'
+#' @param gr1   \code{GRanges} object 1
+#' @param gr2   \code{GRanges} object 2
+#' @return vector of pairwise distances
+#' Elements in which the region in gr2 is upstream of the region in gr1 will be assigned negative distances
+#'
+#' @export
+grSignedDistance <- function(gr1, gr2){
+	if (length(gr1)!=length(gr2)) logger.error("gr1 and gr2 must have equal lengths")
+	gr1.c <- resize(gr1, width=1, fix="center")
+	gr2.c <- resize(gr2, width=1, fix="center")
+	dd <- distance(gr1, gr2, ignore.strand=TRUE)
+	# -1>  -2>  ==> +
+	# -1>  <2-  ==> +
+	# <1-  -2>  ==> +
+	# <1-  <2-  ==> -
+	# -2>  -1>  ==> -
+	# -2>  <1-  ==> +
+	# <2-  -1>  ==> -
+	# <2-  <1-  ==> +
+	isUpstream <- (strand(gr1) == "+" & start(gr1.c) > start(gr2.c)) |
+	              (strand(gr1) == "-" & start(gr1.c) < start(gr2.c))
+	dd[isUpstream] <- -dd[isUpstream]
+	return(dd)
+}
+
 #' grGeneAnnot
 #'
 #' get gene annotation for a \code{GRanges} object using a \code{RegionSetDB} region database object by linking to the nearest gene
