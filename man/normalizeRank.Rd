@@ -14,7 +14,7 @@ normalizeRank(X, out = "percentile", ties.method = "average")
 \item{ties.method}{method for breaking ties (see \code{?colRanks} for details)}
 }
 \value{
-a matrix containing the normalized avlues
+a matrix containing the normalized values
 }
 \description{
 Performs rank normalization on the columns of a matrix

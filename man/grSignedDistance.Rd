@@ -13,7 +13,8 @@ grSignedDistance(gr1, gr2)
 }
 \value{
 vector of pairwise distances
-Elements in which the region in gr2 is upstream of the region in gr1 will be assigned negative distances
+Elements in which the region in gr2 is upstream of the region in gr1 will be assigned negative distances.
+"Upstream" is defined based on the orientation of the regions in \code{gr1}.
 }
 \description{
 Compute pairwise distances between the elements of two \code{GRanges} objects,

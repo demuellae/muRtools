@@ -560,7 +560,8 @@ grLiftOver <- function(gr, targetAssembly, onlyUnique=TRUE){
 #' @param gr1   \code{GRanges} object 1
 #' @param gr2   \code{GRanges} object 2
 #' @return vector of pairwise distances
-#' Elements in which the region in gr2 is upstream of the region in gr1 will be assigned negative distances
+#' Elements in which the region in gr2 is upstream of the region in gr1 will be assigned negative distances.
+#' "Upstream" is defined based on the orientation of the regions in \code{gr1}.
 #'
 #' @export
 grSignedDistance <- function(gr1, gr2){
