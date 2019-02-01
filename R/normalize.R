@@ -37,6 +37,6 @@ normalizePercentile <- function(X){
 	res <- apply(X, 2, FUN=function(x){
 		ecdf(x)(x)
 	})
-	dimnames(res) <- dimnames(res)
+	dimnames(res) <- dimnames(X)
 	return(res)
 }
