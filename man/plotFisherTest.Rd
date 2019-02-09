@@ -4,10 +4,10 @@
 \alias{plotFisherTest}
 \title{plotFisherTest}
 \usage{
-plotFisherTest(x, y, name.x = NULL, name.y = NULL, ...)
+plotFisherTest(x, y = NULL, name.x = NULL, name.y = NULL, ...)
 }
 \arguments{
-\item{x}{factor object or one that can be coerced to one}
+\item{x}{factor object or one that can be coerced to one. Alternative a 2x2 contingency matrix}
 
 \item{y}{factor object or one that can be coerced to one}
 

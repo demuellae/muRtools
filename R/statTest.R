@@ -124,7 +124,7 @@ testAssoc <- function(x, y, permMat=NULL) {
 #' plotFisherTest
 #' 
 #' Conduct a Fisher's exact test and plot the results as a heatmap
-#' @param x    factor object or one that can be coerced to one
+#' @param x    factor object or one that can be coerced to one. Alternative a 2x2 contingency matrix
 #' @param y    factor object or one that can be coerced to one
 #' @param name.x optional character string specifying the name for the first grouping
 #' @param name.y optional character string specifying the name for the second grouping
@@ -132,19 +132,25 @@ testAssoc <- function(x, y, permMat=NULL) {
 #' @return an \code{S3} object containing the test result object as returned by \code{fisher.test} and a \code{ggplot} object
 #' @author Fabian Mueller
 #' @export
-plotFisherTest <- function(x, y, name.x=NULL, name.y=NULL, ...){
+plotFisherTest <- function(x, y=NULL, name.x=NULL, name.y=NULL, ...){
 	testRes <- fisher.test(x=x, y=y, ...)
-	if (is.null(name.x)) name.x <- deparse(substitute(x))
-	if (is.null(name.y)) name.y <- deparse(substitute(y))
 
-	ct <- table(x, y)
+	if (is.matrix(x) && nrow(x)==2 && ncol(x)==2){
+		ct <- as.table(x)
+		if (is.null(name.x)) name.x <- names(dimnames(conMat))[1]
+		if (is.null(name.y)) name.y <- names(dimnames(conMat))[2]
+	} else {
+		ct <- table(x, y)
+		if (is.null(name.x)) name.x <- deparse(substitute(x))
+		if (is.null(name.y)) name.y <- deparse(substitute(y))
+	}
 
-	pp <- ggplot2.heatmap(ct) + xlab(name.x) + ylab(name.y)
+	# pp <- ggplot2.heatmap(ct) + xlab(name.x) + ylab(name.y)
 	df2p <- data.frame(ct, check.names=FALSE)
 	colnames(df2p) <- c("var1", "var2", "count")
 
-	pp <- ggplot(df2p) +  aes(var1, var2) + geom_tile(aes(fill=count)) + scale_y_discrete(limits = rev(levels(df2p[,2]))) + coord_fixed() +
-		  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5)) + geom_text(aes(label=count)) + xlab(name.x) + ylab(name.y) +
+	pp <- ggplot(df2p) +  aes(var2, var1) + geom_tile(aes(fill=count)) + scale_y_discrete(limits = rev(levels(df2p[,2]))) + coord_fixed() +
+		  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5)) + geom_text(aes(label=count)) + xlab(name.y) + ylab(name.x) +
 		  labs(subtitle=paste0("OR=", round(testRes$estimate, 4), " (Alternative: '", testRes$alternative,"'; p-value=", round(testRes$p.value, 4), ")"))
 	res <- list(
 		testRes=testRes,
