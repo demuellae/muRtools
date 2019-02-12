@@ -623,7 +623,7 @@ grGeneAnnot <- function(gr, rsdb, geneSetName="genes_protein_coding", geneSetCol
 	dist.signed <- mcols(dd)[,"distance"]
 	coord.q <- start(resize(gr[queryHits(dd)], width=1, fix="center", ignore.strand=TRUE))
 	# isNeg.q <- strand(gr[queryHits(dd)])=="-"
-	coord.s <- start(tssGr)
+	coord.s <- start(tssGr[subjectHits(dd)])
 	isNeq.s <- geneStrand=="-"
 	isDownstream <- (dist.signed > 0) & ((!isNeq.s & (coord.q > coord.s)) | (isNeq.s & (coord.q < coord.s)))
 	dist.signed[isDownstream] <- -dist.signed[isDownstream]
