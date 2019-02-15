@@ -10,7 +10,7 @@
 #' @return a matrix containing the normalized values
 #' @author Fabian Mueller
 #' @export 
-normalizeRank <- function(X, out="percentile", ties.method="average"){
+normalizeRank <- function(X, out="rank", ties.method="average"){
 	require(matrixStats)
 	rankM <- colRanks(X, ties.method=ties.method, preserveShape=TRUE)
 	dimnames(rankM) <- dimnames(X)
