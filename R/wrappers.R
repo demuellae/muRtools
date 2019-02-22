@@ -14,8 +14,8 @@
 #' @return the result of \code{read.table}
 #' @author Fabian Mueller
 #' @export
-readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="", comment.char="", ...){
-	read.table(fn, header=header, sep=sep, comment.char=comment.char,  stringsAsFactors=stringsAsFactors, quote=quote, ...)
+readTab <- function(fn, sep="\t", header=TRUE, stringsAsFactors=FALSE, quote="", comment.char="",  na.strings="", ...){
+	read.table(fn, header=header, sep=sep, comment.char=comment.char,  stringsAsFactors=stringsAsFactors, quote=quote, na.strings=na.strings, ...)
 }
 
 #' writeTab

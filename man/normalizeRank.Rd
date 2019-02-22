@@ -4,7 +4,7 @@
 \alias{normalizeRank}
 \title{normalizeRank}
 \usage{
-normalizeRank(X, out = "percentile", ties.method = "average")
+normalizeRank(X, out = "rank", ties.method = "average")
 }
 \arguments{
 \item{X}{A matrix which should be normalized}

@@ -5,7 +5,7 @@
 \title{readTab}
 \usage{
 readTab(fn, sep = "\\t", header = TRUE, stringsAsFactors = FALSE,
-  quote = "", comment.char = "", ...)
+  quote = "", comment.char = "", na.strings = "", ...)
 }
 \arguments{
 \item{fn}{filename to read}
