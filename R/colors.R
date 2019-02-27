@@ -78,7 +78,7 @@ colpal.corpid <- c(
 #' plot.colpal(colpals.games[["rollgalaxy"]])
 colpals.games <- list(
   bruges=c("#3B8FCF", "#B52622", "#8D5718", "#572978", "#FFC856", "#28A742", "#256CBF", "#C4292C", "#E0EB36"),
-  mombasa=c("#009FE3", "#8EC041", "#951B81", "#FFCC00", "#BE1716", "#DE7E00", "#7C83B3", "#671719", "#E0CDA6", "#775725", "#000000"),
+  mombasa=c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE1716", "#7C83B3", "#671719", "#E0CDA6", "#775725", "#000000"),
   dominantspecies=c("#0093E9", "#D93123", "#19B245", "#F9ED00", "#E5BCCF", "#F7D58A", "#9FC6E0", "#ACD499", "#D8D088", "#59413B", "#000000"),
   terramystica=c("#3B76BB", "#A9122A", "#235E31", "#996F58", "#EDE980", "#D69A30", "#000000", "#B6B6B6"),
   gaiaproject=c("#005AA6", "#D52429", "#FFCB28", "#F37124", "#744F30", "#858A91", "#56A744", "#A52181", "#697F9B", "#0C9DD9"),

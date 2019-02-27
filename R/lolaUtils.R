@@ -727,7 +727,7 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #' lolaRegionSetHeatmap
 #' Plot a heatmap in which the rows are different user sets and the color corresponds to an enrichment score
 #'
-#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}
+#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}
 #' @param lolaRes  LOLA enrichment result as returned by the \code{runLOLA} function from the \code{LOLA} package
 #' @param scoreCol column name in \code{lolaRes} to be plotted
 #' @param orderCol column name in \code{lolaRes} which is used for sorting the results
