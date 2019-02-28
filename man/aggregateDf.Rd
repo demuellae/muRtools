@@ -17,7 +17,7 @@ aggregated \code{data.frame}
 \description{
 Wrapper around \code{aggregate} to merge rows of a data frame based on a specified grouping.
 Merging is done by either returning the unique value for each group or if multiple different
-val;ues exists converting them to character and concatenating by ";"
+values exists converting them to character and concatenating by ";"
 }
 \author{
 Fabian Mueller
