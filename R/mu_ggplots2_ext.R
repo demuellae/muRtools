@@ -37,6 +37,32 @@ ggplot2.heatmap <- function(mm,add.text=FALSE){
 	return(p)
 }
 
+#' ggplot2.distr
+#' 
+#' Distribution plot combining violin and boxplot using ggplot2
+#' @param x vector of values whose distribution is to be plottet
+#' @param fillColor color to be used to fill the violin
+#' @return the ggplot2 object (can be extended for plotting)
+#' @export
+#' @examples 
+#' x <- rnorm(1000)
+#' ggplot2.distr(x)
+#}
+ggplot2.distr <- function(x, fillColor="#676D8D"){
+  if (!is.data.frame(x)){
+    x <- data.frame(value=x)
+  }
+  x[,"group"] <- ".all"
+  valCol <- colnames(x)[1]
+  pp <- ggplot(x) + aes_string(x="group", y=valCol) +
+        geom_violin(adjust=1, fill=fillColor) +
+        geom_boxplot(aes(fill=NULL), outlier.shape=NA, width=0.2) +
+        coord_flip() +
+        # theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5)) + 
+        theme(axis.title.y=element_blank()) + guides(fill=FALSE) 
+  return(pp)
+}
+
 #' ggMessagePlot
 #'
 #' Creates a plot, using \pkg{ggplot2}, with a single text message.
