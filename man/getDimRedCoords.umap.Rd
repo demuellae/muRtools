@@ -4,7 +4,7 @@
 \alias{getDimRedCoords.umap}
 \title{getDimRedCoords.umap}
 \usage{
-getDimRedCoords.umap(X, distMethod = "euclidean", dims = c(1, 2))
+getDimRedCoords.umap(X, distMethod = "euclidean", dims = c(1, 2), ...)
 }
 \arguments{
 \item{X}{A matrix on which the dimension reduction is to be performed}
@@ -12,6 +12,8 @@ getDimRedCoords.umap(X, distMethod = "euclidean", dims = c(1, 2))
 \item{distMethod}{distance metric to be employed}
 
 \item{dims}{dimensions to return from the reduction}
+
+\item{...}{parameters passed on to \code{uwot::umap()}}
 }
 \value{
 a matrix containing two columns for the reduced dimensions and the same number of

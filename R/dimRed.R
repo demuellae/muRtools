@@ -98,11 +98,12 @@ getDimRedCoords.tsne <- function(X, distMethod="euclidean", dims=c(1,2)){
 #' @param X   A matrix on which the dimension reduction is to be performed
 #' @param distMethod   distance metric to be employed
 #' @param dims dimensions to return from the reduction
+#' @param ... parameters passed on to \code{uwot::umap()}
 #' @return a matrix containing two columns for the reduced dimensions and the same number of
 #'         rows as \code{X}
 #' @author Fabian Mueller
 #' @export 
-getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
+getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 	require(uwot)
 	numNA <- colSums(is.na(X) | is.infinite(X)) # colSums(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
@@ -111,7 +112,7 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
 		X <- X[,has.noNA]
 	}
 	k <- max(dims)
-	coords <- umap(X, n_components=k, metric=distMethod)[,dims]
+	coords <- umap(X, n_components=k, metric=distMethod, ...)[,dims]
 	colnames(coords) <- paste0("UMAP", 1:ncol(coords))
 	rownames(coords) <- rownames(X)
 	return(coords)
