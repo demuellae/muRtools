@@ -93,13 +93,13 @@ create.densityScatter <- function(df2p,is.special=NULL,dens.subsample=FALSE,dens
 	}
 	if (is.null(df2p) || nrow(df2p)<1){
 		logger.warning(c("Could not create density scatterplot"))
-		pp <- rnb.message.plot("Could not create plot")
+		pp <- ggMessagePlot("Could not create plot")
 		return(pp)
 	}
 	df2p <- na.omit(df2p)
 	if (is.null(df2p) || nrow(df2p)<1){
 		logger.warning(c("Could not create density scatterplot (NA omission removed all entries)"))
-		pp <- rnb.message.plot("Could not create plot")
+		pp <- ggMessagePlot("Could not create plot")
 		return(pp)
 	}
 	df2p.sub <- df2p
@@ -128,7 +128,7 @@ create.densityScatter <- function(df2p,is.special=NULL,dens.subsample=FALSE,dens
 	stable.h <- c(stable.bandwidth.fun(df2p.sub[,1]),stable.bandwidth.fun(df2p.sub[,2]))
 
 	if (is.null(dens.ranks)){
-  		pp <- rnb.message.plot("Could not assess density")
+  		pp <- ggMessagePlot("Could not assess density")
   	} else {		
   		pp <- ggplot(df2p.sub) + aes_string(x=colnames(df2p)[1],y=colnames(df2p)[2]) + 
 		  stat_density2d(geom="tile", fill=DENS.COLORS.LOW[1], aes(,alpha=..density..^0.25), contour=FALSE, n=dens.n, h=stable.h) +
