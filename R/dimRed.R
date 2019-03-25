@@ -31,7 +31,8 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 		attr(coords,"PCAmethod") <- "prcomp"
 	} else if (method=="irlba"){
 		require(irlba)
-		pca <- prcomp_irlba(X, center = TRUE, scale. = FALSE, ...)
+		nComps <- max(components)
+		pca <- prcomp_irlba(X, n=nComps, center = TRUE, scale. = FALSE, ...)
 		coords <- pca$x[,components, drop=FALSE]
 		rownames(coords) <- rownames(X)
 		percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
@@ -39,6 +40,18 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 		attr(coords, "percVar") <- percVar[components]
 		attr(coords,"PCAclass") <-"PCcoord"
 		attr(coords,"PCAmethod") <- "irldba"
+	} else if (method=="irlba_svd") {
+		require(irlba)
+		nComps <- max(components)
+		svdRes <- irlba::irlba(t(X), nComps, nComps, maxit=1000, ...)
+		svdDiag <- matrix(0, nrow=length(svdRes$d), ncol=length(svdRes$d))
+		diag(svdDiag) <- svdRes$d
+		coords <- t(svdDiag %*% t(svdRes$v))
+		rownames(coords) <- rownames(X)
+		colnames(coords) <- paste0('PC', 1:ncol(coords))
+		# attr(coords, "percVar") <- percVar[components]
+		attr(coords,"PCAclass") <-"PCcoord"
+		attr(coords,"PCAmethod") <- "irldba_svd"
 	} else {
 		stop(paste("Unknown PCA method:", method))
 	}
