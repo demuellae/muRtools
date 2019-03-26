@@ -52,6 +52,9 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 		# attr(coords, "percVar") <- percVar[components]
 		attr(coords,"PCAclass") <-"PCcoord"
 		attr(coords,"PCAmethod") <- "irldba_svd"
+		attr(coords,"SVD_D") <- svdDiag
+		attr(coords,"SVD_U") <- svdRes$u
+		attr(coords,"SVD_V") <- svdRes$v
 	} else {
 		stop(paste("Unknown PCA method:", method))
 	}
