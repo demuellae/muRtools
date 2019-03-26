@@ -49,12 +49,15 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 		coords <- t(svdDiag %*% t(svdRes$v))
 		rownames(coords) <- rownames(X)
 		colnames(coords) <- paste0('PC', 1:ncol(coords))
-		# attr(coords, "percVar") <- percVar[components]
-		attr(coords,"PCAclass") <-"PCcoord"
-		attr(coords,"PCAmethod") <- "irldba_svd"
-		attr(coords,"SVD_D") <- svdDiag
-		attr(coords,"SVD_U") <- svdRes$u
-		attr(coords,"SVD_V") <- svdRes$v
+
+		vv <- svdRes$d^2/nrow(X)
+		attr(coords, "percVar") <- 100 * vv/sum(vv)
+		attr(coords, "PCAclass") <-"PCcoord"
+		attr(coords, "PCAmethod") <- "irldba_svd"
+		attr(coords, "SVD_D") <- svdDiag
+		attr(coords, "SVD_U") <- svdRes$u
+		attr(coords, "SVD_V") <- svdRes$v
+		# projection of a new matrix (M) into PC space: coord_M <- M %*% svdRes$u
 	} else {
 		stop(paste("Unknown PCA method:", method))
 	}
@@ -128,9 +131,11 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 		X <- X[,has.noNA]
 	}
 	k <- max(dims)
-	coords <- umap(X, n_components=k, metric=distMethod, ...)[,dims]
+	uRes <- umap(X, n_components=k, metric=distMethod, ret_model=TRUE, ...)
+	coords <- uRes$embedding[,dims]
 	colnames(coords) <- paste0("UMAP", 1:ncol(coords))
 	rownames(coords) <- rownames(X)
+	attr(coords,"umapRes") <- uRes
 	return(coords)
 }
 # getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2)){
