@@ -250,7 +250,7 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	if (!is.null(rownames(coords))) df2p$observation <- rownames(coords)
 	pp <- ggplot(df2p, aes_string(x=xLab, y=yLab, color=colorCol))
 	if (!is.null(colScheme)){
-		if (is.character(colScheme) && length(colScheme)==1 && colScheme=="auto"){
+		if (is.character(colScheme) && length(colScheme)==1 && colScheme=="[auto]"){
 			pp <- pp + ggAutoColorScale(df2p[,colorCol])
 		} else {
 			if (colorNumeric){
