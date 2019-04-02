@@ -5,7 +5,7 @@
 \title{getDimRedPlot}
 \usage{
 getDimRedPlot(coords, annot = NULL, colorCol = NULL, shapeCol = NULL,
-  colScheme = NULL, ptSize = 3, addLabels = FALSE,
+  colScheme = "[auto]", ptSize = 3, addLabels = FALSE,
   addDensity = FALSE, annot.text = NULL)
 }
 \arguments{
@@ -20,7 +20,7 @@ if \code{colorCol} not supplied but \code{annot} is supplied, it defaults to the
 if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
 it defaults to the second annotation column}
 
-\item{colScheme}{color sheme to be used in coloring the points}
+\item{colScheme}{color sheme to be used in coloring the points. can be a character vector with the supplied colors. Alternatively, if it is a one-element character vector \code{"[auto]"} the color scheme will be selected automatically using \code{muRtools::ggAutoColorScale}. If \code{NULL}, ggplots default color scheme will be used.}
 
 \item{ptSize}{size of the points in the scatterplot}
 

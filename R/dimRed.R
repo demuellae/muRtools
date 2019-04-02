@@ -170,7 +170,7 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 #' @param shapeCol name or index in the annotation matrix (\code{annot}) that should be used for point shapes
 #'                 if \code{shapeCol} not supplied but \code{annot} is supplied and has more than one column, 
 #'                 it defaults to the second annotation column
-#' @param colScheme color sheme to be used in coloring the points
+#' @param colScheme color sheme to be used in coloring the points. can be a character vector with the supplied colors. Alternatively, if it is a one-element character vector \code{"[auto]"} the color scheme will be selected automatically using \code{muRtools::ggAutoColorScale}. If \code{NULL}, ggplots default color scheme will be used.
 #' @param ptSize   size of the points in the scatterplot
 #' @param addLabels should observation labels be added to each point
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
@@ -178,7 +178,7 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme=NULL, ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL){
+getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL){
 	if (!is.null(annot)){
 		if (nrow(annot)!=nrow(coords)){
 			stop("Non-matching number of rows for dimension reduction coordinates and annotation")
@@ -250,10 +250,14 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	if (!is.null(rownames(coords))) df2p$observation <- rownames(coords)
 	pp <- ggplot(df2p, aes_string(x=xLab, y=yLab, color=colorCol))
 	if (!is.null(colScheme)){
-		if (colorNumeric){
-			pp <- pp + scale_color_gradientn(colours=colScheme, na.value = "#C0C0C0")
+		if (is.character(colScheme) && length(colScheme)==1 && colScheme=="auto"){
+			pp <- pp + ggAutoColorScale(df2p[,colorCol])
 		} else {
-			pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
+			if (colorNumeric){
+				pp <- pp + scale_color_gradientn(colours=colScheme, na.value = "#C0C0C0")
+			} else {
+				pp <- pp + scale_color_manual(na.value = "#C0C0C0", values=colScheme)
+			}
 		}
 	}
 	if (addDensity){
