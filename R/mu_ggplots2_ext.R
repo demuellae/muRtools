@@ -162,7 +162,7 @@ ggAutoColorScale <- function(x, method="color", symmetric=TRUE){
         xDiff <- x - ctrVal
         lims <- max(abs(xDiff), na.rm=TRUE)
         lims <- c(ctrVal-lims, ctrVal+lims)
-        params[["colors"]] <- colpal.cont(n=9, name="cb.RdYlBu")
+        params[["colors"]] <- rev(colpal.cont(n=9, name="cb.RdYlBu"))
       } 
     }
     params[["limits"]] <- lims
