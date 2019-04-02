@@ -102,7 +102,6 @@ getPointDensity <- function(x, y, n = 100) {
   return(dens$z[ii])
 }
 
-
 #' theme_nogrid
 #' 
 #' A ggplot2 theme based on theme_bw but with no grid lines and axis only on top and bottom
@@ -130,6 +129,58 @@ theme_nogrid <- function(base_size = 10, base_family = "") {
       panel.grid.minor  = element_blank(),
       strip.background  = element_rect(fill = "white", colour = "black", size = 0.2)
     )
+}
+
+#' ggAutoColorScale
+#' 
+#' Automatical color scales for values for ggplots
+#' @param x vector of values
+#' @param method method for scaling: \code{"color"} or \code{"fill"}
+#' @param symmetric treat numeric values as symmetric. If there are values smaller and larger than 0, a diverging color scheme will be applied
+#' @return the theme structure
+#' @export
+#' @aliases theme_nogrid
+#' @examples 
+#' dframe.num.pos <- data.frame(x=runif(100),y=runif(100))
+#' ggplot(dframe.num.pos, aes(x=x,y=y, color=x)) + geom_point() + ggAutoColorScale(dframe.num.pos[,"x"])
+#' dframe.num.sym <- data.frame(x=rnorm(100),y=rnorm(100))
+#' ggplot(dframe.num.sym, aes(x=x,y=y, color=x)) + geom_point() + ggAutoColorScale(dframe.num.sym[,"x"])
+#' dframe.num.sym.lab <- data.frame(x=rnorm(100),y=rnorm(100), lab=sample(c("A", "B", "C", "D"), 100, replace=TRUE))
+#' ggplot(dframe.num.sym.lab, aes(x=x,y=y, color=lab)) + geom_point() + ggAutoColorScale(dframe.num.sym.lab[,"lab"])
+ggAutoColorScale <- function(x, method="color", symmetric=TRUE){
+  if (!is.element(method, c("color", "colour", "fill"))) error("invalid scale method")
+  res <- NULL
+  params <- list()
+  params[["na.value"]] <- "#C0C0C0"
+  if (is.numeric(x)){
+    
+    lims <- c(min(x, na.rm=TRUE), max(x, na.rm=TRUE))
+    params[["colors"]] <- colpal.cont(n=9, name="viridis")
+    if (symmetric){
+      ctrVal <- 0L
+      if(any(x < ctrVal) && any(x > ctrVal)){
+        xDiff <- x - ctrVal
+        lims <- max(abs(xDiff), na.rm=TRUE)
+        lims <- c(ctrVal-lims, ctrVal+lims)
+        params[["colors"]] <- colpal.cont(n=9, name="cb.RdYlBu")
+      } 
+    }
+    params[["limits"]] <- lims
+
+    mname <- paste0("scale_", method, "_gradientn")
+  } else {
+    res[["scale_method"]] <- "manual"
+    if (!is.factor(x)){
+      x <- factor(x)
+    }
+    lvls <- levels(x)
+    cs <- rep(colpals.games[["mombasa"]], length.out=length(lvls))
+    params[["limits"]] <- lvls
+    params[["values"]] <- cs
+    mname <- paste0("scale_", method, "_manual")
+  }
+  res <- do.call(mname, params)
+  return(res)
 }
 
 #' ggsave4doc
