@@ -139,7 +139,6 @@ theme_nogrid <- function(base_size = 10, base_family = "") {
 #' @param symmetric treat numeric values as symmetric. If there are values smaller and larger than 0, a diverging color scheme will be applied
 #' @return the theme structure
 #' @export
-#' @aliases theme_nogrid
 #' @examples 
 #' dframe.num.pos <- data.frame(x=runif(100),y=runif(100))
 #' ggplot(dframe.num.pos, aes(x=x,y=y, color=x)) + geom_point() + ggAutoColorScale(dframe.num.pos[,"x"])
