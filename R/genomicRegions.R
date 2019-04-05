@@ -70,7 +70,7 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 	}
 	if (!is.null(strandCharNA) && is.character(strandCharNA) && length(strandCharNA)==1){
 		repIdx <- is.na(tt[,"strand"]) | tt[,"strand"] %in% setdiff(c(".", "*"), strandCharNA)
-		if (all(repIdx) && !addAnnotCols && coordOnly){
+		if (!addAnnotCols && coordOnly && all(repIdx)){
 			tt <- tt[,c("chrom", "start", "end")]
 		} else {
 			tt[repIdx,"strand"] <- strandCharNA
