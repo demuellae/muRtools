@@ -68,13 +68,11 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 	if (!addAnnotCols && coordOnly){
 		tt <- tt[,c("chrom", "start", "end", "strand")]
 	}
-	if (!is.null(strandCharNA) && is.character(strandCharNA) && length(strandCharNA)==1){
-		repIdx <- is.na(tt[,"strand"]) | tt[,"strand"] %in% setdiff(c(".", "*"), strandCharNA)
-		if (!addAnnotCols && coordOnly && all(repIdx)){
-			tt <- tt[,c("chrom", "start", "end")]
-		} else {
-			tt[repIdx,"strand"] <- strandCharNA
-		}
+	strandNaIdx <- is.na(tt[,"strand"]) | tt[,"strand"] %in% setdiff(c(".", "*"), strandCharNA)
+	if (!addAnnotCols && coordOnly && all(strandNaIdx)){
+		tt <- tt[,c("chrom", "start", "end")]
+	} else if (!is.null(strandCharNA) && is.character(strandCharNA) && length(strandCharNA)==1){
+		tt[strandNaIdx,"strand"] <- strandCharNA
 	}
 	if (addAnnotCols){
 		tt <- data.frame(tt, elementMetadata(gr))
