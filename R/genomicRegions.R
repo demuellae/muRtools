@@ -41,9 +41,10 @@ bedTobigBed <- function(bedFn, chromSizes, bbFn=paste0(gsub("\\.bed$", "", bedFn
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
 #' @param bigBed also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.
+#' @param strandCharNA character to be used if strand is NA, '*' or '.'
 #' @return (invisibly) the written results as a data.frame
 #' @export 
-granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE){
+granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE, strandCharNA="."){
 	if (doSort){
 		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
 		gr <- gr[oo]
@@ -60,9 +61,13 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 		end=format(end(gr), trim=TRUE, scientific=FALSE),
 		name=nns,
 		score=sc,
-		strand=strand(gr),
+		strand=as.character(strand(gr)),
 		stringsAsFactors=FALSE
 	)
+	if (!is.null(strandCharNA) && is.character(strandCharNA) && length(strandCharNA)==1){
+		repIdx <- is.na(tt[,"strand"]) | tt[,"strand"] %in% setdiff(c(".", "*"), strandCharNA)
+		tt[repIdx,"strand"] <- strandCharNA
+	}
 	if (addAnnotCols){
 		tt <- data.frame(tt, elementMetadata(gr))
 	}

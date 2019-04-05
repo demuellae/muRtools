@@ -5,7 +5,8 @@
 \title{granges2bed}
 \usage{
 granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE,
-  colNames = FALSE, doSort = TRUE, bigBed = FALSE)
+  colNames = FALSE, doSort = TRUE, bigBed = FALSE,
+  strandCharNA = ".")
 }
 \arguments{
 \item{gr}{GRanges object}
@@ -19,6 +20,8 @@ granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE,
 \item{doSort}{sort the regions before writing the output}
 
 \item{bigBed}{also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.}
+
+\item{strandCharNA}{character to be used if strand is NA, '*' or '.'}
 
 \item{sc}{score vector or column in elementMetadata of GRanges}
 }

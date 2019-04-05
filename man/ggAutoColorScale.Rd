@@ -2,7 +2,6 @@
 % Please edit documentation in R/mu_ggplots2_ext.R
 \name{ggAutoColorScale}
 \alias{ggAutoColorScale}
-\alias{theme_nogrid}
 \title{ggAutoColorScale}
 \usage{
 ggAutoColorScale(x, method = "color", symmetric = TRUE)
