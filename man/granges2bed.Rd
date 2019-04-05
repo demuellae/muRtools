@@ -6,7 +6,7 @@
 \usage{
 granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE,
   colNames = FALSE, doSort = TRUE, bigBed = FALSE,
-  strandCharNA = ".")
+  strandCharNA = ".", coordOnly = FALSE)
 }
 \arguments{
 \item{gr}{GRanges object}
@@ -22,6 +22,8 @@ granges2bed(gr, fn, score = NULL, addAnnotCols = FALSE,
 \item{bigBed}{also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.}
 
 \item{strandCharNA}{character to be used if strand is NA, '*' or '.'}
+
+\item{coordOnly}{output only the coordinates and strand information (only taken into account if \code{addAnnotCols==FALSE}). If all strand information is NA, it will be dropped as well.}
 
 \item{sc}{score vector or column in elementMetadata of GRanges}
 }
