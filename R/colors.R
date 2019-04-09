@@ -42,7 +42,7 @@ colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A
 #' @export
 #' @examples
 #' plot.colpal(colpal.mu.cat)
-colpal.mu.cat <- c("#e69f00", "#56b4e9", "#74c476", "#cc79a7", "#d55e00", "#0072b2", "#009e73", "#6a51a3", "#f0e442", "#999999", "#000000")
+colpal.mu.cat <- c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE1716", "#7C83B3", "#671719", "#775725", "#a6cee3", "#CC79A7", "#E0CDA6", "#ffffb3", "#8dd3c7", "#018D9D", "#8c1515", "#676D8D", "#000000")
 #' \describe{
 #'   \item{\code{colpal.corpid}}{
 #'         Color palette inspired by coorporate identities I worked with

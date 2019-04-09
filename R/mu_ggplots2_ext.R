@@ -173,7 +173,7 @@ ggAutoColorScale <- function(x, method="color", symmetric=TRUE){
       x <- factor(x)
     }
     lvls <- levels(x)
-    cs <- rep(colpals.games[["mombasa"]], length.out=length(lvls))
+    cs <- rep(colpal.mu.cat, length.out=length(lvls))
     params[["limits"]] <- lvls
     params[["values"]] <- cs
     mname <- paste0("scale_", method, "_manual")
