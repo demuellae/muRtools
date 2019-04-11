@@ -737,6 +737,10 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #' @param recalc   recalculate adjusted p-value/q-value and ranks after the specified subsetting (by \code{includedCollections})
 #' @param pvalCut p-value cutoff (negative log10) to be employed for filtering the results
 #' @param maxTerms maximum number of items to be included in the plot
+#' @param userSetOrder the order in which the user sets are displayed.
+#'                 \code{NULL} (default) means original factor levels if \code{userSet} is a factor or (alphanumeric) sorting otherwise;
+#'                 \code{"nSignif"} means in decreasing order of significant terms;
+#'                 \code{"clusterSignif"} means hierarchical clustering by occurrences of significant terms;
 #' @param colorpanel colorpanel for the heatmap gradient
 #' @param groupByCollection facet the plot by collection
 #' @param orderDecreasing flag indicating whether the value in \code{orderCol} should be considered as decreasing (as opposed
@@ -746,7 +750,7 @@ lolaBoxPlotPerTarget <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 #'
 #' @author Fabian Mueller
 #' @export
-lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
+lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol=scoreCol, signifCol="qValue", markSignif=FALSE, includedCollections=c(), recalc=TRUE, pvalCut=0.01, maxTerms=50, userSetOrder=NULL, colorpanel=colpal.cont(9, "cb.OrRd"), colorpanelLimits=rep(as.numeric(NA),2), groupByCollection=TRUE, orderDecreasing=NULL, appendTermDbId=TRUE){
 	#prepare data.frame for plotting
 	df2p <- muRtools:::lolaPrepareDataFrameForPlot(lolaDb, lolaRes, scoreCol=scoreCol, orderCol=orderCol, signifCol=signifCol, includedCollections=includedCollections, recalc=recalc, pvalCut=pvalCut, maxTerms=maxTerms, perUserSet=TRUE, groupByCollection=groupByCollection, orderDecreasing=orderDecreasing, appendTermDbId=appendTermDbId)
 
@@ -754,7 +758,25 @@ lolaRegionSetHeatmap <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCol
 		return(ggMessagePlot("No significant association found"))
 	}
 
-	if (!is.factor(df2p$userSet)) df2p$userSet <- factor(df2p$userSet)
+	if (is.factor(df2p$userSet)) {
+		uSetLvls <- levels(df2p$userSet)
+	} else {
+		uSetLvls <- sort(unique(df2p$userSet))
+	}
+	if (!is.null(userSetOrder)){
+		if (userSetOrder=="nSignif"){
+			ns <- tapply(df2p$isSignif, df2p$userSet, sum)
+			uSetLvls <- names(ns)[order(ns, decreasing=TRUE)]
+		} else if (userSetOrder=="clusterSignif"){
+			mm <- reshape2::acast(df2p, userSet ~ dbSet, value.var="isSignif")
+			mm[is.na(mm)] <- FALSE
+			cc <- hclust(dist(mm, method="manhattan"), method="complete")
+
+			uSetLvls <- rev(cc$labels[cc$order])
+		}
+	}
+
+	df2p$userSet <- factor(df2p$userSet, levels=uSetLvls)
 	if (markSignif) df2p$signifTxt <- ifelse(df2p$isSignif, "*", NA) 
 
 	pp <- ggplot(df2p) + aes(term, userSet) + geom_tile(aes_string(fill=scoreCol)) + 
@@ -827,12 +849,15 @@ lolaRegionSetHeatmap2 <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCo
 	if (is.na(colorpanelLimits[2])) colorpanelLimits[2] <- max(scoreM, na.rm=TRUE)
 	cp <- circlize::colorRamp2(seq(colorpanelLimits[1], colorpanelLimits[2], length.out=length(colorpanel)), colorpanel)
 	hm <- Heatmap(scoreM,
-		col=cp,
+		col=cp, na_col="#FFFFFF",
 		split=rMeta[,"collection"],
 		show_row_names=TRUE, row_names_side="left", row_title_side="right",
+		row_names_max_width=unit(0.4, "npc"),
 		show_column_names=TRUE, column_names_side="top",
 		cluster_rows=FALSE, cluster_columns=FALSE,
-		width=unit(0.2, "npc"),
+		width=unit(0.4, "npc"),
+		gap=unit(0.001, "npc"),
+		border=TRUE,
 		name=scoreCol
 	)
 	# annoStrM <- as.matrix(rMeta[,c("name", "target", "cellType")])
@@ -846,7 +871,10 @@ lolaRegionSetHeatmap2 <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCo
 	# 	},
 	# 	cluster_rows=FALSE, cluster_columns=FALSE,
 	# 	split=rMeta[,"collection"],
-	# 	show_row_names=FALSE, show_column_names=FALSE, show_heatmap_legend=FALSE,
+	# 	show_row_names=TRUE, row_names_side="left",
+	# 	row_title_side="right",
+	# 	row_names_max_width=unit(0.4, "npc"),
+	# 	show_column_names=FALSE, show_heatmap_legend=FALSE,
 	# 	width=unit(0.2, "npc")
 	# )
 
