@@ -8,9 +8,10 @@ Plot a heatmap in which the rows are different user sets and the color correspon
 lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
   orderCol = scoreCol, signifCol = "qValue", markSignif = FALSE,
   includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
-  maxTerms = 50, colorpanel = colpal.cont(9, "cb.OrRd"),
-  colorpanelLimits = rep(as.numeric(NA), 2), groupByCollection = TRUE,
-  orderDecreasing = NULL, appendTermDbId = TRUE)
+  maxTerms = 50, userSetOrder = NULL, colorpanel = colpal.cont(9,
+  "cb.OrRd"), colorpanelLimits = rep(as.numeric(NA), 2),
+  groupByCollection = TRUE, orderDecreasing = NULL,
+  appendTermDbId = TRUE)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}
@@ -32,6 +33,11 @@ lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
 \item{pvalCut}{p-value cutoff (negative log10) to be employed for filtering the results}
 
 \item{maxTerms}{maximum number of items to be included in the plot}
+
+\item{userSetOrder}{the order in which the user sets are displayed.
+\code{NULL} (default) means original factor levels if \code{userSet} is a factor or (alphanumeric) sorting otherwise;
+\code{"nSignif"} means in decreasing order of significant terms;
+\code{"clusterSignif"} means hierarchical clustering by occurrences of significant terms;}
 
 \item{colorpanel}{colorpanel for the heatmap gradient}
 

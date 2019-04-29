@@ -96,7 +96,9 @@ colpals.games <- list(
 #' @export 
 plot.colpal <- function(cp, type="pie"){
   if (type=="pie"){
-    pie(rep(1,length(cp)), labels=names(cp), col=cp, clockwise=TRUE)
+    nns <- names(cp)
+    if (is.null(nns)) nns <- cp
+    pie(rep(1,length(cp)), labels=nns, col=cp, clockwise=TRUE)
   } else if (is.element(type, c("bar", "stripes"))){
     require(plotrix)
     plot.new()
