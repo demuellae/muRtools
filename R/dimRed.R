@@ -13,7 +13,11 @@
 #' @author Fabian Mueller
 #' @export 
 getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
-	numNA <- colSums(is.na(X) | is.infinite(X))
+	csFun <- colSums
+	if (is.character(attr(class(X), "package")) && attr(class(X), "package")=="Matrix"){
+		csFun <- Matrix::colSums
+	}
+	numNA <- csFun(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
 	if (any(numNA>0)){
 		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"features because the remaining ones contained NAs/Inf"))
