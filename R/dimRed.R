@@ -14,8 +14,10 @@
 #' @export 
 getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 	csFun <- colSums
+	tFun <- t
 	if (is.character(attr(class(X), "package")) && attr(class(X), "package")=="Matrix"){
 		csFun <- Matrix::colSums
+		tFun <- Matrix::t
 	}
 	numNA <- csFun(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
@@ -47,7 +49,7 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 	} else if (method=="irlba_svd") {
 		require(irlba)
 		nComps <- max(components)
-		svdRes <- irlba::irlba(t(X), nComps, nComps, maxit=1000, ...)
+		svdRes <- irlba::irlba(tFun(X), nComps, nComps, maxit=1000, ...)
 		svdDiag <- matrix(0, nrow=length(svdRes$d), ncol=length(svdRes$d))
 		diag(svdDiag) <- svdRes$d
 		coords <- t(svdDiag %*% t(svdRes$v))
