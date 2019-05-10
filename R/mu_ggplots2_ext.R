@@ -157,7 +157,7 @@ ggAutoColorScale <- function(x, method="color", symmetric=TRUE){
     params[["colors"]] <- colpal.cont(n=9, name="viridis")
     if (symmetric){
       ctrVal <- 0L
-      if(any(x < ctrVal) && any(x > ctrVal)){
+      if(any(x < ctrVal, na.rm=TRUE) && any(x > ctrVal, na.rm=TRUE)){
         xDiff <- x - ctrVal
         lims <- max(abs(xDiff), na.rm=TRUE)
         lims <- c(ctrVal-lims, ctrVal+lims)
