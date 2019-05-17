@@ -11,7 +11,7 @@
 #' @rdname colpal
 #' @aliases colpal,colpal.cb,colpal.colpal.bde
 #' @examples 
-#' plot.colpal(colpal.cb)
+#' plotColpal(colpal.cb)
 colpal.cb <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#000000")
 #' \describe{
 #'   \item{\code{colpal.bde}}{
@@ -21,7 +21,7 @@ colpal.cb <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
 #' @rdname colpal
 #' @export
 #' @examples
-#' plot.colpal(colpal.bde)
+#' plotColpal(colpal.bde)
 colpal.bde <- c("#2166AC","#B2182B","#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E","#E6AB02","#A6761D","#666666","#00441B","#40004B","#053061")
 #' \describe{
 #'   \item{\code{colpal.nature}}{
@@ -31,7 +31,7 @@ colpal.bde <- c("#2166AC","#B2182B","#1B9E77","#D95F02","#7570B3","#E7298A","#66
 #' @rdname colpal
 #' @export
 #' @examples
-#' plot.colpal(colpal.nature)
+#' plotColpal(colpal.nature)
 colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A47", "#E67800", "#709F28", "#008FB4", "#84486A", "#B5797F", "#7489A8",  "#6C9396", "#7D9FB1", "#84486A", "#7C698B", "#88A2C3")
 #' \describe{
 #'   \item{\code{colpal.nature}}{
@@ -41,7 +41,7 @@ colpal.nature <- c("#003D7C", "#D50911", "#0086A8", "#008136", "#7C68A4", "#8E1A
 #' @rdname colpal
 #' @export
 #' @examples
-#' plot.colpal(colpal.mu.cat)
+#' plotColpal(colpal.mu.cat)
 colpal.mu.cat <- c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE1716", "#7C83B3", "#671719", "#775725", "#a6cee3", "#CC79A7", "#E0CDA6", "#ffffb3", "#8dd3c7", "#018D9D", "#8c1515", "#676D8D", "#000000")
 #' \describe{
 #'   \item{\code{colpal.corpid}}{
@@ -51,7 +51,7 @@ colpal.mu.cat <- c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE17
 #' @rdname colpal
 #' @export
 #' @examples
-#' plot.colpal(colpal.corpid)
+#' plotColpal(colpal.corpid)
 colpal.corpid <- c(
   "mpii.darkblue"="#1C1D3B",
   "mpii.lightblue"="#676D8D",
@@ -75,7 +75,7 @@ colpal.corpid <- c(
 #' @rdname colpal
 #' @export
 #' @examples
-#' plot.colpal(colpals.games[["rollgalaxy"]])
+#' plotColpal(colpals.games[["rollgalaxy"]])
 colpals.games <- list(
   bruges=c("#3B8FCF", "#B52622", "#8D5718", "#572978", "#FFC856", "#28A742", "#256CBF", "#C4292C", "#E0EB36"),
   mombasa=c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE1716", "#7C83B3", "#671719", "#E0CDA6", "#775725", "#000000"),
@@ -86,7 +86,7 @@ colpals.games <- list(
   #c("#", "#", "#", "#", "#", "#", "#", "#")
 )
 
-#' plot.colpal
+#' plotColpal
 #' 
 #' Get a continuous color palette
 #' @param cp   color palette, i.e. vector of colors
@@ -94,7 +94,7 @@ colpals.games <- list(
 #' @return nothing of particular interest
 #' @author Fabian Mueller
 #' @export 
-plot.colpal <- function(cp, type="pie"){
+plotColpal <- function(cp, type="pie"){
   if (type=="pie"){
     nns <- names(cp)
     if (is.null(nns)) nns <- cp
@@ -118,8 +118,8 @@ plot.colpal <- function(cp, type="pie"){
 #' @author Fabian Mueller
 #' @export
 #' @examples
-#' plot.colpal(colpal.cont(5, "viridis"))
-#' plot.colpal(colpal.cont(5, "cb.BrBG"))
+#' plotColpal(colpal.cont(5, "viridis"))
+#' plotColpal(colpal.cont(5, "cb.BrBG"))
 colpal.cont <- function(n=3, name="viridis", ...){
   if (name=="viridis"){
     require(viridis)

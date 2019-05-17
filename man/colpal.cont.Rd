@@ -20,8 +20,8 @@ a character vector containing n colors
 Get a continuous color palette
 }
 \examples{
-plot.colpal(colpal.cont(5, "viridis"))
-plot.colpal(colpal.cont(5, "cb.BrBG"))
+plotColpal(colpal.cont(5, "viridis"))
+plotColpal(colpal.cont(5, "cb.BrBG"))
 }
 \author{
 Fabian Mueller

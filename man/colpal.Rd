@@ -32,11 +32,11 @@ colpals.games
 }
 }
 \examples{
-plot.colpal(colpal.cb)
-plot.colpal(colpal.bde)
-plot.colpal(colpal.nature)
-plot.colpal(colpal.mu.cat)
-plot.colpal(colpal.corpid)
-plot.colpal(colpals.games[["rollgalaxy"]])
+plotColpal(colpal.cb)
+plotColpal(colpal.bde)
+plotColpal(colpal.nature)
+plotColpal(colpal.mu.cat)
+plotColpal(colpal.corpid)
+plotColpal(colpals.games[["rollgalaxy"]])
 }
 \keyword{datasets}
