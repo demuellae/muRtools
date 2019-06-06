@@ -5,19 +5,18 @@ Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
 Date: 2019-01-21
 Suggests:
-    GenomicRanges,
     BSgenome.Hsapiens.UCSC.hg19,
     BSgenome.Hsapiens.NCBI.GRCh38,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10
 Imports:
-    data.table
-Depends:
 	muLogR,
     gplots,
     plotrix,
     ggplot2,
-    data.table
+    data.table,
+    GenomicRanges,
+    GenomeInfoDb
 License: GPL-2
 Version: 0.9
 RoxygenNote: 6.1.1
