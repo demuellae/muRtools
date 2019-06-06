@@ -3,10 +3,8 @@
 #' Fabian's custom plotting functions and utilities
 #'
 #' @import muLogR
-#' @import gplots
-#' @import plotrix
 #' @import ggplot2
-#' @import data.table
+#' @importFrom data.table data.table as.data.table fread
 #' @import GenomicRanges
 #' @import GenomeInfoDb
 #' @docType package

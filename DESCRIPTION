@@ -5,20 +5,21 @@ Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
 Date: 2019-01-21
 Suggests:
+    gplots,
+    plotrix,
     BSgenome.Hsapiens.UCSC.hg19,
     BSgenome.Hsapiens.NCBI.GRCh38,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10
 Imports:
 	muLogR,
-    gplots,
-    plotrix,
     ggplot2,
     data.table,
     GenomicRanges,
     GenomeInfoDb
 License: GPL-2
 Version: 0.9
+Encoding: UTF-8
 Collate: 
     'analysisConfig.R'
     'clustering.R'
