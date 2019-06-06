@@ -1,6 +1,6 @@
 Package: muRtools
 Title: Mueller's R tools
-Description: My custom plotting functions and utilities
+Description: Fabian's custom plotting functions and utilities
 Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
 Date: 2019-01-21
@@ -9,7 +9,7 @@ Suggests:
     BSgenome.Hsapiens.NCBI.GRCh38,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10
-Depends:
+Imports:
 	muLogR,
     gplots,
     plotrix,
@@ -19,7 +19,6 @@ Depends:
     GenomeInfoDb
 License: GPL-2
 Version: 0.9
-RoxygenNote: 6.1.1
 Collate: 
     'analysisConfig.R'
     'clustering.R'
@@ -39,6 +38,7 @@ Collate:
     'muKDEplots.R'
     'muMakeTrans.R'
     'muPairs.R'
+    'muRtools.R'
     'muScatter.R'
     'stringOps.R'
     'mu_ggplots2_ext.R'
@@ -47,3 +47,4 @@ Collate:
     'statTest.R'
     'txdb.R'
     'wrappers.R'
+RoxygenNote: 6.1.1
