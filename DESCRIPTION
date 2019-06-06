@@ -9,7 +9,7 @@ Suggests:
     BSgenome.Hsapiens.NCBI.GRCh38,
     BSgenome.Mmusculus.UCSC.mm9,
     BSgenome.Mmusculus.UCSC.mm10
-Imports:
+Depends:
 	muLogR,
     gplots,
     plotrix,
