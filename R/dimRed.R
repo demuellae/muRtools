@@ -181,10 +181,11 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 #' @param addLabels should observation labels be added to each point
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
 #' @param annot.text optional text to be added in the lower right corner of the plot
+#' @param orderCol name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL){
+getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL, orderCol=NULL){
 	if (!is.null(annot)){
 		if (nrow(annot)!=nrow(coords)){
 			stop("Non-matching number of rows for dimension reduction coordinates and annotation")
@@ -251,6 +252,23 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			warning("Currently only non-numeric columns are supported for dimRed shapes. --> converting to factor")
 			df2p[,shapeCol] <- factor(df2p[,shapeCol])
 		}
+	}
+
+	if (!is.null(orderCol)) {
+		if (length(orderCol)!=1){
+			stop("colorCol must be of length 1")
+		}
+		if (is.numeric(orderCol)){
+			if (!is.null(colnames(annot))){
+				orderCol <- colnames(annot)[orderCol]
+			}
+		}
+		if (is.character(orderCol) || is.numeric(orderCol)){
+			oo <- order(df2p[,orderCol], decreasing=FALSE, na.last=FALSE)
+		} else {
+			stop("invalid value for orderCol")
+		}
+		df2p <- df2p[oo,]
 	}
 
 	if (!is.null(rownames(coords))) df2p$observation <- rownames(coords)

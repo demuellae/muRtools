@@ -6,7 +6,7 @@
 \usage{
 getDimRedPlot(coords, annot = NULL, colorCol = NULL, shapeCol = NULL,
   colScheme = "[auto]", ptSize = 3, addLabels = FALSE,
-  addDensity = FALSE, annot.text = NULL)
+  addDensity = FALSE, annot.text = NULL, orderCol = NULL)
 }
 \arguments{
 \item{coords}{dimension reduction coordinates}
@@ -29,6 +29,8 @@ it defaults to the second annotation column}
 \item{addDensity}{should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group}
 
 \item{annot.text}{optional text to be added in the lower right corner of the plot}
+
+\item{orderCol}{name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points}
 }
 \value{
 a \code{ggplot2} object containing the dimension reduction plot
