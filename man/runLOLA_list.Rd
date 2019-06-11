@@ -13,7 +13,7 @@ runLOLA_list(userSets, userUniverse, lolaDb, ...)
 
 \item{userUniverse}{GRanges object to be used as universe (as required by \code{LOLA::runLOLA})}
 
-\item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}}
+\item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{loadLolaDbs}}
 
 \item{...}{other arguments to iterate over}
 }

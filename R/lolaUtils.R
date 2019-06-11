@@ -892,7 +892,7 @@ lolaRegionSetHeatmap2 <- function(lolaDb, lolaRes, scoreCol="pValueLog", orderCo
 #'
 #' @param userSets      NAMED list or GRangesList of user sets
 #' @param userUniverse  GRanges object to be used as universe (as required by \code{LOLA::runLOLA})
-#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \link{\code{loadLolaDbs}}
+#' @param lolaDb   LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{loadLolaDbs}
 #' @param ...  other arguments to iterate over
 #' @return LOLA result as returned by \code{LOLA::runLOLA}
 #'
