@@ -6,7 +6,8 @@
 \usage{
 getDimRedPlot(coords, annot = NULL, colorCol = NULL, shapeCol = NULL,
   colScheme = "[auto]", ptSize = 3, addLabels = FALSE,
-  addDensity = FALSE, annot.text = NULL, orderCol = NULL)
+  addDensity = FALSE, annot.text = NULL, orderCol = NULL,
+  facetCols = NULL)
 }
 \arguments{
 \item{coords}{dimension reduction coordinates}
@@ -31,6 +32,8 @@ it defaults to the second annotation column}
 \item{annot.text}{optional text to be added in the lower right corner of the plot}
 
 \item{orderCol}{name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points}
+
+\item{facetCols}{name (string) of columns to be used for faceting the resulting plot. Each facet will contain all the points not in the facet as grey points.}
 }
 \value{
 a \code{ggplot2} object containing the dimension reduction plot

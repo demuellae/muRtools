@@ -182,10 +182,11 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
 #' @param annot.text optional text to be added in the lower right corner of the plot
 #' @param orderCol name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points
+#' @param facetCols name (string) of columns to be used for faceting the resulting plot. Each facet will contain all the points not in the facet as grey points.
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL, orderCol=NULL){
+getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL, orderCol=NULL, facetCols=NULL){
 	if (!is.null(annot)){
 		if (nrow(annot)!=nrow(coords)){
 			stop("Non-matching number of rows for dimension reduction coordinates and annotation")
@@ -271,6 +272,15 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		df2p <- df2p[oo,]
 	}
 
+	if (!is.null(facetCols)){
+		if (length(facetCols) > 2){
+			stop("Too many facet columns")
+		}
+		for (cn in facetCols){
+			df2p[,cn] <- annot[,cn]
+		}
+	}
+
 	if (!is.null(rownames(coords))) df2p$observation <- rownames(coords)
 	pp <- ggplot(df2p, aes_string(x=xLab, y=yLab, color=colorCol))
 	if (!is.null(colScheme)){
@@ -295,6 +305,9 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			pp <- pp + stat_density2d(data=df2p2, alpha=0.3)
 		}
 	}
+	if (!is.null(facetCols)){
+		pp <- pp + geom_point(data=df2p[,!(colnames(df2p) %in% facetCols)], color="#C0C0C0", size=ptSize)
+	}
 	if (!is.null(shapeCol)){
 		pp <- pp + geom_point(aes_string(shape=shapeCol), size=ptSize) + scale_shape_manual(values=c(19,15,17,4,3,18,8,1,0,2,6))
 	} else {
@@ -306,6 +319,14 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 	# pp <- pp + coord_fixed()
 	if (!is.null(annot.text)){
 		pp <- pp + annotate("text", x=max(df2p[,xLab],na.rm=TRUE),y=min(df2p[,yLab],na.rm=TRUE),label=annot.text,parse=FALSE,hjust=1,vjust=1,size=4)
+	}
+	if (!is.null(facetCols)){
+		if (length(facetCols)==1){
+			nr <- ceiling(sqrt(length(unique(df2p[,facetCols]))))
+			pp <- pp + facet_wrap(as.formula(paste0("~", facetCols)), nrow=nr)
+		} else {
+			pp <- pp + facet_grid(as.formula(paste(facetCols, collapse="~")))
+		}	
 	}
 	#add percent variance explained to axis labels
 	percVar <- attr(coords,"percVar")
