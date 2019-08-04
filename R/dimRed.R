@@ -152,7 +152,7 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 	if (callArgL[["n_neighbors"]] > nrow(X)){
 		nn <- nrow(X)
 		logger.warning(c("UMAP: number of neighbors can't be > N_samples. --> reducing to", nn, "neighbors"))
-		allArgL[["n_neighbors"]] <- nn
+		callArgL[["n_neighbors"]] <- nn
 	}
 
 	uRes <- do.call("umap", callArgL)
