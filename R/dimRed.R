@@ -142,18 +142,19 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 		X,
 		n_components=k,
 		metric=distMethod,
-		ret_model=TRUE,
-		dotArgs
+		ret_model=TRUE
 	)
 	callArgL <- c(callArgL, list(n_neighbors=15))
 	if (is.element("n_neighbors", names(dotArgs))){
 		callArgL[["n_neighbors"]] <- dotArgs[["n_neighbors"]]
+		dotArgs[["n_neighbors"]] <- NULL
 	}
 	if (callArgL[["n_neighbors"]] > nrow(X)){
-		nn <- nrow(X)
+		nn <- as.integer(nrow(X)/2)
 		logger.warning(c("UMAP: number of neighbors can't be > N_samples. --> reducing to", nn, "neighbors"))
 		callArgL[["n_neighbors"]] <- nn
 	}
+	callArgL <- c(callArgL, dotArgs)
 
 	uRes <- do.call("umap", callArgL)
 	coords <- uRes$embedding[,dims]
