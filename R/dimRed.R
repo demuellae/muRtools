@@ -130,6 +130,7 @@ getDimRedCoords.tsne <- function(X, distMethod="euclidean", dims=c(1,2)){
 #' @export 
 getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 	require(uwot)
+	dotArgs <- list(...)
 	numNA <- colSums(is.na(X) | is.infinite(X)) # colSums(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
 	if (any(numNA>0)){
@@ -137,7 +138,24 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 		X <- X[,has.noNA]
 	}
 	k <- max(dims)
-	uRes <- umap(X, n_components=k, metric=distMethod, ret_model=TRUE, ...)
+	callArgL <- list(
+		X,
+		n_components=k,
+		metric=distMethod,
+		ret_model=TRUE,
+		dotArgs
+	)
+	callArgL <- c(callArgL, list(n_neighbors=15))
+	if (is.element("n_neighbors", names(dotArgs))){
+		callArgL[["n_neighbors"]] <- dotArgs[["n_neighbors"]]
+	}
+	if (callArgL[["n_neighbors"]] > nrow(X)){
+		nn <- nrow(X)
+		logger.warning(c("UMAP: number of neighbors can't be > N_samples. --> reducing to", nn, "neighbors"))
+		allArgL[["n_neighbors"]] <- nn
+	}
+
+	uRes <- do.call("umap", callArgL)
 	coords <- uRes$embedding[,dims]
 	colnames(coords) <- paste0("UMAP", 1:ncol(coords))
 	rownames(coords) <- rownames(X)
