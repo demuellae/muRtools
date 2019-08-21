@@ -209,10 +209,18 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 
 	if (!is.function(col.l)) col.l <- getColorFun(ml, col.l)
 	if (!is.function(col.r)) col.r <- getColorFun(mr, col.r)
+	colPalLegend_l <- col.l
+	if (is.character(ml) || is.factor(ml)){
+		colPalLegend_l <- environment(col.l)[["mapVec"]]
+	}
+	colPalLegend_r <- col.r
+	if (is.character(mr) || is.factor(mr)){
+		colPalLegend_r <- environment(col.r)[["mapVec"]]
+	}
 
 	dummyColor <- circlize::colorRamp2(seq(0, 1, length.out=2), rep("grey", 2))
 	res <- Heatmap(ml,
-		col=dummyColor, rect_gp=gpar(type="none"),
+		col=colPalLegend_l, rect_gp=gpar(type="none"),
 		cell_fun = function(j, i, x, y, width, height, fill) {
 			# grid.rect(x=x, y=y, width=width, height=height, gp=gpar(col="grey", fill="grey"))
 			grid.polygon(
@@ -232,7 +240,7 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 	# dummy heatmap for color legend
 	dummyM <- matrix(rep(NA, length.out=nrow(mr)), nrow=nrow(ml), ncol=1)
 	rownames(dummyM) <- rownames(ml)
-	dummyHm <- Heatmap(dummyM, col=dummyColor, width=unit(0, "mm"), name=name.r)
+	dummyHm <- Heatmap(dummyM, col=colPalLegend_r, width=unit(0, "mm"), name=name.r)
 
 	return(res + dummyHm)
 }
