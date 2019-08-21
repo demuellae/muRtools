@@ -33,8 +33,6 @@ testAssoc <- function(x, y, permMat=NULL) {
 			"pvalue" = as.double(NA))
 
 	if (length(x) != length(y)) logger.error(c("x and y must have matching lengths"))
-
-	## Focus on common values
 	if (class(x) == "Date") { x <- as.integer(x) }
 	if (class(y) == "Date") { y <- as.integer(y) }
 	if (is.character(x) || is.logical(x)) { x <- factor(x) }
