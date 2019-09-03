@@ -22,6 +22,7 @@ Get a continuous color palette
 \examples{
 plotColpal(colpal.cont(5, "viridis"))
 plotColpal(colpal.cont(5, "cb.BrBG"))
+plotColpal(colpal.cont(9, "solarextra"))
 }
 \author{
 Fabian Mueller

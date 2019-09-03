@@ -8,6 +8,7 @@
 \alias{colpal.nature}
 \alias{colpal.mu.cat}
 \alias{colpal.iwh.cb01}
+\alias{colpal.solarextra}
 \alias{colpal.corpid}
 \alias{colpals.games}
 \title{Custom Color Paletes}
@@ -22,6 +23,8 @@ colpal.nature
 colpal.mu.cat
 
 colpal.iwh.cb01
+
+colpal.solarextra
 
 colpal.corpid
 
@@ -40,6 +43,7 @@ plotColpal(colpal.bde)
 plotColpal(colpal.nature)
 plotColpal(colpal.mu.cat)
 plotColpal(colpal.iwh.cb01)
+plotColpal(colpal.solarextra)
 plotColpal(colpal.corpid)
 plotColpal(colpals.games[["rollgalaxy"]])
 }

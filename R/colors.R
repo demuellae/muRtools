@@ -54,6 +54,16 @@ colpal.mu.cat <- c("#009FE3", "#DE7E00", "#8EC041", "#FFCC00", "#951B81", "#BE17
 #' plotColpal(colpal.iwh.cb01)
 colpal.iwh.cb01 <- c("#117ef6", "#b1005b", "#6c8900", "#ff724f", "#ff68af", "#ffb7f5", "#00883a", "#9138a9", "#71003c", "#016cae", "#610048", "#610063", "#00e3b5", "#bfdf91", "#bba2ff", "#964b00", "#ffc153", "#66ecaa", "#01276d", "#009770", "#074a00", "#2cebe8", "#692e00")
 #' \describe{
+#'   \item{\code{colpal.solarextra}}{
+#'      Diverging color scheme often used by the Greenleaf lab
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plotColpal(colpal.solarextra)
+colpal.solarextra = c('#3361A5', '#248AF3', '#14B3FF', '#88CEEF', '#C1D5DC', '#EAD397', '#FDB31A', '#E42A2A', '#A31D1D')
+#' \describe{
 #'   \item{\code{colpal.corpid}}{
 #'         Color palette inspired by coorporate identities I worked with
 #'   }
@@ -130,10 +140,15 @@ plotColpal <- function(cp, type="pie"){
 #' @examples
 #' plotColpal(colpal.cont(5, "viridis"))
 #' plotColpal(colpal.cont(5, "cb.BrBG"))
+#' plotColpal(colpal.cont(9, "solarextra"))
 colpal.cont <- function(n=3, name="viridis", ...){
   if (name=="viridis"){
     require(viridis)
     return(viridis(n, ...))
+  } else if (name=="solarextra"){
+    if (n < 1 || n > length(colpal.solarextra)) stop("invalid value for n")
+    idx <- as.integer(round(seq(1, length(colpal.solarextra), length.out=n), 0))
+    return(colpal.solarextra[idx])
   } else if (grepl("^cb\\.", name)){
     require(RColorBrewer)
     name <- gsub("^cb\\.", "", name)
