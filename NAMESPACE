@@ -3,6 +3,7 @@
 export(aggregateDf)
 export(bed2GRanges)
 export(camel2underscore)
+export(chordDiagramFromContingencyTable)
 export(col.text.2.hex)
 export(colgrad.methylation.rb)
 export(colgrad.methylation.yb)
