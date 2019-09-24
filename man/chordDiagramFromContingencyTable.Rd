@@ -18,7 +18,7 @@ chordDiagramFromContingencyTable(contTab, cs_rows = colpal.mu.cat,
 nothing of particular interest (include this function while plotting).
 }
 \description{
-Plot a bipartitechord diagram for a contingency matrix
+Plot a bipartite chord diagram (circular Sankey diagram with 2 categories) for a contingency matrix
 the values of two matrices
 }
 \examples{

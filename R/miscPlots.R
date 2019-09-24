@@ -1,7 +1,7 @@
 
 #' chordDiagramFromContingencyTable
 #' 
-#' Plot a bipartitechord diagram for a contingency matrix
+#' Plot a bipartite chord diagram (circular Sankey diagram with 2 categories) for a contingency matrix
 #' the values of two matrices
 #' @param contTab   \code{matrix} or \code{table} containing the contingency matrix
 #' @param cs_rows   color scheme to use for the rows of the matrix
