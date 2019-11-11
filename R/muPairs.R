@@ -8,8 +8,7 @@
 #' @export 
 #' @examples 
 #' colorize.value(0.5,rng=c(-1,1), colscheme.col.val=c(colorpanel(100,"blue","white"),colorpanel(100,"white","red")))
-colorize.value <- function(val, rng=c(-1,1), colscheme.col.val=c(colorpanel(100,"blue","white"),colorpanel(100,"white","red")))
-{
+colorize.value <- function(val, rng=c(-1,1), colscheme.col.val=c(gplots::colorpanel(100,"blue","white"),gplots::colorpanel(100,"white","red"))){
 	return(colscheme.col.val[round((val - rng[1]) / (rng[2] -rng[1])  * (length(colscheme.col.val)-1),0)+1])
 }
 #' panel.cor.col
@@ -22,12 +21,11 @@ colorize.value <- function(val, rng=c(-1,1), colscheme.col.val=c(colorpanel(100,
 #' @param cex.cor cex for correlation text
 #' @param ... more plotting parameters
 #' @return Nothing particularly interesting
-panel.cor.col <- function(x, y, digits=2, prefix="", cex.cor, ...)
-{
-	
+panel.cor.col <- function(x, y, digits=2, prefix="", cex.cor, ...){
 	usr <- par("usr"); on.exit(par(usr))
 	par(usr = c(0, 1, 0, 1))
-	cc <- cor(x, y)
+	idx <- !is.na(x) & !is.na(y) & is.finite(x) & is.finite(y)
+	cc <- cor(x[idx], y[idx])
 	cor.col <- colorize.value(cc,rng=c(-1,1),...)
 	rect(0, 0, 1, 1, density = NULL, angle = 45,col = cor.col)
 	r <- abs(cc)
@@ -43,8 +41,7 @@ panel.cor.col <- function(x, y, digits=2, prefix="", cex.cor, ...)
 #' @param y y
 #' @param ... more plotting parameters
 #' @return Nothing particularly interesting
-panel.density <- function(x, y, ...)
-{
+panel.density <- function(x, y, ...){
 	colorVals = densCols(x=x,y=y)
 	points(x,y, col=colorVals, pch=20, cex=1)
 }
@@ -61,6 +58,6 @@ panel.density <- function(x, y, ...)
 #' dd[,5] <- 1/dd[,5]
 #' tt <- dd[,1:5]
 #' pairsDensCor(tt)
-pairsDensCor <- function(tt,colscheme=c(colorpanel(100,"blue","white"),colorpanel(100,"white","red")),...){
+pairsDensCor <- function(tt,colscheme=c(gplots::colorpanel(100,"blue","white"),gplots::colorpanel(100,"white","red")),...){
 	pairs(tt,lower.panel=panel.density,upper.panel=panel.cor.col,colscheme.col.val=colscheme,...)
 }
