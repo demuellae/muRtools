@@ -325,12 +325,12 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 		}
 	}
 	if (!is.null(facetCols)){
-		pp <- pp + geom_point(data=df2p[,!(colnames(df2p) %in% facetCols)], color="#C0C0C0", size=ptSize)
+		pp <- pp + geom_point(data=df2p[,!(colnames(df2p) %in% facetCols)], color="#C0C0C0", size=ptSize, shape=16)
 	}
 	if (!is.null(shapeCol)){
 		pp <- pp + geom_point(aes_string(shape=shapeCol), size=ptSize) + scale_shape_manual(values=c(19,15,17,4,3,18,8,1,0,2,6))
 	} else {
-		pp <- pp + geom_point(size=ptSize)
+		pp <- pp + geom_point(size=ptSize, shape=16)
 	}
 	if (addLabels && is.element("observation", colnames(df2p))){
 		pp <- pp + geom_text(aes(label=observation), size=2)
