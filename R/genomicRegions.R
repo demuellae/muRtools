@@ -490,7 +490,7 @@ df2granges <- function(df, ids=rownames(df), chrom.col=1L, start.col=2L, end.col
 	}
 
 	# Region coordinates
-	param.list[["ranges"]] <- IRanges(start=df[, start.col], end=df[, end.col], names=ids)
+	param.list[["ranges"]] <- IRanges::IRanges(start=df[, start.col], end=df[, end.col], names=ids)
 
 	# Match strands
 	if (!is.null(strand.col)) {

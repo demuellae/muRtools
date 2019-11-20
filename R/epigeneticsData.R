@@ -73,7 +73,7 @@ bed2GRanges <- function(fname,assembly=NA){
 	}
 	res <- GRanges(
 		seqnames=sns,
-		ranges=IRanges(tbl$start + 1,end=tbl$end) #0-based, right exclusive --> 1-based, right inclusive
+		ranges=IRanges::IRanges(tbl$start + 1,end=tbl$end) #0-based, right exclusive --> 1-based, right inclusive
 	)
 	if (is.element("strand",colnames(tbl))) {
 		strand(res) <- tbl$strand
