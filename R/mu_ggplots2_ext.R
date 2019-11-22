@@ -114,7 +114,7 @@ getPointDensity <- function(x, y, n = 100) {
 #' theme_set(theme_nogrid())
 #' dframe <- data.frame(x=runif(100),y=runif(100))
 #' ggplot(dframe,aes(x=x,y=y)) + geom_point()
-theme_nogrid <- function(base_size = 10, base_family = "") {
+theme_nogrid <- function(base_size = 8, base_family = "Helvetica") {
   # Starts with theme_grey and then modify some parts
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
     theme(
