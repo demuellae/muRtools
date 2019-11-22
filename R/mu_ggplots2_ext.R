@@ -201,7 +201,7 @@ ggAutoColorScale <- function(x, method="color", symmetric=TRUE){
 #' @return result of \code{ggsave} command
 #' @export
 #' @aliases ggsave4doc
-ggsave4doc <- function(fn, plot=last_plot(), width=146, height=146, units="mm", family="Palatino", dimPreset=NULL, useDingbats=FALSE,...){
+ggsave4doc <- function(fn, plot=last_plot(), width=192, height=192, units="mm", family="Helvetica", dimPreset=NULL, useDingbats=FALSE,...){
   if (!is.null(dimPreset)){
     if (dimPreset == "slide_nuc_wide_full"){
       width <- 338.6
