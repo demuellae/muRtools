@@ -83,8 +83,10 @@ getAnnotGrl.gencode <- function(name){
 getGeneAnnotMap <- function(assembly, from="ENSEMBL", to="SYMBOL", multiMap="paste"){
 	aa <- NULL
 	if (is.element(assembly, c("hg38", "hg19"))){
+		require(org.Hs.eg.db)
 		aa <- org.Hs.eg.db::org.Hs.eg.db
 	} else if (is.element(assembly, c("mm9", "mm10"))){
+		require(org.Mm.eg.db)
 		aa <- org.Mm.eg.db::org.Mm.eg.db
 	} else {
 		stop(paste0("Unknown assembly:", assembly))
