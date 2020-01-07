@@ -506,7 +506,7 @@ umapParamGridReport <- function(X, outDir, metric=c("euclidean"), min_dist=seq(0
 		logger.status(c("Computing UMAP dimensions (", i, "of", nrow(umap_params), ")"))
 		getDimRedCoords.umap(X, distMethod=umap_params[i,"metric"], dims=c(1,2), min_dist=umap_params[i,"min_dist"], n_neighbors=umap_params[i,"n_neighbors"])
 	})
-	rr <- muReportR::createReport(file.path(outDir, "umapParams.html"), "UMAP parameter search", page.title = "UMAP parameters", init.configuration=TRUE, theme="stanford")
+	rr <- muReportR::createReport(file.path(outDir, "umapParams.html"), "UMAP parameter grid search", page.title = "UMAP parameters", init.configuration=TRUE, theme="stanford")
 	txt <- "Parameter grid search for UMAP parameters"
 	rr <- muReportR::addReportSection(rr, "Dimension reduction plots", txt, level=1L, collapsed=FALSE)
 	
