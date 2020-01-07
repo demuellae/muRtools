@@ -5,8 +5,8 @@
 \title{umapParamGridReport}
 \usage{
 umapParamGridReport(X, outDir, metric = c("euclidean"),
-  min_dist = seq(0.01, 0.91, by = 0.1), n_neighbors = c(5, 15, 30, 50),
-  ...)
+  min_dist = c(0.01, 0.05, seq(0.1, 0.9, by = 0.1)), n_neighbors = c(5,
+  15, 25, 50), ...)
 }
 \arguments{
 \item{X}{feature matrix containing one row for each observation and one column for each feature}
