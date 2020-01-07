@@ -496,7 +496,7 @@ getAssocTestRes.pca <- function(X, ph, nComp=10, nPerm=1000){
 #' 
 #' @author Fabian Mueller
 #' @export
-umapParamGridReport <- function(X, outDir, metric=c("euclidean"), min_dist=seq(0.01, 0.91, by=0.1), n_neighbors=c(5,15,30,50), ...){
+umapParamGridReport <- function(X, outDir, metric=c("euclidean"), min_dist=c(0.01, 0.05, seq(0.1, 0.9, by=0.1)), n_neighbors=c(5,15,25,50), ...){
 	require(muReportR)
 	require(ggplot2)
 	require(muLogR)
