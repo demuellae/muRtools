@@ -4,8 +4,8 @@
 \alias{pairsDensCor}
 \title{pairsDensCor}
 \usage{
-pairsDensCor(tt, colscheme = c(colorpanel(100, "blue", "white"),
-  colorpanel(100, "white", "red")), ...)
+pairsDensCor(tt, colscheme = c(gplots::colorpanel(100, "blue", "white"),
+  gplots::colorpanel(100, "white", "red")), ...)
 }
 \arguments{
 \item{tt}{table to be visualized}

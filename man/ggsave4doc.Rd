@@ -4,8 +4,8 @@
 \alias{ggsave4doc}
 \title{ggsave4doc}
 \usage{
-ggsave4doc(fn, plot = last_plot(), width = 146, height = 146,
-  units = "mm", family = "Palatino", dimPreset = NULL,
+ggsave4doc(fn, plot = last_plot(), width = 192, height = 192,
+  units = "mm", family = "Helvetica", dimPreset = NULL,
   useDingbats = FALSE, ...)
 }
 \arguments{

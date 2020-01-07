@@ -478,3 +478,66 @@ getAssocTestRes.pca <- function(X, ph, nComp=10, nPerm=1000){
 	# testNames <- sapply(assocL, FUN=function(x){sapply(x, FUN=function(y){y[["test"]]})})
 	return(assocL)
 }
+
+################################################################################
+# Grid search UMAP parameters
+################################################################################
+#' umapParamGridReport
+#' 
+#' Generate a report with plots of UMAP dimension reduction plots for parameter combinations
+#' @param X         feature matrix containing one row for each observation and one column for each feature
+#' @param outDir    output directory
+#' @param colorBy   annotation to color by
+#' @param metric    parameters passed on to \code{uwot::umap()}
+#' @param min_dist  parameters passed on to \code{uwot::umap()}
+#' @param n_neighbors parameters passed on to \code{uwot::umap()}
+#' @param ...       parameters passed on to \code{getDimRedPlot}
+#' @return a \code{muReportR} report (HTML) showing dimension reduction plots for the grid search
+#' 
+#' @author Fabian Mueller
+#' @export
+umapParamGridReport <- function(X, outDir, metric=c("euclidean"), min_dist=seq(0.01, 0.91, by=0.1), n_neighbors=c(5,15,30,50), ...){
+	require(muReportR)
+	require(ggplot2)
+	require(muLogR)
+	umap_params <- expand.grid(metric, min_dist, n_neighbors, stringsAsFactors=FALSE)
+	colnames(umap_params) <- c("metric", "min_dist", "n_neighbors")
+	coordL <- lapply(1:nrow(umap_params), FUN=function(i){
+		logger.status(c("Computing UMAP dimensions (", i, "of", nrow(umap_params), ")"))
+		getDimRedCoords.umap(X, distMethod=umap_params[i,"metric"], dims=c(1,2), min_dist=umap_params[i,"min_dist"], n_neighbors=umap_params[i,"n_neighbors"])
+	})
+	rr <- muReportR::createReport(file.path(outDir, "umapParams.html"), "UMAP parameter search", page.title = "UMAP parameters", init.configuration=TRUE, theme="stanford")
+	txt <- "Parameter grid search for UMAP parameters"
+	rr <- muReportR::addReportSection(rr, "Dimension reduction plots", txt, level=1L, collapsed=FALSE)
+	
+	umap_params_strings <- umap_params
+	for (cn in colnames(umap_params)){
+		umap_params_strings[[cn]] <- normalize.str(as.character(umap_params_strings[[cn]]), return.camel=TRUE)
+	}
+
+	plotL <- lapply(seq_along(coordL), FUN=function(i){
+		logger.status(c("Plotting reduced dimension scatterplot (", i, "of", nrow(umap_params), ")"))
+		pp <-  getDimRedPlot(coordL[[i]], ...) + coord_fixed()
+		figFn <- paste("umap", umap_params_strings[i,"metric"], umap_params_strings[i,"min_dist"], umap_params_strings[i,"n_neighbors"], sep="_")
+		repPlot <- muReportR::createReportGgPlot(pp, figFn, rr, width=7, height=7, create.pdf=TRUE, high.png=0L)
+		repPlot <- muReportR::off(repPlot, handle.errors=TRUE)
+		return(repPlot)
+	})
+	figSettings.metric <- unique(umap_params[,"metric"])
+	names(figSettings.metric) <- unique(umap_params_strings[,"metric"])
+	figSettings.min_dist <- unique(umap_params[,"min_dist"])
+	names(figSettings.min_dist) <- unique(umap_params_strings[,"min_dist"])
+	figSettings.n_neighbors <- unique(umap_params[,"n_neighbors"])
+	names(figSettings.n_neighbors) <- unique(umap_params_strings[,"n_neighbors"])
+	figSettings <- list(
+		"metric" = figSettings.metric,
+		"min_dist" = figSettings.min_dist,
+		"n_neighbors" = figSettings.n_neighbors
+	)
+	rr <- muReportR::addReportFigure(rr, "UMAP dimension reduction", plotL, figSettings)
+
+	muReportR::off(rr)
+	invisible(rr)
+}
+# umapParamGridReport(dre$pcaCoord, "reports", metric=c("euclidean"), min_dist=c(0.01, 0.51), n_neighbors=c(5,15,30), annot=data.frame(cluster=dre$clustAss), ptSize=0.25)
+# umapParamGridReport(dre$pcaCoord, "reports", annot=data.frame(cluster=dre$clustAss), ptSize=0.25)
