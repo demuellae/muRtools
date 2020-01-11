@@ -4,8 +4,14 @@
 \alias{loadRnBeadsAnalysis}
 \title{loadRnBeadsAnalysis}
 \usage{
-loadRnBeadsAnalysis(input, type = "cluster_run", preprocessed = TRUE,
-  setOptions = TRUE, preAnalysis = TRUE, diffMeth = TRUE)
+loadRnBeadsAnalysis(
+  input,
+  type = "cluster_run",
+  preprocessed = TRUE,
+  setOptions = TRUE,
+  preAnalysis = TRUE,
+  diffMeth = TRUE
+)
 }
 \arguments{
 \item{input}{input directory}

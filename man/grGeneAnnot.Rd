@@ -4,8 +4,13 @@
 \alias{grGeneAnnot}
 \title{grGeneAnnot}
 \usage{
-grGeneAnnot(gr, rsdb, geneSetName = "genes_protein_coding",
-  geneSetCollection = "Gencode", maxDist = 1e+05)
+grGeneAnnot(
+  gr,
+  rsdb,
+  geneSetName = "genes_protein_coding",
+  geneSetCollection = "Gencode",
+  maxDist = 1e+05
+)
 }
 \arguments{
 \item{gr}{\code{GRanges} object to liftOver}

@@ -4,8 +4,7 @@
 \alias{getGeneAnnotMap}
 \title{getGeneAnnotMap}
 \usage{
-getGeneAnnotMap(assembly, from = "ENSEMBL", to = "SYMBOL",
-  multiMap = "paste")
+getGeneAnnotMap(assembly, from = "ENSEMBL", to = "SYMBOL", multiMap = "paste")
 }
 \arguments{
 \item{assembly}{character string specifying the assembly}

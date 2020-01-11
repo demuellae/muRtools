@@ -4,8 +4,15 @@
 \alias{diagDivCellHeatmap}
 \title{diagDivCellHeatmap}
 \usage{
-diagDivCellHeatmap(ml, mr, col.l = NULL, col.r = NULL,
-  name.l = "Lower left", name.r = "Upper right", ...)
+diagDivCellHeatmap(
+  ml,
+  mr,
+  col.l = NULL,
+  col.r = NULL,
+  name.l = "Lower left",
+  name.r = "Upper right",
+  ...
+)
 }
 \arguments{
 \item{ml}{the first value matrix (will be the left-lower diagonal in the cells of the resulting heatmap)}

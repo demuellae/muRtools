@@ -4,8 +4,11 @@
 \alias{chordDiagramFromContingencyTable}
 \title{chordDiagramFromContingencyTable}
 \usage{
-chordDiagramFromContingencyTable(contTab, cs_rows = colpal.mu.cat,
-  cs_columns = colpal.mu.cat)
+chordDiagramFromContingencyTable(
+  contTab,
+  cs_rows = colpal.mu.cat,
+  cs_columns = colpal.mu.cat
+)
 }
 \arguments{
 \item{contTab}{\code{matrix} or \code{table} containing the contingency matrix}

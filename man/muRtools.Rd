@@ -3,7 +3,6 @@
 \docType{package}
 \name{muRtools}
 \alias{muRtools}
-\alias{muRtools-package}
 \title{muRtools: Mueller's R tools}
 \description{
 Fabian's custom plotting functions and utilities

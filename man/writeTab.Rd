@@ -4,8 +4,15 @@
 \alias{writeTab}
 \title{writeTab}
 \usage{
-writeTab(x, fn, sep = "\\t", row.names = FALSE, col.names = TRUE,
-  quote = FALSE, ...)
+writeTab(
+  x,
+  fn,
+  sep = "\\t",
+  row.names = FALSE,
+  col.names = TRUE,
+  quote = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{table to write to file}

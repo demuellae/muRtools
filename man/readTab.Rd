@@ -4,8 +4,16 @@
 \alias{readTab}
 \title{readTab}
 \usage{
-readTab(fn, sep = "\\t", header = TRUE, stringsAsFactors = FALSE,
-  quote = "", comment.char = "", na.strings = "", ...)
+readTab(
+  fn,
+  sep = "\\t",
+  header = TRUE,
+  stringsAsFactors = FALSE,
+  quote = "",
+  comment.char = "",
+  na.strings = "",
+  ...
+)
 }
 \arguments{
 \item{fn}{filename to read}

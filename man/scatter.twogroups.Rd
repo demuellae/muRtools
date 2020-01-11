@@ -4,8 +4,14 @@
 \alias{scatter.twogroups}
 \title{scatter.twogroups}
 \usage{
-scatter.twogroups(x, y, is.g, cols.all = blues9[-(1:3)],
-  cols.g = c("coral", "darkred"), ...)
+scatter.twogroups(
+  x,
+  y,
+  is.g,
+  cols.all = blues9[-(1:3)],
+  cols.g = c("coral", "darkred"),
+  ...
+)
 }
 \arguments{
 \item{x}{x coordinates}
@@ -19,8 +25,6 @@ scatter.twogroups(x, y, is.g, cols.all = blues9[-(1:3)],
 \item{cols.g}{colorscheme for the points in the highlighted group}
 
 \item{...}{more plotting parameters}
-
-\item{x}{x coordinates}
 }
 \value{
 Nothing particularly interesting

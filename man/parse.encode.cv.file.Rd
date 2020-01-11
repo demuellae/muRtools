@@ -4,8 +4,9 @@
 \alias{parse.encode.cv.file}
 \title{parse.encode.cv.file}
 \usage{
-
-  parse.encode.cv.file(cvFile = "http://hgdownload.cse.ucsc.edu/goldenPath/encodeDCC/cv.ra")
+parse.encode.cv.file(
+  cvFile = "http://hgdownload.cse.ucsc.edu/goldenPath/encodeDCC/cv.ra"
+)
 }
 \arguments{
 \item{cvFile}{the file location for the ENCODE controlled vocabulary file. Defaults to the one provided by ENCODE}

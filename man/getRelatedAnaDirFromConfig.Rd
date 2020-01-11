@@ -4,8 +4,7 @@
 \alias{getRelatedAnaDirFromConfig}
 \title{getRelatedAnaDirFromConfig}
 \usage{
-getRelatedAnaDirFromConfig(cfg, anaName,
-  anaVersion = cfg[[".anaVersion"]])
+getRelatedAnaDirFromConfig(cfg, anaName, anaVersion = cfg[[".anaVersion"]])
 }
 \arguments{
 \item{cfg}{configuration object as returned by \code{getConfig}}

@@ -4,8 +4,12 @@
 \alias{pngtemp}
 \title{pngtemp}
 \usage{
-pngtemp(fn = paste0("~/tmp_work/", getHashString("rplot"), ".png"),
-  width = 1024, height = 1024, ...)
+pngtemp(
+  fn = paste0("~/tmp_work/", getHashString("rplot"), ".png"),
+  width = 1024,
+  height = 1024,
+  ...
+)
 }
 \arguments{
 \item{fn}{file name}

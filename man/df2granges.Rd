@@ -4,9 +4,18 @@
 \alias{df2granges}
 \title{df2granges}
 \usage{
-df2granges(df, ids = rownames(df), chrom.col = 1L, start.col = 2L,
-  end.col = 3L, strand.col = NULL, coord.format = "B1RI",
-  assembly = NULL, doSort = FALSE, adjNumChromNames = FALSE)
+df2granges(
+  df,
+  ids = rownames(df),
+  chrom.col = 1L,
+  start.col = 2L,
+  end.col = 3L,
+  strand.col = NULL,
+  coord.format = "B1RI",
+  assembly = NULL,
+  doSort = FALSE,
+  adjNumChromNames = FALSE
+)
 }
 \arguments{
 \item{df}{Table defining genomic regions.}

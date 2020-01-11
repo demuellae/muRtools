@@ -340,10 +340,11 @@ getSeqlengths4assembly <- function(assembly, onlyMainChrs=FALSE, adjChrNames=TRU
 #' @param assembly    assembly
 #' @param dropUnknownChrs discard entries with seqnames not supported by assembly
 #' @param adjChrNames  should the prefix "chr" be added to main chromosomes if not already present and chrMT be renamed to chrM?
+#' @param silent      Limit logging to most important messages
 #' @param ...         arguments passed on to \code{getSeqlengths4assembly}
 #' @return GRanges object with genome properties set
 #' @export
-setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE, ...){
+setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE, silent=FALSE, ...){
 	sls <- getSeqlengths4assembly(assembly, adjChrNames=adjChrNames, ...)
 	if (adjChrNames){
 		mainREnum <- "^([1-9][0-9]?|[XYM]|MT)$"
@@ -356,8 +357,10 @@ setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE,
 	}
 	supportedChrs <- as.vector(seqnames(gr)) %in% names(sls)
 	if (sum(supportedChrs)!=length(gr)){
-		ss <- setdiff(seqlevels(gr), names(sls))
-		logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
+		if (!silent){
+			ss <- setdiff(seqlevels(gr), names(sls))
+			logger.warning(c("The following seqnames are not supported by the genome assembly:", paste(ss, collapse=", ")))
+		}
 		if (dropUnknownChrs){
 			n <- length(gr) - sum(supportedChrs)
 			logger.warning(c(n, "entries with unsupported seqnames will be discarded"))

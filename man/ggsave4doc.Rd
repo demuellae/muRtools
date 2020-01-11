@@ -4,9 +4,17 @@
 \alias{ggsave4doc}
 \title{ggsave4doc}
 \usage{
-ggsave4doc(fn, plot = last_plot(), width = 192, height = 192,
-  units = "mm", family = "Helvetica", dimPreset = NULL,
-  useDingbats = FALSE, ...)
+ggsave4doc(
+  fn,
+  plot = last_plot(),
+  width = 192,
+  height = 192,
+  units = "mm",
+  family = "Helvetica",
+  dimPreset = NULL,
+  useDingbats = FALSE,
+  ...
+)
 }
 \arguments{
 \item{fn}{file name}

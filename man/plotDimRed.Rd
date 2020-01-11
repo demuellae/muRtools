@@ -4,9 +4,19 @@
 \alias{plotDimRed}
 \title{getDimRedPlot}
 \usage{
-plotDimRed(X, dimRedFun = getDimRedCoords.pca, annot = NULL,
-  colorCol = NULL, shapeCol = NULL, colScheme = NULL, ptSize = 3,
-  addLabels = FALSE, addDensity = FALSE, annot.text = NULL, ...)
+plotDimRed(
+  X,
+  dimRedFun = getDimRedCoords.pca,
+  annot = NULL,
+  colorCol = NULL,
+  shapeCol = NULL,
+  colScheme = NULL,
+  ptSize = 3,
+  addLabels = FALSE,
+  addDensity = FALSE,
+  annot.text = NULL,
+  ...
+)
 }
 \arguments{
 \item{X}{feature matrix containing one row for each observation and one column for each feature}

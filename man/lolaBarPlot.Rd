@@ -4,12 +4,21 @@
 \alias{lolaBarPlot}
 \title{lolaBarPlot}
 \usage{
-lolaBarPlot(lolaDb, lolaRes, scoreCol = "pValueLog",
-  orderCol = scoreCol, signifCol = "qValue",
-  includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
-  maxTerms = 50, colorpanel = sample(rainbow(maxTerms, v = 0.5)),
-  groupByCollection = TRUE, orderDecreasing = NULL,
-  appendTermDbId = TRUE)
+lolaBarPlot(
+  lolaDb,
+  lolaRes,
+  scoreCol = "pValueLog",
+  orderCol = scoreCol,
+  signifCol = "qValue",
+  includedCollections = c(),
+  recalc = TRUE,
+  pvalCut = 0.01,
+  maxTerms = 50,
+  colorpanel = sample(rainbow(maxTerms, v = 0.5)),
+  groupByCollection = TRUE,
+  orderDecreasing = NULL,
+  appendTermDbId = TRUE
+)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}

@@ -4,10 +4,15 @@
 \alias{plotCorPhm}
 \title{plotCorPhm}
 \usage{
-plotCorPhm(cc, clustDend = NULL, sampleAnnot = NA,
-  color = colorRampPalette(rev(colpal.cont(n = 11, name =
-  "cb.RdBu")))(100), breaks = seq(-1 - 1e-06, 1 + 1e-06, length.out =
-  length(color) + 1), border_color = NA, ...)
+plotCorPhm(
+  cc,
+  clustDend = NULL,
+  sampleAnnot = NA,
+  color = colorRampPalette(rev(colpal.cont(n = 11, name = "cb.RdBu")))(100),
+  breaks = seq(-1 - 1e-06, 1 + 1e-06, length.out = length(color) + 1),
+  border_color = NA,
+  ...
+)
 }
 \arguments{
 \item{cc}{a correlation matrix (as returned by \code{cor()})}

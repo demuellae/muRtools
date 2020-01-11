@@ -4,9 +4,18 @@
 \alias{diagDivHeatmap}
 \title{diagDivHeatmap}
 \usage{
-diagDivHeatmap(ml, mr, col.l = NULL, col.r = NULL,
-  name.l = "Lower left", name.r = "Upper right", cluster = FALSE,
-  cell.val.text = FALSE, cell.val.text.round = 2, ...)
+diagDivHeatmap(
+  ml,
+  mr,
+  col.l = NULL,
+  col.r = NULL,
+  name.l = "Lower left",
+  name.r = "Upper right",
+  cluster = FALSE,
+  cell.val.text = FALSE,
+  cell.val.text.round = 2,
+  ...
+)
 }
 \arguments{
 \item{ml}{the first value matrix (the left-lower diagonal matrix will be in the result)}

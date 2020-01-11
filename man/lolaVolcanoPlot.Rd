@@ -4,9 +4,15 @@
 \alias{lolaVolcanoPlot}
 \title{lolaVolcanoPlot}
 \usage{
-lolaVolcanoPlot(lolaDb, lolaRes, includedCollections = c(),
-  signifCol = "qValue", recalc = TRUE, colorBy = "maxRnk",
-  colorpanel = c())
+lolaVolcanoPlot(
+  lolaDb,
+  lolaRes,
+  includedCollections = c(),
+  signifCol = "qValue",
+  recalc = TRUE,
+  colorBy = "maxRnk",
+  colorpanel = c()
+)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}

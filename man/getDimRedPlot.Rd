@@ -4,10 +4,19 @@
 \alias{getDimRedPlot}
 \title{getDimRedPlot}
 \usage{
-getDimRedPlot(coords, annot = NULL, colorCol = NULL, shapeCol = NULL,
-  colScheme = "[auto]", ptSize = 3, addLabels = FALSE,
-  addDensity = FALSE, annot.text = NULL, orderCol = NULL,
-  facetCols = NULL)
+getDimRedPlot(
+  coords,
+  annot = NULL,
+  colorCol = NULL,
+  shapeCol = NULL,
+  colScheme = "[auto]",
+  ptSize = 3,
+  addLabels = FALSE,
+  addDensity = FALSE,
+  annot.text = NULL,
+  orderCol = NULL,
+  facetCols = NULL
+)
 }
 \arguments{
 \item{coords}{dimension reduction coordinates}

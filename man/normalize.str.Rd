@@ -23,5 +23,5 @@ remove all leading and trailing whitespaces and special characters
 By default, underscore is the replacement character. Avoids consecutive underscores.
 }
 \examples{
-normalize.str("_ (b)lA BLu[bb.blA\\tblubb- bla)\\n_")
+normalize.str("_ (b)lA BLu[bb.blA\tblubb- bla)\n_")
 }

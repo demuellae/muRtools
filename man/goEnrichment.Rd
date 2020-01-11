@@ -4,8 +4,14 @@
 \alias{goEnrichment}
 \title{goEnrichment}
 \usage{
-goEnrichment(qids, uids, ontology = "BP", idType = "ensembl",
-  assembly = "org.Hs.eg.db", algorithm = "weight01")
+goEnrichment(
+  qids,
+  uids,
+  ontology = "BP",
+  idType = "ensembl",
+  assembly = "org.Hs.eg.db",
+  algorithm = "weight01"
+)
 }
 \arguments{
 \item{qids}{character vector of query gene IDs}

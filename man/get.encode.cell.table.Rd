@@ -4,8 +4,9 @@
 \alias{get.encode.cell.table}
 \title{get.encode.cell.table}
 \usage{
-
-  get.encode.cell.table(cvFile = "http://hgdownload.cse.ucsc.edu/goldenPath/encodeDCC/cv.ra")
+get.encode.cell.table(
+  cvFile = "http://hgdownload.cse.ucsc.edu/goldenPath/encodeDCC/cv.ra"
+)
 }
 \arguments{
 \item{cvFile}{the file location for the ENCODE controlled vocabulary file. Defaults to the one provided by ENCODE}

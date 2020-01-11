@@ -4,8 +4,11 @@
 \alias{ggtemp}
 \title{ggtemp}
 \usage{
-ggtemp(plot = last_plot(), fn = paste0("~/tmp_work/",
-  getHashString("ggplot"), ".pdf"), ...)
+ggtemp(
+  plot = last_plot(),
+  fn = paste0("~/tmp_work/", getHashString("ggplot"), ".pdf"),
+  ...
+)
 }
 \arguments{
 \item{plot}{see \code{?ggsave}}

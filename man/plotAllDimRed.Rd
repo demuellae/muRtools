@@ -4,9 +4,16 @@
 \alias{plotAllDimRed}
 \title{plotAllDimRed}
 \usage{
-plotAllDimRed(X, fn.prefix = NULL, fn.suffix = "", annot = NULL,
-  distMethods = c(euc = "euclidean", man = "manhattan"), width = 10,
-  height = 10, ...)
+plotAllDimRed(
+  X,
+  fn.prefix = NULL,
+  fn.suffix = "",
+  annot = NULL,
+  distMethods = c(euc = "euclidean", man = "manhattan"),
+  width = 10,
+  height = 10,
+  ...
+)
 }
 \arguments{
 \item{X}{feature matrix containing one row for each observation and one column for each feature}

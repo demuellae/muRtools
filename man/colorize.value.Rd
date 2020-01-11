@@ -4,9 +4,12 @@
 \alias{colorize.value}
 \title{colorize.value}
 \usage{
-colorize.value(val, rng = c(-1, 1),
+colorize.value(
+  val,
+  rng = c(-1, 1),
   colscheme.col.val = c(gplots::colorpanel(100, "blue", "white"),
-  gplots::colorpanel(100, "white", "red")))
+    gplots::colorpanel(100, "white", "red"))
+)
 }
 \arguments{
 \item{val}{value to be transformed}

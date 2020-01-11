@@ -5,13 +5,24 @@
 \title{lolaRegionSetHeatmap
 Plot a heatmap in which the rows are different user sets and the color corresponds to an enrichment score}
 \usage{
-lolaRegionSetHeatmap(lolaDb, lolaRes, scoreCol = "pValueLog",
-  orderCol = scoreCol, signifCol = "qValue", markSignif = FALSE,
-  includedCollections = c(), recalc = TRUE, pvalCut = 0.01,
-  maxTerms = 50, userSetOrder = NULL, colorpanel = colpal.cont(9,
-  "cb.OrRd"), colorpanelLimits = rep(as.numeric(NA), 2),
-  groupByCollection = TRUE, orderDecreasing = NULL,
-  appendTermDbId = TRUE)
+lolaRegionSetHeatmap(
+  lolaDb,
+  lolaRes,
+  scoreCol = "pValueLog",
+  orderCol = scoreCol,
+  signifCol = "qValue",
+  markSignif = FALSE,
+  includedCollections = c(),
+  recalc = TRUE,
+  pvalCut = 0.01,
+  maxTerms = 50,
+  userSetOrder = NULL,
+  colorpanel = colpal.cont(9, "cb.OrRd"),
+  colorpanelLimits = rep(as.numeric(NA), 2),
+  groupByCollection = TRUE,
+  orderDecreasing = NULL,
+  appendTermDbId = TRUE
+)
 }
 \arguments{
 \item{lolaDb}{LOLA DB object as returned by \code{LOLA::loadRegionDB} or \code{\link{loadLolaDbs}}}
