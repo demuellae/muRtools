@@ -25,8 +25,6 @@ umapParamGridReport(
 \item{n_neighbors}{parameters passed on to \code{uwot::umap()}}
 
 \item{...}{parameters passed on to \code{getDimRedPlot}}
-
-\item{colorBy}{annotation to color by}
 }
 \value{
 a \code{muReportR} report (HTML) showing dimension reduction plots for the grid search

@@ -487,7 +487,6 @@ getAssocTestRes.pca <- function(X, ph, nComp=10, nPerm=1000){
 #' Generate a report with plots of UMAP dimension reduction plots for parameter combinations
 #' @param X         feature matrix containing one row for each observation and one column for each feature
 #' @param outDir    output directory
-#' @param colorBy   annotation to color by
 #' @param metric    parameters passed on to \code{uwot::umap()}
 #' @param min_dist  parameters passed on to \code{uwot::umap()}
 #' @param n_neighbors parameters passed on to \code{uwot::umap()}
