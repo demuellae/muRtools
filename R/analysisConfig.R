@@ -186,3 +186,59 @@ getRelatedAnaDirFromConfig <- function(cfg, anaName, anaVersion=cfg[[".anaVersio
 	}
 	return(res)
 }
+
+#' getScriptDependencyGraph
+#' 
+#' Get a script dependency graph by parsing analysis R scripts
+#' @param scriptDirs   directories containing R scripts
+#' @return \code{igraph} object containing dependencies between scripts
+#' @author Fabian Mueller
+#' @noRd
+getScriptDependencyGraph <- function(scriptDirs="."){
+	scriptDirs <- "~/muResearchCode/BrainDev/src/"
+	require(igraph)
+	scrptFns <- list.files(scriptDirs, pattern="*.R$", full.names=TRUE, recursive=TRUE)
+	sdf <- data.frame(
+		script=basename(scrptFns),
+		path=scrptFns,
+		anaName=as.character(NA),
+		stringsAsFactors=FALSE
+	)
+	sdf[is.na(sdf[,"anaName"]),"anaName"] <- sdf[is.na(sdf[,"anaName"]), "script"]
+
+	importL <- rep(list(c()), nrow(sdf))
+	for (i in 1:nrow(sdf)){
+		lls <- trimws(readLines(sdf[i,"path"]))
+		lls <- lls[!grepl("^#", lls)] # remove comments
+		anaNameLines <- grep("^ANA_NAME ?<-", lls, value=TRUE)
+		if (length(anaNameLines) > 0){
+			anaNameLines <- anaNameLines[length(anaNameLines)]
+			sdf[i, "anaName"] <- gsub("^.+\"(.+)\"$", "\\1", anaNameLines)
+		}
+		importLines <- grep('getRelatedAnaDirFromConfig\\(', lls, value=TRUE)
+		if (length(importLines) > 0){
+			importL[[i]] <- sort(unique(gsub("^.+getRelatedAnaDirFromConfig\\((config ?, ?)['\"]([^'\"]+)['\"][,\\)].*$", "\\2", importLines)))
+		}
+	}
+
+	vvs <- unique(sort(c(sdf[,"anaName"], unlist(importL))))
+	adjM <- matrix(FALSE, nrow=length(vvs), ncol=length(vvs))
+	rownames(adjM) <- colnames(adjM) <- vvs
+	for (i in 1:nrow(sdf)){
+		if (length(importL[[i]]) > 0) adjM[importL[[i]], sdf[i,"anaName"]] <- TRUE
+	}
+
+	gg <- graph_from_adjacency_matrix(adjM, mode="directed", diag=FALSE)
+	V(gg)$hasScript <- V(gg)$name %in% sdf[,"anaName"]
+	V(gg)[V(gg)$hasScript]$scriptNames <- sapply(V(gg)[V(gg)$hasScript]$name, FUN=function(vn){
+		paste(sdf[sdf[,"anaName"]==vn,"script"], collapse=";")
+	})
+
+	V(gg)$color <- ifelse(V(gg)$hasScript, "#a6cee3", "#bdbdbd")
+	V(gg)$label.color <- "black"
+	E(gg)$color <- "black"
+
+	# plot(gg, edge.arrow.size=0.75)
+	# plot(make_ego_graph(gg, order=99999, nodes=c("integrative_sc_regulation"), mode="in")[[1]], edge.arrow.size=0.75)
+	return(gg)
+}

@@ -158,3 +158,66 @@ plotFisherTest <- function(x, y=NULL, name.x=NULL, name.y=NULL, ...){
 	class(res) <- "FisherTestPlot"
 	return(res)
 }
+
+#' rowTtest
+#'
+#' performs a two-sided Welch's t-test (unequal variances, equal or unequal sample sizes) on each row of a matrix X with the indices inds.1 vs indices idx2 as group assignments.
+#' @author Fabian Mueller
+#' @param X Matrix on which the test is performed for every row
+#' @param idx1 column indices of group 1 members
+#' @param idx2 column indices of group 2 members
+#' @param na.rm Should NAs be removed (logical)
+#' @param alternative Testing alternative. Must be one of "two.sided" (default),"less","greater" or "all".
+#' 		  in case of "all" a data frome with corresping alternative variables is returned. 
+#' 		  Otherwise the result is a vector.
+#' @return vector (or data.frame if alternative=="all") of p-values resulting from the Welch's t-test
+#' @export
+#' @note Requires \code{matrixStats} package
+rowTtest <- function(X, idx1, idx2=-idx1, na.rm=FALSE, alternative="two.sided"){
+	require(matrixStats)
+	if (!(alternative %in% c("two.sided","less","greater","all"))) {
+		stop("invalid value for testing alternative")
+	}
+	X.1 <- X[,idx1]
+	X.2 <- X[,idx2]
+	if (na.rm){
+		n.1 <- rowSums(!is.na(X.1), FALSE)
+		n.2 <- rowSums(!is.na(X.2), FALSE)
+	} else {
+		n.1 <- length(idx1)
+		n.2 <- length(idx2)
+	}
+	rm.1 <- rowMeans(X.1, na.rm = na.rm)
+	rm.2 <- rowMeans(X.2, na.rm = na.rm)
+	rv.1 <- rowVars(X.1, na.rm = na.rm)
+	rv.2 <- rowVars(X.2, na.rm = na.rm)
+	rq.1 <- rv.1/n.1
+	rq.2 <- rv.2/n.2
+	t.stat <- (rm.1 - rm.2)/sqrt(rq.1 + rq.2)
+	rdf <- (rq.1 + rq.2)^2/(rq.1^2/(n.1-1) + rq.2^2/(n.2-1)) #degrees of freedom
+	rp <- rep(NA,nrow(X))
+	if (alternative == "two.sided" || alternative == "all") {
+		rp.2s <- 2*pt(-abs(t.stat),rdf)
+	}
+	if (alternative == "less" || alternative == "all") {
+		rp.l <- pt(t.stat,rdf)
+	}
+	if (alternative == "greater" || alternative == "all") {
+		rp.g <- pt(t.stat,rdf,lower.tail=FALSE)
+	}
+	if (alternative == "two.sided") rp <- rp.2s
+	if (alternative == "greater")   rp <- rp.g
+	if (alternative == "less")      rp <- rp.l
+	if (alternative == "all")		rp <- data.frame(less=rp.l,greater=rp.g,two.sided=rp.2s)
+
+	res <- data.frame(
+	  pval = rp, 
+	  mean1 = rm.1, 
+	  mean2 = rm.2, 
+	  var1 = rv.1,
+	  var2 = rv.2,
+	  n1 = n.1,
+	  n2 = n.2
+	)
+	return(res)
+}
