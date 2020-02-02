@@ -363,7 +363,7 @@ setGenomeProps <- function(gr, assembly, dropUnknownChrs=TRUE, adjChrNames=TRUE,
 		}
 		if (dropUnknownChrs){
 			n <- length(gr) - sum(supportedChrs)
-			logger.warning(c(n, "entries with unsupported seqnames will be discarded"))
+			logger.warning(c(paste0(n, " of ", length(gr), " (", round(100*n/length(gr), 2), "%)"), "entries with unsupported seqnames will be discarded"))
 			gr <- gr[supportedChrs]
 		}
 	}
