@@ -199,13 +199,26 @@ getDimRedCoords.umap <- function(X, distMethod="euclidean", dims=c(1,2), ...){
 #' @param ptSize   size of the points in the scatterplot
 #' @param addLabels should observation labels be added to each point
 #' @param addDensity should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group
+#' @param addVoronoi should a Voronoi tessalation grid (based on \code{colorCol}) be added to the plot
 #' @param annot.text optional text to be added in the lower right corner of the plot
 #' @param orderCol name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points
 #' @param facetCols name (string) of columns to be used for faceting the resulting plot. Each facet will contain all the points not in the facet as grey points.
 #' @return a \code{ggplot2} object containing the dimension reduction plot
 #' @author Fabian Mueller
 #' @export 
-getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, annot.text=NULL, orderCol=NULL, facetCols=NULL){
+#' 
+#' @examples
+#' \donttest{
+#' df <- data.frame(
+#' 	x = c(rnorm(20, mean=0, sd=0.2), rnorm(10, mean=1, sd=0.4), rnorm(15, mean=1, sd=0.2)),
+#' 	y = c(rnorm(20, mean=0, sd=0.2), rnorm(10, mean=1, sd=0.4), rnorm(15, mean=0.5, sd=0.3)),
+#' 	group = rep(c("group1", "group2", "group3"), times=c(20,10,15)),
+#' 	stringsAsFactors=FALSE
+#' )
+#' getDimRedPlot(df[,c("x", "y")], annot=df[,c("group"), drop=FALSE], colorCol="group")
+#' getDimRedPlot(df[,c("x", "y")], annot=df[,c("group"), drop=FALSE], colorCol="group", addDensity=TRUE)
+#' }
+getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colScheme="[auto]", ptSize=3, addLabels=FALSE, addDensity=FALSE, addVoronoi=FALSE, annot.text=NULL, orderCol=NULL, facetCols=NULL){
 	if (!is.null(annot)){
 		if (nrow(annot)!=nrow(coords)){
 			stop("Non-matching number of rows for dimension reduction coordinates and annotation")
@@ -322,6 +335,20 @@ getDimRedPlot <- function(coords, annot=NULL, colorCol=NULL, shapeCol=NULL, colS
 			grps.1sample <- names(grpCounts)[grpCounts<2]
 			df2p2 <- df2p[!(df2p[,colorCol] %in% grps.1sample),]
 			pp <- pp + stat_density2d(data=df2p2, alpha=0.3)
+		}
+	}
+	if (addVoronoi){
+		if (colorNumeric){
+			warning("Currently only non-numeric columns are supported for dimRed coloring in combination with density contours. --> skipping density contours")
+		} else {
+			require(deldir)
+			center.x <- tapply(df2p[,xLab], df2p[,colorCol], FUN=function(x){mean(x, na.rm=TRUE)})
+			center.y <- tapply(df2p[,yLab], df2p[,colorCol], FUN=function(x){mean(x, na.rm=TRUE)})
+
+			voronoi <- deldir(center.x, center.y,
+				rw=c(min(df2p[,xLab], na.rm=TRUE), max(df2p[,xLab], na.rm=TRUE), min(df2p[,yLab], na.rm=TRUE), max(df2p[,yLab], na.rm=TRUE))
+			)
+			pp <- pp + geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2), size=1, data=voronoi$dirsgs, linetype=1, color="#C0C0C0")
 		}
 	}
 	if (!is.null(facetCols)){

@@ -13,6 +13,7 @@ getDimRedPlot(
   ptSize = 3,
   addLabels = FALSE,
   addDensity = FALSE,
+  addVoronoi = FALSE,
   annot.text = NULL,
   orderCol = NULL,
   facetCols = NULL
@@ -38,6 +39,8 @@ it defaults to the second annotation column}
 
 \item{addDensity}{should Gaussian Kernel density estimation be performed and the contour lines plotted for each color group}
 
+\item{addVoronoi}{should a Voronoi tessalation grid (based on \code{colorCol}) be added to the plot}
+
 \item{annot.text}{optional text to be added in the lower right corner of the plot}
 
 \item{orderCol}{name or index in the annotation matrix (\code{annot}) that should be used for ordering the points. If not \code{NULL} Points will be ordered increasingly by their value, i.e. higher-valued points are plottet over lower-valued points}
@@ -49,6 +52,18 @@ a \code{ggplot2} object containing the dimension reduction plot
 }
 \description{
 Generate a plot from dimension reduction coordinates
+}
+\examples{
+\donttest{
+df <- data.frame(
+	x = c(rnorm(20, mean=0, sd=0.2), rnorm(10, mean=1, sd=0.4), rnorm(15, mean=1, sd=0.2)),
+	y = c(rnorm(20, mean=0, sd=0.2), rnorm(10, mean=1, sd=0.4), rnorm(15, mean=0.5, sd=0.3)),
+	group = rep(c("group1", "group2", "group3"), times=c(20,10,15)),
+	stringsAsFactors=FALSE
+)
+getDimRedPlot(df[,c("x", "y")], annot=df[,c("group"), drop=FALSE], colorCol="group")
+getDimRedPlot(df[,c("x", "y")], annot=df[,c("group"), drop=FALSE], colorCol="group", addDensity=TRUE)
+}
 }
 \author{
 Fabian Mueller
