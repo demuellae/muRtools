@@ -96,7 +96,7 @@ ggMessagePlot <- function(txt) {
 #' @export
 getPointDensity <- function(x, y, n = 100) {
   idx <- !is.na(x) & !is.na(y) & is.finite(x) & is.finite(y)
-  if (sum(idx) < length(x)){
+  if (sum(idx) < length(idx)){
     x <- x[idx]
     y <- y[idx]
   }
@@ -104,7 +104,13 @@ getPointDensity <- function(x, y, n = 100) {
   ix <- findInterval(x, dens$x)
   iy <- findInterval(y, dens$y)
   ii <- cbind(ix, iy)
-  return(dens$z[ii])
+  res <- rep(as.numeric(NA), length(idx))
+  if (sum(idx) < length(idx)){
+    res[idx] <- dens$z[ii]
+  } else {
+    res <- dens$z[ii]
+  }
+  return(res)
 }
 
 #' theme_nogrid
