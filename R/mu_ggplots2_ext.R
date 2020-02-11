@@ -95,6 +95,11 @@ ggMessagePlot <- function(txt) {
 #' @return The density within each square
 #' @export
 getPointDensity <- function(x, y, n = 100) {
+  idx <- !is.na(x) & !is.na(y) & is.finite(x) & is.finite(y)
+  if (sum(idx) < length(x)){
+    x <- x[idx]
+    y <- y[idx]
+  }
   dens <- MASS::kde2d(x = x, y = y, n = n)
   ix <- findInterval(x, dens$x)
   iy <- findInterval(y, dens$y)
