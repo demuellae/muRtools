@@ -17,6 +17,13 @@
 chordDiagramFromContingencyTable <- function(contTab, cs_rows=colpal.mu.cat, cs_columns=colpal.mu.cat){
 	require(circlize)
 
+	if (is.character(cs_rows) && length(cs_rows)==1 && cs_rows=="[auto]"){
+		cs_rows <- colpal.mu.cat
+	}
+	if (is.character(cs_columns) && length(cs_columns)==1 && cs_columns=="[auto]"){
+		cs_columns <- colpal.mu.cat
+	}
+
 	# contTab <- t(contTab)
 	dn1 <- names(dimnames(contTab))[1]
 	dn2 <- names(dimnames(contTab))[2]
