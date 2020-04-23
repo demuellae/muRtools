@@ -29,8 +29,7 @@ scatter.twogroups <- function(x,y,is.g,cols.all=blues9[-(1:3)],cols.g=c("coral",
 #' @param nbin number of bins
 #' @param bandwidth bandwidth
 #' @author Fabian Mueller (RnBeads)
-densRanks <- function (x, y = NULL, nbin = 128, bandwidth) 
-{
+densRanks <- function (x, y = NULL, nbin = 128, bandwidth){
     xy <- xy.coords(x, y)
     select <- is.finite(xy$x) & is.finite(xy$y)
     x <- cbind(xy$x, xy$y)[select, ]
@@ -96,7 +95,14 @@ create.densityScatter <- function(df2p,is.special=NULL,dens.subsample=FALSE,dens
 		pp <- ggMessagePlot("Could not create plot")
 		return(pp)
 	}
-	df2p <- na.omit(df2p)
+	# df2p <- na.omit(df2p)
+	mm <- as.matrix(df2p[,c(1,2)])
+	idx <- rowSums(!is.na(mm)) == 2 & rowSums(is.finite(mm)) == 2
+	if (sum(idx) < nrow(df2p)){
+		i <- sum(!idx)
+		logger.info(paste0("Discarding ", i, " of ", nrow(mm), " (", round(100*i/nrow(mm), 2), "%) data points with non-finite or NA values"))
+		df2p <- df2p[idx,]
+	}
 	if (is.null(df2p) || nrow(df2p)<1){
 		logger.warning(c("Could not create density scatterplot (NA omission removed all entries)"))
 		pp <- ggMessagePlot("Could not create plot")

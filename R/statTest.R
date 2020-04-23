@@ -180,6 +180,10 @@ rowTtest <- function(X, idx1, idx2=-idx1, na.rm=FALSE, alternative="two.sided"){
 	}
 	X.1 <- X[,idx1]
 	X.2 <- X[,idx2]
+	# sparse matrices not fully supported yet: convert to dense matrix
+	if (!is.matrix(X.1)) X.1 <- as.matrix(X.1)
+	if (!is.matrix(X.2)) X.2 <- as.matrix(X.2)
+		
 	if (na.rm){
 		n.1 <- rowSums(!is.na(X.1), FALSE)
 		n.2 <- rowSums(!is.na(X.2), FALSE)
@@ -187,9 +191,6 @@ rowTtest <- function(X, idx1, idx2=-idx1, na.rm=FALSE, alternative="two.sided"){
 		n.1 <- length(idx1)
 		n.2 <- length(idx2)
 	}
-	# sparse matrices not fully supported yet: convert to dense matrix
-	if (!is.matrix(X.1)) X.1 <- as.matrix(X.1)
-	if (!is.matrix(X.2)) X.2 <- as.matrix(X.2)
 
 	rm.1 <- rowMeans(X.1, na.rm = na.rm)
 	rm.2 <- rowMeans(X.2, na.rm = na.rm)
