@@ -6,12 +6,15 @@
 \usage{
 chordDiagramFromContingencyTable(
   contTab,
+  chordColorByCol = FALSE,
   cs_rows = colpal.mu.cat,
   cs_columns = colpal.mu.cat
 )
 }
 \arguments{
 \item{contTab}{\code{matrix} or \code{table} containing the contingency matrix}
+
+\item{chordColorByCol}{color chords by column instead of by row}
 
 \item{cs_rows}{color scheme to use for the rows of the matrix}
 

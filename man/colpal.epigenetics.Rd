@@ -8,7 +8,15 @@
 \alias{colgrad.methylation.rb}
 \alias{colgrad.methylation.yb}
 \title{Custom Color Paletes for epigenetic modifications}
-\format{An object of class \code{character} of length 10.}
+\format{
+An object of class \code{character} of length 10.
+
+An object of class \code{character} of length 8.
+
+An object of class \code{character} of length 3.
+
+An object of class \code{character} of length 3.
+}
 \usage{
 colpal.histone
 

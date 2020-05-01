@@ -12,7 +12,23 @@
 \alias{colpal.corpid}
 \alias{colpals.games}
 \title{Custom Color Paletes}
-\format{An object of class \code{character} of length 9.}
+\format{
+An object of class \code{character} of length 9.
+
+An object of class \code{character} of length 13.
+
+An object of class \code{character} of length 17.
+
+An object of class \code{character} of length 18.
+
+An object of class \code{character} of length 23.
+
+An object of class \code{character} of length 9.
+
+An object of class \code{character} of length 13.
+
+An object of class \code{list} of length 6.
+}
 \usage{
 colpal.cb
 

@@ -4,6 +4,7 @@
 #' Plot a bipartite chord diagram (circular Sankey diagram with 2 categories) for a contingency matrix
 #' the values of two matrices
 #' @param contTab   \code{matrix} or \code{table} containing the contingency matrix
+#' @param chordColorByCol color chords by column instead of by row
 #' @param cs_rows   color scheme to use for the rows of the matrix
 #' @param cs_columns   color scheme to use for the rows of the matrix
 #' @return nothing of particular interest (include this function while plotting).
@@ -14,7 +15,7 @@
 #' contTab <- with(airquality, table(cut(Temp, quantile(Temp)), Month))
 #' names(dimnames(contTab))[1] <- "quantile"
 #' chordDiagramFromContingencyTable(contTab)
-chordDiagramFromContingencyTable <- function(contTab, cs_rows=colpal.mu.cat, cs_columns=colpal.mu.cat){
+chordDiagramFromContingencyTable <- function(contTab, chordColorByCol=FALSE, cs_rows=colpal.mu.cat, cs_columns=colpal.mu.cat){
 	require(circlize)
 
 	if (is.character(cs_rows) && length(cs_rows)==1 && cs_rows=="[auto]"){
@@ -58,7 +59,11 @@ chordDiagramFromContingencyTable <- function(contTab, cs_rows=colpal.mu.cat, cs_
 	circos.par(gap.after=gaps, start.degree=start_degree)
 	# circos.par(start.degree = 90, clock.wise = FALSE)
 	# circos.par(gap.after=c(rep(2, nrow(ovMat)-1), 20, rep(2, ncol(ovMat)-1), 20))
-	chordDiagram(ovMat, order=c(rev(rownames(ovMat)), colnames(ovMat)), grid.col=stateColors, annotationTrack=c("name", "grid"))
+	column.col <- NULL
+	if (chordColorByCol) {
+		column.col <- rep(cs_columns, length.out=ncol(contTab))
+	}
+	chordDiagram(ovMat, order=c(rev(rownames(ovMat)), colnames(ovMat)), grid.col=stateColors, column.col=column.col, annotationTrack=c("name", "grid"))
 	circos.clear()
 	invisible(NULL)
 }
