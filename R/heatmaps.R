@@ -80,7 +80,7 @@ getColorFun <- function(x, colPal=NULL){
 	} else {
 		if (is.null(colPal)){
 			colFun <- circlize::colorRamp2(seq(min(x, na.rm=TRUE), max(x, na.rm=TRUE), length.out=9), colpal.cont(9, "cb.YlGnBu"))
-		} else if (is.character(col.l) && length(col.l)>1){
+		} else if (is.character(colPal) && length(colPal)>1){
 			colFun <- circlize::colorRamp2(seq(min(x, na.rm=TRUE), max(x, na.rm=TRUE), length.out=length(colPal)), colPal)
 		}
 	}
