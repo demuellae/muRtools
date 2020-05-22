@@ -64,6 +64,17 @@ colpal.iwh.cb01 <- c("#117ef6", "#b1005b", "#6c8900", "#ff724f", "#ff68af", "#ff
 #' plotColpal(colpal.solarextra)
 colpal.solarextra = c('#3361A5', '#248AF3', '#14B3FF', '#88CEEF', '#C1D5DC', '#EAD397', '#FDB31A', '#E42A2A', '#A31D1D')
 #' \describe{
+#'   \item{\code{colpal.PhFr.[ab]}}{
+#'      Photinia fraseri color schemes by Alexandro Trevino
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plotColpal(colpal.PhFr.a)
+colpal.PhFr.a = c('#57612F', '#B3B235', '#CECC2A', '#F8F39E', '#FEFBDE', '#F8AAA8', '#EA7E58', '#D46E2A', '#7B2718')
+colpal.PhFr.b = c('#57612F', '#B3B235', '#CECC2A', '#F8F39E', '#FEFBDE', '#FDDEDA', '#F8AAA8', '#E34D4D', '#A32022')
+#' \describe{
 #'   \item{\code{colpal.corpid}}{
 #'         Color palette inspired by coorporate identities I worked with
 #'   }
@@ -151,6 +162,13 @@ colpal.cont <- function(n=3, name="viridis", ...){
     return(colpal.solarextra[idx])
   } else if (grepl("^cb\\.", name)){
     require(RColorBrewer)
+    name <- gsub("^cb\\.", "", name)
+    return(brewer.pal(n, name, ...))
+  } else if (grepl("^at\\.", name)){
+    # alex Trevino's color schemes
+    atL <- list(
+      PhFrA = c("")
+    )
     name <- gsub("^cb\\.", "", name)
     return(brewer.pal(n, name, ...))
   } else {

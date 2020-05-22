@@ -4,10 +4,12 @@
 \alias{sortGr}
 \title{sortGr}
 \usage{
-sortGr(gr)
+sortGr(gr, alnum = FALSE)
 }
 \arguments{
 \item{gr}{\code{GRanges} object to sort}
+
+\item{alnum}{sort chromosomes alphanumerically instead of by number}
 }
 \value{
 sorted \code{GRanges} object

@@ -6,11 +6,16 @@
 #' sort a \code{GRanges} object
 #'
 #' @param gr    \code{GRanges} object to sort
+#' @param alnum sort chromosomes alphanumerically instead of by number
 #' @return sorted \code{GRanges} object
 #'
 #' @export
-sortGr <- function(gr){
-	gr[order(as.integer(seqnames(gr)), start(gr), end(gr), as.integer(strand(gr)))]
+sortGr <- function(gr, alnum=FALSE){
+	if (alnum){
+		gr[order(as.character(seqnames(gr)), start(gr), end(gr), as.integer(strand(gr)))]
+	} else {
+		gr[order(as.integer(seqnames(gr)), start(gr), end(gr), as.integer(strand(gr)))]
+	}
 }
 
 #' bedTobigBed
