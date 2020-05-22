@@ -46,11 +46,12 @@ bedTobigBed <- function(bedFn, chromSizes, bbFn=paste0(gsub("\\.bed$", "", bedFn
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
 #' @param bigBed also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.
+#' @param tabix compress and index by tabix
 #' @param strandCharNA character to be used if strand is NA, '*' or '.'
 #' @param coordOnly output only the coordinates and strand information (only taken into account if \code{addAnnotCols==FALSE}). If all strand information is NA, it will be dropped as well.
 #' @return (invisibly) the written results as a data.frame
 #' @export 
-granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE, strandCharNA=".", coordOnly=FALSE){
+granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE, tabix=FALSE, strandCharNA=".", coordOnly=FALSE){
 	if (doSort){
 		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
 		gr <- gr[oo]
@@ -90,6 +91,11 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 			logger.error(c("Could not convert to bigBed. Valid seqlengths are required."))
 		}
 		bedTobigBed(fn, sls)
+	}
+	if (tabix){
+		require(Rsamtools)
+		zipped <- bgzip(fn, dest=paste0(fn, ".gz"))
+		indexTabix(zipped, "bed")
 	}
 	invisible(tt)
 }

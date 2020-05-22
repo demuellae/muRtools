@@ -12,6 +12,7 @@ granges2bed(
   colNames = FALSE,
   doSort = TRUE,
   bigBed = FALSE,
+  tabix = FALSE,
   strandCharNA = ".",
   coordOnly = FALSE
 )
@@ -28,6 +29,8 @@ granges2bed(
 \item{doSort}{sort the regions before writing the output}
 
 \item{bigBed}{also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.}
+
+\item{tabix}{compress and index by tabix}
 
 \item{strandCharNA}{character to be used if strand is NA, '*' or '.'}
 
