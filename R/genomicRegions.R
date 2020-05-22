@@ -45,13 +45,14 @@ bedTobigBed <- function(bedFn, chromSizes, bbFn=paste0(gsub("\\.bed$", "", bedFn
 #' @param addAnnotCols add the columns stored in elementMetadata of GRanges
 #' @param colNames add column names
 #' @param doSort sort the regions before writing the output
+#' @param bedgraph export to bedgraph instead of bed
 #' @param bigBed also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.
 #' @param tabix compress and index by tabix
 #' @param strandCharNA character to be used if strand is NA, '*' or '.'
 #' @param coordOnly output only the coordinates and strand information (only taken into account if \code{addAnnotCols==FALSE}). If all strand information is NA, it will be dropped as well.
 #' @return (invisibly) the written results as a data.frame
 #' @export 
-granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bigBed=FALSE, tabix=FALSE, strandCharNA=".", coordOnly=FALSE){
+granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, doSort=TRUE, bedgraph=FALSE, bigBed=FALSE, tabix=FALSE, strandCharNA=".", coordOnly=FALSE){
 	if (doSort){
 		oo <- order(as.integer(seqnames(gr)),start(gr), end(gr), as.integer(strand(gr)))
 		gr <- gr[oo]
@@ -80,12 +81,18 @@ granges2bed <- function(gr, fn, score=NULL, addAnnotCols=FALSE, colNames=FALSE, 
 	} else if (!is.null(strandCharNA) && is.character(strandCharNA) && length(strandCharNA)==1){
 		tt[strandNaIdx,"strand"] <- strandCharNA
 	}
-	if (addAnnotCols){
+	if (bedgraph){
+		if (is.null(score)){
+			logger.error(c("Could not convert to bedgraph without a score argument"))
+		}
+		tt <- tt[,c("chrom", "start", "end", "score")]
+	}
+	if (!bedgraph && addAnnotCols){
 		tt <- data.frame(tt, elementMetadata(gr))
 	}
 	write.table(tt, file=fn, quote=FALSE, sep="\t", row.names=FALSE, col.names=colNames)
 
-	if (bigBed){
+	if (!bedgraph && bigBed){
 		sls <- seqlengths(gr)
 		if (is.null(sls)){
 			logger.error(c("Could not convert to bigBed. Valid seqlengths are required."))

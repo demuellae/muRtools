@@ -11,6 +11,7 @@ granges2bed(
   addAnnotCols = FALSE,
   colNames = FALSE,
   doSort = TRUE,
+  bedgraph = FALSE,
   bigBed = FALSE,
   tabix = FALSE,
   strandCharNA = ".",
@@ -27,6 +28,8 @@ granges2bed(
 \item{colNames}{add column names}
 
 \item{doSort}{sort the regions before writing the output}
+
+\item{bedgraph}{export to bedgraph instead of bed}
 
 \item{bigBed}{also save as bigbed file. Requires that the GRanges object has chromosome sizes stored.}
 
