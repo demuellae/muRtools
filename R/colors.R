@@ -75,6 +75,19 @@ colpal.solarextra = c('#3361A5', '#248AF3', '#14B3FF', '#88CEEF', '#C1D5DC', '#E
 colpal.PhFr.a = c('#57612F', '#B3B235', '#CECC2A', '#F8F39E', '#FEFBDE', '#F8AAA8', '#EA7E58', '#D46E2A', '#7B2718')
 colpal.PhFr.b = c('#57612F', '#B3B235', '#CECC2A', '#F8F39E', '#FEFBDE', '#FDDEDA', '#F8AAA8', '#E34D4D', '#A32022')
 #' \describe{
+#'   \item{\code{colpal.PhFr.[ab]}}{
+#'      Miniblaze/Moonblaze color schemes by Alexandro Trevino
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plotColpal(colpal.PhFr.a)
+colpal.miniblaze <- c("#d6947f", "#a6b769", "#566466", "#668ec9", "#191e4c", "#875b68")
+colpal.moonblaze <- c("#d29e92", "#6d3423", "#d6947f", "#f4baa3", "#e1d29e", "#48483d",
+"#f9fae8", "#a6b769", "#4a5233", "#c1cfbb", "#566466", "#668ec9",
+"#191e4c", "#875b68", "#1f1b1a")
+#' \describe{
 #'   \item{\code{colpal.corpid}}{
 #'         Color palette inspired by coorporate identities I worked with
 #'   }
