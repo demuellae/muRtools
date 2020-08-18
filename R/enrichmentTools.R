@@ -46,11 +46,16 @@ goEnrichment <- function(qids, uids, ontology="BP", idType="ensembl", assembly="
 	)
 	rownames(enrichTab) <- enrichTab[,"GO.ID"]
 	enrichTab[,"pVal"] <- pVals[rownames(enrichTab)]
+	associatedGenes <- lapply(enrichTab[,"GO.ID"], FUN=function(goId){
+		intersect(qids, ls(tgData@graph@nodeData@data[[goId]]$genes))
+	})
+	names(associatedGenes) <- enrichTab[,"GO.ID"]
 
 	res <- list(
 		tgData=tgData,
 		resultObj=enrichRes,
-		table=enrichTab
+		table=enrichTab,
+		associatedGenes=associatedGenes
 	)
 	class(res) <- "GOenrichment [muRtools:topGO]"
 	return(res)
