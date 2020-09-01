@@ -407,7 +407,7 @@ lolaPrepareDataFrameForPlot <- function(lolaDb, lolaRes, scoreCol="pValueLog", o
 	if (length(dbSets2keep) > maxTerms){
 		if (perUserSet){
 			logger.info(c("Reduced the number of region sets in the plot to", maxTerms, "per userSet"))
-			uSetF <- lolaRes[["userSet"]]
+			uSetF <- df2p[["userSet"]]
 			if (!is.factor(uSetF)) uSetF <- factor(uSetF)
 			dbSets2keep <- c()
 			for (ss in levels(uSetF)){
