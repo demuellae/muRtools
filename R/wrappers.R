@@ -68,3 +68,15 @@ aggregateDf <- function(df, groupBy){
 	rownames(res) <- grpNames
 	return(res)
 }
+
+#' textSearch
+#' 
+#' Shortcut wrapper around \code{aggregate} to search case insensive in a vector of strings
+#' @param s string or expression
+#' @param x string vector to search in
+#' @return string vector of matches
+#' @author Fabian Mueller
+#' @export
+textSearch <- function(s, x, ...){
+	grep(s, x, ignore.case=TRUE, value=TRUE, ...)
+}
