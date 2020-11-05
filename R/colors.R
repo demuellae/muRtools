@@ -64,6 +64,19 @@ colpal.iwh.cb01 <- c("#117ef6", "#b1005b", "#6c8900", "#ff724f", "#ff68af", "#ff
 #' plotColpal(colpal.solarextra)
 colpal.solarextra = c('#3361A5', '#248AF3', '#14B3FF', '#88CEEF', '#C1D5DC', '#EAD397', '#FDB31A', '#E42A2A', '#A31D1D')
 #' \describe{
+#'   \item{\code{colpals.topo}}{
+#'         List of topgraphic color palettes from http://soliton.vm.bytemark.co.uk/pub/cpt-city/views/topo.html
+#'   }
+#' }
+#' @rdname colpal
+#' @export
+#' @examples
+#' plotColpal(colpals.topo[["dem_cut"]])
+colpals.topo <- list(
+  dem_cut = c('#008435', '#33CC00', '#F4F071', '#F4BD45', '#99642B', '#692e00'),
+  schwarzwald = c('#B0F3BE', '#E0FBB2', '#B8DE76', '#27A52A', '#34883C', '#9CA429', '#F8B004', '#C04A02', '#870800', '#741805', '#6C2A0A', '#7D4A2B', '#9C8170', '#B5B5B5')
+)
+#' \describe{
 #'   \item{\code{colpal.PhFr.[ab]}}{
 #'      Photinia fraseri color schemes by Alexandro Trevino
 #'   }
@@ -165,6 +178,7 @@ plotColpal <- function(cp, type="pie"){
 #' plotColpal(colpal.cont(5, "viridis"))
 #' plotColpal(colpal.cont(5, "cb.BrBG"))
 #' plotColpal(colpal.cont(9, "solarextra"))
+#' plotColpal(colpal.cont(9, "cptcity.europe_7"))
 colpal.cont <- function(n=3, name="viridis", ...){
   if (name=="viridis"){
     require(viridis)
@@ -184,6 +198,18 @@ colpal.cont <- function(n=3, name="viridis", ...){
     )
     name <- gsub("^cb\\.", "", name)
     return(brewer.pal(n, name, ...))
+  } else if (grepl("^topo\\.", name)){
+    name <- gsub("^topo\\.", "", name)
+    cp <- colpals.topo[[name]]
+    if (n < 1 || n > length(cp)) stop("invalid value for n")
+    idx <- as.integer(round(seq(1, length(cp), length.out=n), 0))
+    return(cp[idx])
+  } else if (grepl("^cptcity\\.", name)){
+    require(cptcity)
+    name <- gsub("^cptcity\\.", "", name)
+    nameMatches <- cptcity::find_cpt(name)
+    if (length(nameMatches) < 1) stop(paste("Could not find cptcity color scheme:", name))
+    return(cptcity::cpt(pal=nameMatches[1], n=n))
   } else {
     stop(c("Unknown name for color palette:", name))
   }
