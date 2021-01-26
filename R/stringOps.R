@@ -7,7 +7,7 @@
 #' @examples 
 #' underscore2camel("bla_blubb")
 underscore2camel <- function(x){
-	x <- gsub("([[:alnum:]])_([0-9a-z])","\\1\\U\\2",x,perl=TRUE)
+	x <- gsub("([[:alnum:]])_([0-9a-zA-Z])","\\1\\U\\2",x,perl=TRUE)
 	return(x)
 }
 
