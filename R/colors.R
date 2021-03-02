@@ -122,7 +122,12 @@ colpal.corpid <- c(
   "stanford.chocolate"="#2F2424",
   "stanford.fog"="#F4F4F4",
   "stanford.cloud"="#dad7cb",
-  "stanford.lightsandstone"="#F9F6EF"
+  "stanford.lightsandstone"="#F9F6EF",
+  "icb.lightblue"="#2face3",
+  "icb.darkblue"="#114279",
+  "icb.paleblue"="#bae2ef",
+  "icb.lightgrey"="#f1f1f1",
+  "icb.darkgrey"="#4d4f53"
 )
 #' \describe{
 #'   \item{\code{colpals.games}}{
