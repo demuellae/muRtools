@@ -125,6 +125,7 @@ colpal.corpid <- c(
   "stanford.lightsandstone"="#F9F6EF",
   "icb.lightblue"="#2face3",
   "icb.darkblue"="#114279",
+  "icb.linkblue"="#0b7cac",
   "icb.paleblue"="#bae2ef",
   "icb.lightgrey"="#f1f1f1",
   "icb.darkgrey"="#4d4f53"
