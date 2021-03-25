@@ -49,20 +49,31 @@ chordDiagramFromContingencyTable <- function(contTab, chordColorByCol=FALSE, cs_
 	start_degree <- 270 - (180 - row_sector_degree)/2
 	gaps <- c(rep(small_gap, nr - 1), big_gap, rep(small_gap, nc - 1), big_gap)
 
-	# segment colors
-	stateColors <- c(
-		rep(cs_rows, length.out=nrow(contTab)),
-		rep(cs_columns, length.out=ncol(contTab))
-	)
-	names(stateColors) <- c(rownames(ovMat), colnames(ovMat))
-
 	circos.par(gap.after=gaps, start.degree=start_degree)
 	# circos.par(start.degree = 90, clock.wise = FALSE)
 	# circos.par(gap.after=c(rep(2, nrow(ovMat)-1), 20, rep(2, ncol(ovMat)-1), 20))
+
+	# color assignments
+	if (!is.null(names(cs_rows))) {
+		cs_rows <- cs_rows[rownames(contTab)]
+	} else {
+		cs_rows <- rep(cs_rows, length.out=nrow(contTab))
+		names(cs_rows) <- rownames(contTab)
+	}
+	if (!is.null(names(cs_columns))) {
+		cs_columns <- cs_columns[colnames(contTab)]
+	} else {
+		cs_columns <- rep(cs_columns, length.out=ncol(contTab))
+		names(cs_columns) <- colnames(contTab)
+	}
 	column.col <- NULL
 	if (chordColorByCol) {
-		column.col <- rep(cs_columns, length.out=ncol(contTab))
+		column.col <- cs_columns
 	}
+	# segment colors
+	stateColors <- c(cs_rows, cs_columns)
+	names(stateColors) <- c(rownames(ovMat), colnames(ovMat))
+
 	chordDiagram(ovMat, order=c(rev(rownames(ovMat)), colnames(ovMat)), grid.col=stateColors, column.col=column.col, annotationTrack=c("name", "grid"))
 	circos.clear()
 	invisible(NULL)
