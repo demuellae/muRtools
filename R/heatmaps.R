@@ -261,6 +261,9 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 #' @examples
 #' randomGroupedHeatmap(n.row=10, n.col=3, ngrps.row=2, ngrps.col=3, cols=colpal.cont(n=9, name="viridis"))
 #' randomGroupedHeatmap(n.row=100, n.col=18, ngrps.row=3, ngrps.col=3, cols=colpal.cont(n=9, name="cb.BrBG"))
+#' pdftemp()
+#' draw(randomGroupedHeatmap(n.row=100, n.col=6, ngrps.row=3, ngrps.col=3, cols=colpal.PhFr.a))
+#' dev.off()
 randomGroupedHeatmap <- function(n.row=20, n.col=6, ngrps.row=2, ngrps.col=3, cols=NULL, ...){
 	require(ComplexHeatmap)
 	npergroup_r <- ceiling(n.row/ngrps.row)
@@ -283,6 +286,5 @@ randomGroupedHeatmap <- function(n.row=20, n.col=6, ngrps.row=2, ngrps.col=3, co
 		show_row_names = FALSE, show_column_names = FALSE,
 		...
 	)
-	# draw(hm)
 	return(hm)
 }
