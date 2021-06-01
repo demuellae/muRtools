@@ -245,3 +245,44 @@ diagDivCellHeatmap <- function(ml, mr, col.l=NULL, col.r=NULL, name.l="Lower lef
 	return(res + dummyHm)
 }
 
+#' randomGroupedHeatmap
+#' 
+#' generate a random grouped heatmap using \code{ComplexHeatmap}.
+#' @param n.row     number of rows
+#' @param n.col     number of columns
+#' @param ngrps.row number of groups to group rows into
+#' @param ngrps.col number of groups to group columns into
+#' @param cols      color scheme. Should be a color character vector.
+#'                  If \code{NULL} a default color scheme will be used.
+#' @param ...       parameters passed on to \code{ComplexHeatmap::Heatmap}
+#' @return a \code{ComplexHeatmap::Heatmap} object containing the heatmap
+#' @author Fabian Mueller
+#' @export
+#' @examples
+#' randomGroupedHeatmap(n.row=10, n.col=3, ngrps.row=2, ngrps.col=3, cols=colpal.cont(n=9, name="viridis"))
+#' randomGroupedHeatmap(n.row=100, n.col=18, ngrps.row=3, ngrps.col=3, cols=colpal.cont(n=9, name="cb.BrBG"))
+randomGroupedHeatmap <- function(n.row=20, n.col=6, ngrps.row=2, ngrps.col=3, cols=NULL, ...){
+	require(ComplexHeatmap)
+	npergroup_r <- ceiling(n.row/ngrps.row)
+	ridx <- split(1:n.row, ceiling(1:n.row/npergroup_r))
+	npergroup_c <- ceiling(n.col/ngrps.col)
+	cidx <- split(1:n.col, ceiling(1:n.col/npergroup_c))
+	norm_means <- matrix(rnorm(ngrps.row*ngrps.col), nrow=ngrps.row, ncol=ngrps.col)
+	mm <- do.call(rbind, lapply(1:nrow(norm_means), FUN=function(i){
+		do.call(cbind, lapply(1:ncol(norm_means), FUN=function(j){
+			ng_r <- length(ridx[[i]])
+			ng_c <- length(cidx[[j]])
+			matrix(rnorm(ng_r*ng_c, mean=norm_means[i,j]), nrow=ng_r, ncol=ng_c)
+		}))
+	}))
+	if (is.null(cols)) cols <- colpal.cont(n=9, name="solarextra")
+	hm <- Heatmap(mm, name="Random",
+		col = circlize::colorRamp2(seq(min(mm), max(mm), length.out=length(cols)), cols),
+		cluster_columns=TRUE, show_column_dend=FALSE,
+		cluster_rows=TRUE, show_row_dend=FALSE,
+		show_row_names = FALSE, show_column_names = FALSE,
+		...
+	)
+	# draw(hm)
+	return(hm)
+}

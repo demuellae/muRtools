@@ -9,6 +9,7 @@
 \alias{colpal.mu.cat}
 \alias{colpal.iwh.cb01}
 \alias{colpal.solarextra}
+\alias{colpals.topo}
 \alias{colpal.PhFr.a}
 \alias{colpal.miniblaze}
 \alias{colpal.corpid}
@@ -27,11 +28,13 @@ An object of class \code{character} of length 23.
 
 An object of class \code{character} of length 9.
 
+An object of class \code{list} of length 2.
+
 An object of class \code{character} of length 9.
 
 An object of class \code{character} of length 6.
 
-An object of class \code{character} of length 13.
+An object of class \code{character} of length 19.
 
 An object of class \code{list} of length 6.
 }
@@ -47,6 +50,8 @@ colpal.mu.cat
 colpal.iwh.cb01
 
 colpal.solarextra
+
+colpals.topo
 
 colpal.PhFr.a
 
@@ -70,6 +75,7 @@ plotColpal(colpal.nature)
 plotColpal(colpal.mu.cat)
 plotColpal(colpal.iwh.cb01)
 plotColpal(colpal.solarextra)
+plotColpal(colpals.topo[["dem_cut"]])
 plotColpal(colpal.PhFr.a)
 plotColpal(colpal.PhFr.a)
 plotColpal(colpal.corpid)

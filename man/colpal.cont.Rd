@@ -23,6 +23,18 @@ Get a continuous color palette
 plotColpal(colpal.cont(5, "viridis"))
 plotColpal(colpal.cont(5, "cb.BrBG"))
 plotColpal(colpal.cont(9, "solarextra"))
+plotColpal(colpal.cont(9, "cptcity.schwarzwald_cont"))
+plotColpal(colpal.cont(9, "cptcity.europe_7"))
+plotColpal(colpal.cont(9, "cptcity.spain"))
+plotColpal(colpal.cont(9, "cptcity.nordisk"))
+plotColpal(colpal.cont(9, "cptcity.cmocean_delta"))
+plotColpal(colpal.cont(9, "cptcity.colombia"))
+plotColpal(colpal.cont(9, "cptcity.blue_tan_d14"))
+plotColpal(colpal.cont(9, "cptcity.arendal_temperature"))
+plotColpal(colpal.cont(9, "cptcity.jjg_misc_temperature"))
+plotColpal(colpal.cont(9, "cptcity.jjg_neo10_elem_rain"))
+plotColpal(colpal.cont(9, "cptcity.es_vintage_57"))
+plotColpal(colpal.cont(9, "cptcity.es_skywalker_02"))
 }
 \author{
 Fabian Mueller
