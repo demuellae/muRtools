@@ -36,6 +36,9 @@ generate a random grouped heatmap using \code{ComplexHeatmap}.
 \examples{
 randomGroupedHeatmap(n.row=10, n.col=3, ngrps.row=2, ngrps.col=3, cols=colpal.cont(n=9, name="viridis"))
 randomGroupedHeatmap(n.row=100, n.col=18, ngrps.row=3, ngrps.col=3, cols=colpal.cont(n=9, name="cb.BrBG"))
+pdftemp()
+draw(randomGroupedHeatmap(n.row=100, n.col=6, ngrps.row=3, ngrps.col=3, cols=colpal.PhFr.a))
+dev.off()
 }
 \author{
 Fabian Mueller

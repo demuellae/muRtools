@@ -80,3 +80,45 @@ aggregateDf <- function(df, groupBy){
 textSearch <- function(s, x, ...){
 	grep(s, x, ignore.case=TRUE, value=TRUE, ...)
 }
+
+
+#' summarizeSetOverlap
+#' 
+#' prints overlap statistics for two sets
+#' @param set1 vector containing elements in set 1
+#' @param set2 vector containing elements in set 2
+#' @param set1name name for set 1
+#' @param set2name name for set 2
+#' @param doVenn plot a Venn diagram
+#' @return nothing of interest. If \code{doVenn}, a venn diagram will be plotted to the current plotting device
+#' @author Fabian Mueller
+#' @export
+#' @examples
+#' summarizeSetOverlap(1:50, 23:100, "1:50", "23:100")
+summarizeSetOverlap <- function(set1, set2, set1name="set1", set2name="set2", doVenn=TRUE){
+	logger.start(c("Set overlap info:", set1name, "vs.", set2name))
+	n1 <- length(set1)
+	n2 <- length(set2)
+	nInter <- length(intersect(set1, set2))
+	nUnion <- length(union(set1, set2))
+	n1not2 <- length(setdiff(set1, set2))
+	n2not1 <- length(setdiff(set2, set1))
+	logger.info(paste0("|", set1name, "|: ", n1))
+	logger.info(paste0("|", set2name, "|: ", n2))
+	logger.info(paste0("union: ", nUnion))
+	logger.info(paste0("intersection (", set1name,"): ", nInter, " of ", n1, " (", round(100*nInter/n1, 2), "%)"))
+	logger.info(paste0("intersection (", set2name,"): ", nInter, " of ", n2, " (", round(100*nInter/n2, 2), "%)"))
+	logger.info(paste0(set1name, " - ", set2name, ": ", n1not2, " of ", n1, " (", round(100*n1not2/n1, 2), "%)"))
+	logger.info(paste0(set2name, " - ", set1name, ": ", n2not1, " of ", n2, " (", round(100*n2not1/n2, 2), "%)"))
+
+	if (doVenn){
+		require(VennDiagram)
+		ll <- list(a=set1, b=set2)
+		names(ll) <- c(set1name, set2name)
+		vd <- venn.diagram(ll, scaled=TRUE, fill=c("#9ecae1", "#fdae6b"), filename=NULL)
+		grid.newpage()
+		grid.draw(vd)
+	}
+	logger.completed()
+	invisible(NULL)
+}
