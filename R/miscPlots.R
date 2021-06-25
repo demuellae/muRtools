@@ -7,6 +7,7 @@
 #' @param chordColorByCol color chords by column instead of by row
 #' @param cs_rows   color scheme to use for the rows of the matrix
 #' @param cs_columns   color scheme to use for the rows of the matrix
+#' @param ...		passed on to \code{chordDiagram}
 #' @return nothing of particular interest (include this function while plotting).
 #' @author Fabian Mueller
 #' @export
@@ -15,7 +16,7 @@
 #' contTab <- with(airquality, table(cut(Temp, quantile(Temp)), Month))
 #' names(dimnames(contTab))[1] <- "quantile"
 #' chordDiagramFromContingencyTable(contTab)
-chordDiagramFromContingencyTable <- function(contTab, chordColorByCol=FALSE, cs_rows=colpal.mu.cat, cs_columns=colpal.mu.cat){
+chordDiagramFromContingencyTable <- function(contTab, chordColorByCol=FALSE, cs_rows=colpal.mu.cat, cs_columns=colpal.mu.cat, ...){
 	require(circlize)
 
 	if (is.character(cs_rows) && length(cs_rows)==1 && cs_rows=="[auto]"){
@@ -74,7 +75,7 @@ chordDiagramFromContingencyTable <- function(contTab, chordColorByCol=FALSE, cs_
 	stateColors <- c(cs_rows, cs_columns)
 	names(stateColors) <- c(rownames(ovMat), colnames(ovMat))
 
-	chordDiagram(ovMat, order=c(rev(rownames(ovMat)), colnames(ovMat)), grid.col=stateColors, column.col=column.col, annotationTrack=c("name", "grid"))
+	chordDiagram(ovMat, order=c(rev(rownames(ovMat)), colnames(ovMat)), grid.col=stateColors, column.col=column.col, annotationTrack=c("name", "grid"), ...)
 	circos.clear()
 	invisible(NULL)
 }
