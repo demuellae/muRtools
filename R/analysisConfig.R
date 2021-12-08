@@ -5,6 +5,10 @@
 ################################################################################
 # Parsers for config elements
 ################################################################################
+cfg_parse_free <- function(x){
+	return(x)
+}
+
 cfg_parse_string <- function(x){
 	if (!is.character(x)) stop("Config element is not a string")
 	return(x)
