@@ -226,7 +226,12 @@ ggsave4doc <- function(fn, plot=last_plot(), width=192, height=192, units="mm", 
       warning(paste("Undefined preset:", dimPreset))
     }
   }
-  ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, useDingbats=useDingbats,...)
+  ft <- tools::file_ext(fn)
+  if (ft == "png"){
+    ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, ...)
+  } else {
+    ggsave(fn, plot=plot, width=width, height=height, units=units, family=family, useDingbats=useDingbats,...)
+  }
 }
 
 #' ggtemp
