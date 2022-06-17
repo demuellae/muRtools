@@ -51,7 +51,9 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 	}
 	numNA <- csFun(is.na(X) | is.infinite(X))
 	has.noNA <- numNA==0
-	if (any(numNA>0)){
+	if (is.element(method, c("prcomp_iter_impute_scbs"))){
+		logger.info(c("Imputing", sum(numNA), "missing values"))
+	} else if (any(numNA>0)){
 		logger.info(c("retained",sum(has.noNA),"of",ncol(X),"features because the remaining ones contained NAs/Inf"))
 		X <- X[,has.noNA]
 	}
