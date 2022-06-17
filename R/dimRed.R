@@ -1,6 +1,36 @@
 ################################################################################
 # dimension reduction
 ################################################################################
+
+# iterative PCA applying missing value imputation 
+# from scbs tutorial
+# https://github.com/LKremer/scbs/blob/master/docs/tutorial.md
+prcomp_iter_impute_scbs <- function(x, n=10, n_iter=100, min_gain=0.01, ...) {
+  require(irlba)
+  mse <- rep(NA, n_iter)
+  na_loc <- is.na(x)
+  x[na_loc] = 0  # zero is our first guess
+
+  for (i in 1:n_iter) {
+    prev_imp <- x[na_loc]  # what we imputed in the previous round
+    # PCA on the imputed matrix
+    pr <- prcomp_irlba(x, center = F, scale. = F, n = n, ...)
+    # impute missing values with PCA
+    new_imp <- (pr$x %*% t(pr$rotation))[na_loc]
+    x[na_loc] <- new_imp
+    # compare our new imputed values to the ones from the previous round
+    mse[i] = mean((prev_imp - new_imp) ^ 2)
+    # if the values didn't change a lot, terminate the iteration
+    gain <- mse[i] / max(mse, na.rm = T)
+    if (gain < min_gain) {
+      message(paste(c("\n\nTerminated after ", i, " iterations.")))
+      break
+    }
+  }
+  pr$mse_iter <- mse[1:i]
+  pr
+}
+
 #' getDimRedCoords.pca
 #' 
 #' Get dimension reduction coordinates (PCA)
@@ -64,6 +94,18 @@ getDimRedCoords.pca <- function(X, components=c(1,2), method="prcomp", ...){
 		attr(coords, "SVD_U") <- svdRes$u
 		attr(coords, "SVD_V") <- svdRes$v
 		# projection of a new matrix (M) into PC space: coord_M <- M %*% svdRes$u
+	} else if (method=="prcomp_iter_impute_scbs") {
+		require(irlba)
+		nComps <- max(components)
+		X <- scale(X, center=TRUE, scale=FALSE)
+		pca <- prcomp_iter_impute_scbs(X, n=nComps, n_iter=100, min_gain=0.01)
+		coords <- pca$x[,components, drop=FALSE]
+		rownames(coords) <- rownames(X)
+		percVar <- 100 *(pca$sdev)^2 / sum(pca$sdev^2)
+		names(percVar) <- colnames(pca$x)
+		attr(coords, "percVar") <- percVar[components]
+		attr(coords,"PCAclass") <-"PCcoord"
+		attr(coords,"PCAmethod") <- "prcomp_iter_impute_scbs"
 	} else {
 		stop(paste("Unknown PCA method:", method))
 	}
