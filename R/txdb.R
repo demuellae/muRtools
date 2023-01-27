@@ -8,19 +8,20 @@
 getTxDb.gencode <- function(name){
 	require(GenomicFeatures)
 	fileTab <- data.frame(
-		name=c("gencode.v29", "gencode.v27", "gencode.v19", "gencode.vM21", "gencode.vM16", "gencode.vM1"),
-		version=c("29", "27", "19", "M21", "M16", "M1"),
+		name=c("gencode.v29", "gencode.v27", "gencode.v21", "gencode.v19", "gencode.vM21", "gencode.vM16", "gencode.vM1"),
+		version=c("29", "27", "21", "19", "M21", "M16", "M1"),
 		fileURL=c(
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.annotation.gtf.gz",
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_21/gencode.v21.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M21/gencode.vM21.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M16/gencode.vM16.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M1/gencode.vM1.annotation.gtf.gz"
 		),
-		organism = c("Homo sapiens", "Homo sapiens", "Homo sapiens", "Mus musculus", "Mus musculus", "Mus musculus"),
+		organism = c("Homo sapiens", "Homo sapiens", "Homo sapiens", "Homo sapiens", "Mus musculus", "Mus musculus", "Mus musculus"),
 
-		genomeAss=c("hg38", "hg38", "hg19", "mm10", "mm10", "mm9"),
+		genomeAss=c("hg38", "hg38", "hg38", "hg19", "mm10", "mm10", "mm9"),
 		stringsAsFactors = FALSE
 	)
 	rownames(fileTab) <- fileTab$name
@@ -44,19 +45,20 @@ getAnnotGrl.gencode <- function(name){
 	require(GenomicFeatures)
 	require(rtracklayer)
 	fileTab <- data.frame(
-		name=c("gencode.v29", "gencode.v27", "gencode.v19", "gencode.vM21", "gencode.vM16", "gencode.vM1"),
-		version=c("29", "27", "19", "M21", "M16", "M1"),
+		name=c("gencode.v29", "gencode.v27", "gencode.v21", "gencode.v19", "gencode.vM21", "gencode.vM16", "gencode.vM1"),
+		version=c("29", "27", "21", "19", "M21", "M16", "M1"),
 		fileURL=c(
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.annotation.gtf.gz",
+			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_21/gencode.v21.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M21/gencode.vM21.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M16/gencode.vM16.annotation.gtf.gz",
 			"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M1/gencode.vM1.annotation.gtf.gz"
 		),
-		organism = c("Homo sapiens", "Homo sapiens", "Homo sapiens", "Mus musculus", "Mus musculus", "Mus musculus"),
+		organism = c("Homo sapiens", "Homo sapiens", "Homo sapiens", "Homo sapiens", "Mus musculus", "Mus musculus", "Mus musculus"),
 
-		genomeAss=c("hg38", "hg38", "hg19", "mm10", "mm10", "mm9"),
+		genomeAss=c("hg38", "hg38", "hg38", "hg19", "mm10", "mm10", "mm9"),
 		stringsAsFactors = FALSE
 	)
 	rownames(fileTab) <- fileTab$name
