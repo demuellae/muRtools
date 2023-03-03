@@ -199,7 +199,7 @@ getRelatedAnaDirFromConfig <- function(cfg, anaName, anaVersion=cfg[[".anaVersio
 #' @author Fabian Mueller
 #' @noRd
 getScriptDependencyGraph <- function(scriptDirs="."){
-	scriptDirs <- "~/muResearchCode/BrainDev/src/"
+	# scriptDirs <- "~/muResearchCode/BrainDev/src/"
 	require(igraph)
 	scrptFns <- list.files(scriptDirs, pattern="*.R$", full.names=TRUE, recursive=TRUE)
 	sdf <- data.frame(
