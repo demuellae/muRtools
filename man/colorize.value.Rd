@@ -7,8 +7,8 @@
 colorize.value(
   val,
   rng = c(-1, 1),
-  colscheme.col.val = c(gplots::colorpanel(100, "blue", "white"),
-    gplots::colorpanel(100, "white", "red"))
+  colscheme.col.val = c(gplots::colorpanel(100, "blue", "white"), gplots::colorpanel(100,
+    "white", "red"))
 )
 }
 \arguments{

@@ -8,7 +8,8 @@ chordDiagramFromContingencyTable(
   contTab,
   chordColorByCol = FALSE,
   cs_rows = colpal.mu.cat,
-  cs_columns = colpal.mu.cat
+  cs_columns = colpal.mu.cat,
+  ...
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ chordDiagramFromContingencyTable(
 \item{cs_rows}{color scheme to use for the rows of the matrix}
 
 \item{cs_columns}{color scheme to use for the rows of the matrix}
+
+\item{...}{passed on to \code{chordDiagram}}
 }
 \value{
 nothing of particular interest (include this function while plotting).

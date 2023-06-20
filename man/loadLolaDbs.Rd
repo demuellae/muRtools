@@ -4,10 +4,13 @@
 \alias{loadLolaDbs}
 \title{loadLolaDbs}
 \usage{
-loadLolaDbs(lolaDbPaths)
+loadLolaDbs(lolaDbPaths, collections = NULL)
 }
 \arguments{
 \item{lolaDbPaths}{vector of names of LOLA DB paths to be loaded}
+
+\item{collections}{Restrict the database loading to this list of collections.
+passed to \code{LOLA::loadRegionDB}}
 }
 \value{
 LOLA DB list as returned by \code{LOLA::loadRegionDB}

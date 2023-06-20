@@ -3,7 +3,7 @@ Title: Mueller's R tools
 Description: Fabian's custom plotting functions and utilities
 Author: Fabian Mueller
 Maintainer: Fabian Mueller <fmueller@mpi-inf.mpg.de>
-Date: 2023-01-27
+Date: 2023-06-20
 Suggests:
     gplots,
     plotrix,
@@ -18,7 +18,7 @@ Imports:
     GenomicRanges,
     GenomeInfoDb
 License: GPL-2
-Version: 0.9.5
+Version: 0.9.6
 Encoding: UTF-8
 Collate: 
     'analysisConfig.R'
@@ -49,4 +49,4 @@ Collate:
     'statTest.R'
     'txdb.R'
     'wrappers.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3

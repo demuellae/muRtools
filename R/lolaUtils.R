@@ -90,10 +90,24 @@ loadLolaDbs <- function(lolaDbPaths, collections = NULL){
 	require("simpleCache") # TODO: include requirement in dependencies
 	if (length(lolaDbPaths) < 1) logger.error(c("No LOLA DB paths specified"))
 	logger.start("Loading LOLA DBs")
-		lolaDb <- loadRegionDB(lolaDbPaths[1], collections=collections)
-		if (length(lolaDbPaths)>1){
-			for (i in 2:length(lolaDbPaths)){
-				lolaDb <- mergeRegionDBs(lolaDb, loadRegionDB(lolaDbPaths[i], collections=collections))
+		lolaDb <- NULL
+		if (length(lolaDbPaths)<1){
+			logger.error("Invalid LOLA DB Path vector")
+		}
+		for (i in 1:length(lolaDbPaths)){
+			curDb <- NULL
+			tryCatch(
+				curDb <- loadRegionDB(lolaDbPaths[i], collections=collections),
+				error = function(ee) {
+					print(paste("Could not load LolaDB from", lolaDbPaths[i], ":",ee$message))
+				}
+			)
+			if (!is.null(curDb)){
+				if (is.null(lolaDb)){
+					lolaDb <- curDb
+				} else {
+					lolaDb <- mergeRegionDBs(lolaDb, curDb)
+				}
 			}
 		}
 	logger.completed()
