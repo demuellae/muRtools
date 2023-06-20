@@ -70,6 +70,8 @@ downloadLolaDbs <- function(dest, dbs=c("LOLACore")){
 #' 
 #' Load LOLA databases from disk and merge them
 #' @param lolaDbPaths  vector of names of LOLA DB paths to be loaded
+#' @param collections  Restrict the database loading to this list of collections.
+#'                     passed to \code{LOLA::loadRegionDB}
 #' 
 #' @return LOLA DB list as returned by \code{LOLA::loadRegionDB}
 #' @author Fabian Mueller
@@ -82,16 +84,16 @@ downloadLolaDbs <- function(dest, dbs=c("LOLACore")){
 #' lolaDirs <- downloadLolaDbs(lolaDest, dbs="LOLACore")
 #' lolaDb <- loadLolaDbs(lolaDirs[["hg19"]])
 #' }
-loadLolaDbs <- function(lolaDbPaths){
+loadLolaDbs <- function(lolaDbPaths, collections = NULL){
 	require("data.table") #explicitely load data.table to adress LOLA namespace issues
 	require("LOLA")
 	require("simpleCache") # TODO: include requirement in dependencies
 	if (length(lolaDbPaths) < 1) logger.error(c("No LOLA DB paths specified"))
 	logger.start("Loading LOLA DBs")
-		lolaDb <- loadRegionDB(lolaDbPaths[1])
+		lolaDb <- loadRegionDB(lolaDbPaths[1], collections=collections)
 		if (length(lolaDbPaths)>1){
 			for (i in 2:length(lolaDbPaths)){
-				lolaDb <- mergeRegionDBs(lolaDb, loadRegionDB(lolaDbPaths[i]))
+				lolaDb <- mergeRegionDBs(lolaDb, loadRegionDB(lolaDbPaths[i], collections=collections))
 			}
 		}
 	logger.completed()
