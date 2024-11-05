@@ -127,7 +127,7 @@ getConfig <- function(cfgFn, anaName, addDirs=TRUE){
 		.fromJson=cfgJson
 	)
 
-	req.config.there <- cfgElems[,"OPTIONAL"] || cfgElems[, "NAME"] %in% names(cfgJson)
+	req.config.there <- cfgElems[,"OPTIONAL"] | cfgElems[, "NAME"] %in% names(cfgJson)
 	if (!all(req.config.there)){
 		logger.error(c("Missing from config file:", paste(cfgElems[!req.config.there,"NAME"], collapse=",")))
 	}
